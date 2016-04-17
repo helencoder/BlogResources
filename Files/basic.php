@@ -15,5 +15,5 @@ $root = $_SERVER['DOCUMENT_ROOT'];
 @ini_set('memory_limit', '512M');
 //设置超时时间为0，即为永不超时
 set_time_limit(0);
-//json_encode()设置不转义中文
+//json_encode()设置不转义中文 Json不要编码Unicode.
 json_encode('', JSON_UNESCAPED_UNICODE);
