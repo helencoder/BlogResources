@@ -93,7 +93,6 @@ function storageImg($photo)
 }
 
 
-//利用PHP目录和文件函数遍历用户给出目录的所有的文件和文件夹，修改照片名称 后续进行存入excel操作。
 /*
  *功能：利用PHP目录和文件函数遍历用户给出目录的所有的文件和文件夹，修改照片名称 后续进行存入excel操作。
  *参数：传入文件夹路径
@@ -165,4 +164,89 @@ function Rename($dirname){
     $objSheet->fromArray($arr);  //利用fromArray()直接一次性填充数据
     $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');   //设定写入excel的类型
     $objWriter->save($dir.'/logo2.xlsx');       //保存文件，后面为设置excel文件名
+}
+
+/*
+ * 功能：PHP处理图片上传，转存函数
+ * */
+function uploadImg(){
+    if ($_FILES["photos"]["error"] > 0)
+    {
+        echo '错误:'.$_FILES["photos"]["error"].'<br />';
+    }else {
+        echo '文件名:'.$_FILES["photos"]["name"].'<br />';
+        echo '类型:'.$_FILES["photos"]["type"].'<br />';
+        echo '大小:'.($_FILES["photos"]["size"] / 1024).'Kb<br />';
+        echo '存储位置:'.$_FILES["photos"]["tmp_name"];
+    }
+    //文件上传路径
+    $dir = $_SERVER['DOCUMENT_ROOT'].'weixin/Images';
+    var_dump($dir);
+    //文件处理
+    if (file_exists("$dir/".$_FILES["photos"]["name"]))
+    {
+        echo $_FILES["photos"]["name"].'文件已经存在.';
+    }else{
+        move_uploaded_file($_FILES["photos"]["tmp_name"],"$dir/".$_FILES["photos"]["name"]);
+        echo '文件已经被存储到:'."$dir/".$_FILES["photos"]["name"];
+    }
+}
+
+//php上传图片压缩
+function compressImg(){
+    $pic_name=date("YmdHis");
+    // 生成图片的宽度 $pic_width=500;
+    $pic_width=$_POST['width'];
+    // 生成图片的高度 $pic_height=500;
+    $pic_height=$_POST['length'];
+
+    if($_FILES['image']['size']) {
+
+        if ($_FILES['image']['type'] == "image/jpeg" || $_FILES['image']['type'] == "image/jpg" || $_FILES['image']['type'] == "image/jpeg") {
+            $im = imagecreatefromjpeg($_FILES['image']['tmp_name']);
+        } elseif ($_FILES['image']['type'] == "image/x-png") {
+            $im = imagecreatefrompng($_FILES['image']['tmp_name']);
+        } elseif ($_FILES['image']['type'] == "image/gif") {
+            $im = imagecreatefromgif($_FILES['image']['tmp_name']);
+        }
+
+        if ($im) {
+            if (file_exists($pic_name . '.jpg')) {
+                unlink($pic_name . '.jpg');
+            }
+            $this->ResizeImage($im, $pic_width, $pic_height, $pic_name);
+            ImageDestroy($im);
+        }
+    }
+}
+
+//图片压缩
+function ResizeImage($im,$maxwidth,$maxheight,$name){
+    //取得当前图片大小
+    $width = imagesx($im);
+    $height = imagesy($im);
+    //生成缩略图的大小
+    if(($width > $maxwidth) || ($height > $maxheight)){
+        $widthratio = $maxwidth/$width;
+        $heightratio = $maxheight/$height;
+        if($widthratio < $heightratio){
+            $ratio = $widthratio;
+        }else{
+            $ratio = $heightratio;
+        }
+        $newwidth = $width * $ratio;
+        $newheight = $height * $ratio;
+
+        if(function_exists("imagecopyresampled")){
+            $newim = imagecreatetruecolor($newwidth, $newheight);
+            imagecopyresampled($newim, $im, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+        }else{
+            $newim = imagecreate($newwidth, $newheight);
+            imagecopyresized($newim, $im, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+        }
+        ImageJpeg ($newim,$name . ".jpg");
+        ImageDestroy ($newim);
+    }else{
+        ImageJpeg ($im,$name . ".jpg");
+    }
 }
