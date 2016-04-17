@@ -91,3 +91,78 @@ function storageImg($photo)
 
     }
 }
+
+
+//利用PHP目录和文件函数遍历用户给出目录的所有的文件和文件夹，修改照片名称 后续进行存入excel操作。
+/*
+ *功能：利用PHP目录和文件函数遍历用户给出目录的所有的文件和文件夹，修改照片名称 后续进行存入excel操作。
+ *参数：传入文件夹路径
+ *返回：返回excel文件，其中包含原始图片名和更改后图片名的对应
+ *
+ * */
+function Rename($dirname){
+    //原图片名数组
+    $oldImageName = array();
+    //新图片名数组
+    $newImageName = array();
+    if(!is_dir($dirname)){  //判断是否为一个有效的目录
+        echo "{$dirname}目录无效！";
+        exit();
+    }
+    $handle = opendir($dirname);    //打开目录，并传回一个事件句柄
+    while(($fn = readdir($handle))!==false){
+        if($fn!='.'&&$fn!='..'){    //读取dir后会有.和..目录代表本级以及上级目录。以此进行判断。
+            $curDir = $dirname.'/'.$fn;
+            if(is_dir($curDir)){    //假如还为文件夹，就继续循环调用此函数。
+                fRename($curDir);
+            }
+            else{   //此为文件，直接进行改名操作。
+                //pathinfo() 函数以数组的形式返回文件路径的信息。
+                /*包括以下的数组元素：
+                    [dirname]
+                    [basename]
+                    [extension]
+                */
+                $path = pathinfo($curDir);
+                $newname = $path['dirname'].'/'.substr(microtime(),2,8).'.'.$path['extension']; //此处利用微秒函数进行重命名，以防止文件重名。
+                rename($curDir,$newname);
+                array_push($oldImageName,$curDir);  //将旧图片名加入数组中
+                array_push($newImageName,$newname); //将新图片名加入数组中
+            }
+        }
+    }
+
+    //将数组信息写入excel表中。
+    //将数组中的元素进行处理
+    $num = count($oldImageName);    //获取处理的图片数组的长度
+    for($i=0;$i<=$num;$i++){
+        $oldImageName[$i] = substr($oldImageName[$i],9);    //去除图片名所含的路径
+        $newImageName[$i] = substr($newImageName[$i],9);    //去除图片名所含的路径
+    }
+    //dump($oldImageName);
+    //dump($newImageName);
+
+    $dir = $_SERVER['DOCUMENT_ROOT'];  //找出项目的根路径
+    require '/PHPExcel_1.8.0/Classes/PHPExcel.php'; //添加读取excel所需的类文件（PHPExcel）
+
+    $objPHPExcel = new \PHPExcel();                     //实例化一个PHPExcel()对象
+    $objSheet = $objPHPExcel->getActiveSheet();        //选取当前的sheet对象
+    //$objSheet->setTitle('helen');                      //对当前sheet对象命名
+    //常规方式：利用setCellValue()填充数据
+    //$objSheet->setCellValue("A1","张三")->setCellValue("B1","李四");   //利用setCellValues()填充数据
+    //取巧模式：利用fromArray()填充数据
+
+    //更改文件名编码
+    for($i=0;$i<$num;$i++){
+        $oldImageName[$i] = mb_convert_encoding($oldImageName[$i],"UTF-8","GBK");   //此处一定要记得将转换为的字符串存下来！！！
+    }
+
+    $arr = array();
+    for($i=0;$i<$num;$i++){
+        $tmp = array("","$oldImageName[$i]","$newImageName[$i]");
+        array_push($arr,$tmp);
+    }
+    $objSheet->fromArray($arr);  //利用fromArray()直接一次性填充数据
+    $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');   //设定写入excel的类型
+    $objWriter->save($dir.'/logo2.xlsx');       //保存文件，后面为设置excel文件名
+}
