@@ -6,10 +6,10 @@
  */
 
 /*
-        *功能：php完美实现下载远程图片保存到本地
-        *参数：文件url,保存文件目录,保存文件名称，使用的下载方式
-        *当保存文件名称为空时则使用远程文件原来的名称
-        */
+ *功能：php完美实现下载远程图片保存到本地
+ *参数：文件url,保存文件目录,保存文件名称，使用的下载方式
+ *当保存文件名称为空时则使用远程文件原来的名称
+ */
 function getImage($url, $save_dir = '', $filename = '', $type = 0)
 {
     if (trim($url) == '') {
@@ -54,4 +54,40 @@ function getImage($url, $save_dir = '', $filename = '', $type = 0)
     fclose($fp2);
     unset($img, $url);
     return array('file_name' => $filename, 'save_path' => $save_dir . $filename, 'error' => 0);
+}
+
+
+/*
+ *功能：PHP实现上传图片转存
+ *参数：传入文件信息(array)，PHP中利用$_FILES获取
+ *返回：返回存储地址
+ */
+
+function storageImg($photo)
+{
+    //文件处理
+    if ($photo["article"]["error"]['image'] > 0) {
+        #echo '错误:'.$photo["article"]["error"]['image'].'<br />';
+    } else {
+        //文件上传路径
+        $dir = $_SERVER['DOCUMENT_ROOT'] . '/Upload/weixin/article/thumb';
+        //获取文件后缀
+        $ext = strpos($photo["article"]["name"]['image'], '.');
+        $ext = substr($photo["article"]["name"]['image'], $ext + 1);
+        if ($ext == 'gif') {
+            $this->error('封面图不能为gif图片');
+        }
+        //利用时间戳作为图片的新名字，避免重复
+        $timestamp = time();
+        $newname = $timestamp . '.' . $ext;
+        //文件处理
+        if (file_exists("$dir/" . $photo["article"]["name"]['image'])) {
+            echo $photo["article"]["name"] . '文件已经存在.';
+        } else {
+            move_uploaded_file($photo["article"]["tmp_name"]['image'], "$dir/" . $newname);
+        }
+        $img_url = $dir . '/' . $newname;
+        return $img_url;
+
+    }
 }
