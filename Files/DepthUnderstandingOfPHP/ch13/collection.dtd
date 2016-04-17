@@ -1,0 +1,25 @@
+<!-- Script 13.4 - collection.dtd -->
+
+<!ELEMENT collection (book+)>
+
+<!ELEMENT book (title, author+, year, pages?, chapter*, cover?)>
+
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT author (#PCDATA)>
+<!ELEMENT year (#PCDATA)>
+<!ELEMENT pages (#PCDATA)>
+<!ELEMENT chapter (#PCDATA)>
+<!ELEMENT cover EMPTY>
+
+<!ATTLIST title
+edition NMTOKEN #IMPLIED
+>
+
+<!ATTLIST chapter
+number NMTOKEN #IMPLIED
+pages NMTOKEN #IMPLIED
+>
+
+<!ATTLIST cover
+filename NMTOKEN #REQUIRED
+>

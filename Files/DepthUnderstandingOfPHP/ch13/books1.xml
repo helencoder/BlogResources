@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Script 13.2 - books1.xml -->
+<collection>
+<book>
+<title>PHP Advanced and Object-Oriented Programming: Visual QuickPro Guide</title>
+<author>Larry Ullman</author>
+<year>2012</year>
+</book>
+<book>
+<title>Modern JavaScript: Develop and Design</title>
+<author>Larry Ullman</author>
+<year>2012</year>
+<pages>612</pages>
+</book>
+<book>
+<title>C++ Programming: Visual QuickStart Guide</title>
+<author>Larry Ullman</author>
+<author>Andreas Signer</author>
+<year>2006</year>
+<pages>500</pages>
+</book>
+</collection>

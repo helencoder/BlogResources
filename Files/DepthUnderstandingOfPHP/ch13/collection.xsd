@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Script 13.6 - collection.xsd -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="collection">
+    <xs:complexType>
+        <xs:sequence>
+            <xs:element name="book" type="bookType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:element>
+
+<xs:complexType name="bookType">
+    <xs:sequence>
+        <xs:element name="title" type="titleType" />
+        <xs:element name="author" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+        <xs:element name="year" type="xs:int" />
+        <xs:element name="pages" type="xs:int" minOccurs="0" maxOccurs="1" />
+        <xs:element name="chapter" type="chapterType" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="cover" type="coverType" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="coverType">
+    <xs:attribute name="filename" type="xs:string" />
+</xs:complexType>
+
+<xs:complexType name="chapterType">
+    <xs:simpleContent>
+        <xs:extension base="xs:string">
+            <xs:attribute name="number" type="xs:int" />
+            <xs:attribute name="pages" type="xs:int" />
+        </xs:extension>
+    </xs:simpleContent>
+</xs:complexType>
+
+<xs:complexType name="titleType">
+    <xs:simpleContent>
+        <xs:extension base="xs:string">
+            <xs:attribute name="edition" type="xs:int" />
+        </xs:extension>
+    </xs:simpleContent>
+</xs:complexType>
+
+</xs:schema>

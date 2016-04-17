@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Script 13.1 - store.xml -->
+<!DOCTYPE store SYSTEM "store.dtd">
+<store>
+	<product>
+		<name>T-Shirt</name>
+		<size>XL</size>
+		<color>White</color>
+		<price>12.00</price>
+	</product>
+	<product>
+		<name>Sweater</name>
+		<size>M</size>
+		<color>Blue</color>
+		<price>25.50</price>
+		<picture filename="sweater.png" />
+	</product>
+</store>
