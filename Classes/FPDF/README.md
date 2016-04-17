@@ -5,7 +5,7 @@ FPDF is a PHP class which allows to generate PDF files with pure PHP, that is to
 link��http://www.fpdf.org/
 
 ### Tutorials
-1、Minimal example
+###1 Minimal example
 Let's start with the classic example:
 ```php
 <?php
@@ -18,7 +18,7 @@ $pdf->Cell(40,10,'Hello World!');
 $pdf->Output();
 ?>
 ```
-2、Header, footer, page break and image
+###2 Header, footer, page break and image
 Here's a two page example with header, footer and logo:
 ```php
 <?php
@@ -63,7 +63,7 @@ for($i=1;$i<=40;$i++)
 $pdf->Output();
 ?>
 ```
-3、Line breaks and colors
+###3 Line breaks and colors
 Let's continue with an example which prints justified paragraphs. It also illustrates the use of colors.
 ```php
 <?php
@@ -148,7 +148,7 @@ $pdf->PrintChapter(2,'THE PROS AND CONS','20k_c2.txt');
 $pdf->Output();
 ?>
 ```
-4、Multi-columns
+###4 Multi-columns
 This example is a variant of the previous one showing how to lay the text across multiple columns.
 ```php
 <?php
@@ -261,7 +261,7 @@ $pdf->PrintChapter(2,'THE PROS AND CONS','20k_c2.txt');
 $pdf->Output();
 ?>
 ```
-5、Tables
+###5 Tables
 This tutorial shows different ways to make tables.
 ```php
 <?php
@@ -367,7 +367,7 @@ $pdf->FancyTable($header,$data);
 $pdf->Output();
 ?>
 ```
-6、Links and flowing text
+###6 Links and flowing text
 This tutorial explains how to insert links (internal and external) and shows a new text writing mode. It also contains a basic HTML parser.
 ```php
 <?php
@@ -484,4 +484,4 @@ $pdf->WriteHTML($html);
 $pdf->Output();
 ?>
 ```
-7、Adding new fonts and encodings
+###7 Adding new fonts and encodings
