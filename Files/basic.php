@@ -11,3 +11,7 @@ header("Content-type: text/html; charset=utf-8");
 $url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 //当前项目的根路径,注意此路径最后为‘/’
 $root = $_SERVER['DOCUMENT_ROOT'];
+//设置PHP能使用的内存大小
+@ini_set('memory_limit', '512M');
+//设置超时时间为0，即为永不超时
+set_time_limit(0);
