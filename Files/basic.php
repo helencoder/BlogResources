@@ -17,3 +17,5 @@ $root = $_SERVER['DOCUMENT_ROOT'];
 set_time_limit(0);
 //json_encode()设置不转义中文 Json不要编码Unicode.
 json_encode('', JSON_UNESCAPED_UNICODE);
+//转换编码 由UTF-8转为GBK
+mb_convert_encoding('',"UTF-8","GBK");
