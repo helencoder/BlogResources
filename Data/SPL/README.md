@@ -19,72 +19,80 @@ link£∫http://php.net/manual/en/reserved.constants.php
 
 ### Datastructures
 SPL provides a set of standard datastructures. They are grouped here by their underlying implementation which usually defines their general field of application.
-    SplDoublyLinkedList     À´œÚ¡¥±Ì
-    SplStack                ∂—
-    SplQueue                ’Û¡–
-    SplHeap
-    SplMaxHeap
-    SplMinHeap
-    SplPriorityQueue
-    SplFixedArray
-    SplObjectStorage        ”≥…‰
+
+        SplDoublyLinkedList     À´œÚ¡¥±Ì
+        SplStack                ∂—
+        SplQueue                ’Û¡–
+        SplHeap
+        SplMaxHeap
+        SplMinHeap
+        SplPriorityQueue
+        SplFixedArray
+        SplObjectStorage        ”≥…‰
+
 
 ### Iterators
 SPL provides a set of iterators to traverse over objects.
-    AppendIterator
-    ArrayIterator
-    CachingIterator
-    CallbackFilterIterator
-    DirectoryIterator
-    EmptyIterator
-    FilesystemIterator
-    FilterIterator
-    GlobIterator
-    InfiniteIterator
-    IteratorIterator
-    LimitIterator
-    MultipleIterator
-    NoRewindIterator
-    ParentIterator
-    RecursiveArrayIterator
-    RecursiveCachingIterator
-    RecursiveCallbackFilterIterator
-    RecursiveDirectoryIterator
-    RecursiveFilterIterator
-    RecursiveIteratorIterator
-    RecursiveRegexIterator
-    RecursiveTreeIterator
-    RegexIterator
+
+        AppendIterator
+        ArrayIterator
+        CachingIterator
+        CallbackFilterIterator
+        DirectoryIterator
+        EmptyIterator
+        FilesystemIterator
+        FilterIterator
+        GlobIterator
+        InfiniteIterator
+        IteratorIterator
+        LimitIterator
+        MultipleIterator
+        NoRewindIterator
+        ParentIterator
+        RecursiveArrayIterator
+        RecursiveCachingIterator
+        RecursiveCallbackFilterIterator
+        RecursiveDirectoryIterator
+        RecursiveFilterIterator
+        RecursiveIteratorIterator
+        RecursiveRegexIterator
+        RecursiveTreeIterator
+        RegexIterator
+
 
 ### Interfaces
 SPL provides a set of interfaces.
-    Countable
-    OuterIterator
-    RecursiveIterator
-    SeekableIterator
 
-    Countable
-    OuterIterator
-    RecursiveIterator
-    SeekableIterator
-    SplObserver
-    SplSubject
+        Countable
+        OuterIterator
+        RecursiveIterator
+        SeekableIterator
+
+        Countable
+        OuterIterator
+        RecursiveIterator
+        SeekableIterator
+        SplObserver
+        SplSubject
+
 
 ### Exceptions
 SPL provides a set of standard Exceptions.
+
     BadFunctionCallException
-    BadMethodCallException
-    DomainException
-    InvalidArgumentException
-    LengthException
-    LogicException
-    OutOfBoundsException
-    OutOfRangeException
-    OverflowException
-    RangeException
-    RuntimeException
-    UnderflowException
-    UnexpectedValueException
+            BadMethodCallException
+            DomainException
+            InvalidArgumentException
+            LengthException
+            LogicException
+            OutOfBoundsException
+            OutOfRangeException
+            OverflowException
+            RangeException
+            RuntimeException
+            UnderflowException
+            UnexpectedValueException
+
 
     LogicException (extends Exception)
         BadFunctionCallException
