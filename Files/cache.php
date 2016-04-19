@@ -45,3 +45,10 @@ header ("Cache-Control: max-age=$interval");
 header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0"); // HTTP/1.1
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 header("Pragma: no-cache"); // Date in the past
+
+//浏览器缓存文件一个月（过期时间得用gmdate来设置，而不是date）
+header("Cache-Control: public");
+header("Pragma: cache");
+$offset = 30*60*60*24; // cache 1 month
+$ExpStr = "Expires: ".gmdate("D, d M Y H:i:s", time() + $offset)." GMT";
+header($ExpStr);
