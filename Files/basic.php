@@ -19,3 +19,5 @@ set_time_limit(0);
 json_encode('', JSON_UNESCAPED_UNICODE);
 //转换编码 由UTF-8转为GBK
 mb_convert_encoding('',"UTF-8","GBK");
+//设置中国时区
+date_default_timezone_set('PRC');
