@@ -16,7 +16,8 @@
  * @return string $exchange_count 排序过程中交换的次数
  * @return string $compare_count 排序过程中比较的次数
  * */
-function BubbleSort(array $arr,$type){
+function BubbleSort(array $arr , $type = 'asc')
+{
     $array = $arr;
     $length = count($arr);
     $exchange_count = 0;      //交换次数
