@@ -2,22 +2,22 @@
 /**
  * Author: helen
  * CreateTime: 2016/4/17 21:49
- * description: GET¡¢POSTÇëÇóº¯Êý
+ * description: GETï¿½ï¿½POSTï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 
 /*
- * ¹¦ÄÜ£º½Ó¿ÚÇëÇóº¯Êý
- * ²ÎÊý£ºurl£¬[data](Í¨¹ýÊÇ·ñ´«ÈëdataÅÐ¶ÏÆäÎªgetÇëÇó»¹ÊÇpostÇëÇó)
- * ·µ»Ø£ºjsonÊý¾Ý
+ * ï¿½ï¿½ï¿½Ü£ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ * ï¿½ï¿½ï¿½ï¿½urlï¿½ï¿½[data](Í¨ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½dataï¿½Ð¶ï¿½ï¿½ï¿½Îªgetï¿½ï¿½ï¿½ï¿½ï¿½ï¿½postï¿½ï¿½ï¿½ï¿½)
+ * ï¿½ï¿½ï¿½Ø£ï¿½jsonï¿½ï¿½ï¿½
  */
 function request($url, $data = null)
 {
-    //³õÊ¼»¯cURL·½·¨
+    //ï¿½ï¿½Ê¼ï¿½ï¿½cURLï¿½ï¿½ï¿½ï¿½
     $ch = curl_init();
-    //ÉèÖÃcURL²ÎÊý£¨»ù±¾²ÎÊý£©
+    //ï¿½ï¿½ï¿½ï¿½cURLï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     $opts = array(
-        //ÔÚ¾ÖÓòÍøÄÚ·ÃÎÊhttpsÕ¾µãÊ±ÐèÒªÉèÖÃÒÔÏÂÁ½Ïî£¬¹Ø±ÕsslÑéÖ¤£¡
-        //´ËÁ½ÏîÕýÊ½ÉÏÏßÊ±ÐèÒª¸ü¸Ä£¨²»¼ì²éºÍÑéÖ¤ÈÏÖ¤£©
+        //ï¿½Ú¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½httpsÕ¾ï¿½ï¿½Ê±ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½î£¬ï¿½Ø±ï¿½sslï¿½ï¿½Ö¤ï¿½ï¿½
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Òªï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½Ö¤ï¿½ï¿½
         CURLOPT_SSL_VERIFYPEER => false,
         CURLOPT_SSL_VERIFYHOST => false,
         CURLOPT_TIMEOUT => 30,
@@ -27,19 +27,19 @@ function request($url, $data = null)
         CURLOPT_POSTFIELDS     => $data*/
     );
     curl_setopt_array($ch, $opts);
-    //postÇëÇó²ÎÊý
+    //postï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     if (!empty($data)) {
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
     }
-    //Ö´ÐÐcURL²Ù×÷
+    //Ö´ï¿½ï¿½cURLï¿½ï¿½ï¿½ï¿½
     $output = curl_exec($ch);
-    if (curl_errno($ch)) {    //cURL²Ù×÷·¢Éú´íÎó´¦Àí¡£
+    if (curl_errno($ch)) {    //cURLï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
         var_dump(curl_error($ch));
         die;
     }
-    //¹Ø±ÕcURL
+    //ï¿½Ø±ï¿½cURL
     curl_close($ch);
     $res = json_decode($output);
-    return ($res);   //·µ»ØjsonÊý¾Ý
+    return ($res);   //ï¿½ï¿½ï¿½ï¿½jsonï¿½ï¿½
 }
