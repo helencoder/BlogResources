@@ -1,0 +1,8 @@
+{
+    "require": {
+        "monolog/monolog": "^1.19",
+        "swiftmailer/swiftmailer": "~5.3",
+        "filp/whoops": "~1.0",
+        "chrisboulton/php-resque": "1.2.x"
+    }
+}
