@@ -7,6 +7,7 @@
 $url_1 = 'www.baidu.com';
 $url_2 = 'www.zhihu.com';
 $url_3 = 'www.sina.com.cn';
+
 //第一种：循环请求
 /*$sr = array($url_1, $url_2, $url_3);
 foreach ($sr as $k => $v) {
