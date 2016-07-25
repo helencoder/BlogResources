@@ -41,4 +41,5 @@ foreach ($capis as &$api) {
     var_dump($api, $fields, $tags);
     // 写入数据库
     //Tool_Influx::write($db_name, $table_name, $fields, $tags);
+
 }
