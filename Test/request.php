@@ -2,7 +2,7 @@
 /**
  * Author：helen
  * CreateTime: 2016/07/25 18:03
- * Description：API访问方法
+ * Description：API调用方法(适用于网页爬虫)
  */
 
 function api_request($url, $data = null)
