@@ -2,11 +2,10 @@
 /**
  * Author: helen
  * CreateTime: 2016/4/17 21:06
- * description: url²ÎÊı´¦Àíº¯Êı
+ * description: urlå‚æ•°å¤„ç†å‡½æ•°
  */
-
-//urlĞÅÏ¢´¦Àíº¯Êı
-//¶¨Òå´¦Àíº¯Êı
+//urlä¿¡æ¯å¤„ç†å‡½æ•°
+//å®šä¹‰å¤„ç†å‡½æ•°
 function get_url_msg($str)
 {
     $data = array();
@@ -17,12 +16,11 @@ function get_url_msg($str)
     }
     return $data;
 }
-
 /*
-     * ½«URLÖĞµÄ²ÎÊıÈ¡³öÀ´·Åµ½Êı×éÀï
+     * å°†URLä¸­çš„å‚æ•°å–å‡ºæ¥æ”¾åˆ°æ•°ç»„é‡Œ
      * @access public
-     * @param string urlºó´ø²ÎÊı
-     * @return array ´¦ÀíºóµÄÊı×éĞÅÏ¢
+     * @param string urlåå¸¦å‚æ•°
+     * @return array å¤„ç†åçš„æ•°ç»„ä¿¡æ¯
      * */
 function convertUrlQuery($query){
     $queryParts = explode('&', $query);
@@ -34,10 +32,10 @@ function convertUrlQuery($query){
     return $params;
 }
 /*
- * ½« ²ÎÊıÊı×é ÔÙ±ä»Ø ×Ö·û´®ĞÎÊ½µÄ²ÎÊı¸ñÊ½
+ * å°† å‚æ•°æ•°ç»„ å†å˜å› å­—ç¬¦ä¸²å½¢å¼çš„å‚æ•°æ ¼å¼
  * @access public
- * @param array ²ÎÊıÊı×éĞÅÏ¢
- * @return string urlºó´ø²ÎÊı
+ * @param array å‚æ•°æ•°ç»„ä¿¡æ¯
+ * @return string urlåå¸¦å‚æ•°
  * */
 function getUrlQuery($array_query){
     $tmp = array();
