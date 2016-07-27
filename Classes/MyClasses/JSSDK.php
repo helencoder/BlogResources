@@ -2,29 +2,28 @@
 /**
  * Author: helen
  * CreateTime: 2016/4/11 10:39
- * description: Î¢ĞÅÒ³ÃæÊÚÈ¨--(JS-SDKÊ¹ÓÃÈ¨ÏŞÇ©ÃûËã·¨)
+ * description: å¾®ä¿¡é¡µé¢æˆæƒ--(JS-SDKä½¿ç”¨æƒé™ç­¾åç®—æ³•)
  */
 class JSSDK{
     private $appId;
     private $appSecret;
-
     public function __construct($appId, $appSecret)
     {
         $this->appId = $appId;
         $this->appSecret = $appSecret;
     }
     /*
-     * »ñÈ¡access_token
-     * (ĞèÒª»º´æ£¬¿ÉÀûÓÃÊı¾İ¿â´æ´¢,²»ÒªÆµ·±Ë¢ĞÂ»ñÈ¡)
-     * httpÇëÇó·½Ê½: GET  https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
-     * ½Ó¿ÚÇëÇó²ÎÊı
-     *  ²ÎÊı	     ÊÇ·ñ±ØĞë	       ËµÃ÷
-        grant_type	ÊÇ	»ñÈ¡access_tokenÌîĞ´client_credential
-        appid	    ÊÇ	µÚÈı·½ÓÃ»§Î¨Ò»Æ¾Ö¤
-        secret	    ÊÇ	µÚÈı·½ÓÃ»§Î¨Ò»Æ¾Ö¤ÃÜÔ¿£¬¼´appsecret
-     * ½Ó¿Ú·µ»ØËµÃ÷
-     * {"access_token":"ACCESS_TOKEN","expires_in":7200}    access_token	»ñÈ¡µ½µÄÆ¾Ö¤  expires_in	Æ¾Ö¤ÓĞĞ§Ê±¼ä£¬µ¥Î»£ºÃë
-     * ½Ó¿Ú´íÎóËµÃ÷
+     * è·å–access_token
+     * (éœ€è¦ç¼“å­˜ï¼Œå¯åˆ©ç”¨æ•°æ®åº“å­˜å‚¨,ä¸è¦é¢‘ç¹åˆ·æ–°è·å–)
+     * httpè¯·æ±‚æ–¹å¼: GET  https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
+     * æ¥å£è¯·æ±‚å‚æ•°
+     *  å‚æ•°	     æ˜¯å¦å¿…é¡»	       è¯´æ˜
+        grant_type	æ˜¯	è·å–access_tokenå¡«å†™client_credential
+        appid	    æ˜¯	ç¬¬ä¸‰æ–¹ç”¨æˆ·å”¯ä¸€å‡­è¯
+        secret	    æ˜¯	ç¬¬ä¸‰æ–¹ç”¨æˆ·å”¯ä¸€å‡­è¯å¯†é’¥ï¼Œå³appsecret
+     * æ¥å£è¿”å›è¯´æ˜
+     * {"access_token":"ACCESS_TOKEN","expires_in":7200}    access_token	è·å–åˆ°çš„å‡­è¯  expires_in	å‡­è¯æœ‰æ•ˆæ—¶é—´ï¼Œå•ä½ï¼šç§’
+     * æ¥å£é”™è¯¯è¯´æ˜
      * {"errcode":40013,"errmsg":"invalid appid"}
      * */
     private function getAccessToken(){
@@ -49,10 +48,10 @@ class JSSDK{
         }
     }
     /*
-     * »ñÈ¡jsapi_ticket
-     * £¨ÓĞĞ§ÆÚ7200Ãë£¬¿ª·¢Õß±ØĞëÔÚ×Ô¼ºµÄ·şÎñÈ«¾Ö»º´æjsapi_ticket£©
-     * ÇëÇó·½Ê½£ºhttps://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
-     * ½Ó¿Ú·µ»ØÖµ£ºJSON
+     * è·å–jsapi_ticket
+     * ï¼ˆæœ‰æ•ˆæœŸ7200ç§’ï¼Œå¼€å‘è€…å¿…é¡»åœ¨è‡ªå·±çš„æœåŠ¡å…¨å±€ç¼“å­˜jsapi_ticketï¼‰
+     * è¯·æ±‚æ–¹å¼ï¼šhttps://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
+     * æ¥å£è¿”å›å€¼ï¼šJSON
      * {
             "errcode":0,
             "errmsg":"ok",
@@ -91,27 +90,27 @@ class JSSDK{
         }
     }
     /*
-     * Ç©ÃûËã·¨
-     * Ç©ÃûÉú³É¹æÔòÈçÏÂ£º²ÎÓëÇ©ÃûµÄ×Ö¶Î°üÀ¨noncestr£¨Ëæ»ú×Ö·û´®£©, ÓĞĞ§µÄjsapi_ticket, timestamp£¨Ê±¼ä´Á£©, url£¨µ±Ç°ÍøÒ³µÄURL£¬²»°üº¬#¼°ÆäºóÃæ²¿·Ö£© ¡£
-     * 1¡¢¶ÔËùÓĞ´ıÇ©Ãû²ÎÊı°´ÕÕ×Ö¶ÎÃûµÄASCII Âë´ÓĞ¡µ½´óÅÅĞò£¨×ÖµäĞò£©ºó£¬
-     * 2¡¢Ê¹ÓÃURL¼üÖµ¶ÔµÄ¸ñÊ½£¨¼´key1=value1&key2=value2¡­£©Æ´½Ó³É×Ö·û´®string1¡£
-     * ÕâÀïĞèÒª×¢ÒâµÄÊÇËùÓĞ²ÎÊıÃû¾ùÎªĞ¡Ğ´×Ö·û¡£¶Ôstring1×÷sha1¼ÓÃÜ£¬×Ö¶ÎÃûºÍ×Ö¶ÎÖµ¶¼²ÉÓÃÔ­Ê¼Öµ£¬²»½øĞĞURL ×ªÒå¡£
+     * ç­¾åç®—æ³•
+     * ç­¾åç”Ÿæˆè§„åˆ™å¦‚ä¸‹ï¼šå‚ä¸ç­¾åçš„å­—æ®µåŒ…æ‹¬noncestrï¼ˆéšæœºå­—ç¬¦ä¸²ï¼‰, æœ‰æ•ˆçš„jsapi_ticket, timestampï¼ˆæ—¶é—´æˆ³ï¼‰, urlï¼ˆå½“å‰ç½‘é¡µçš„URLï¼Œä¸åŒ…å«#åŠå…¶åé¢éƒ¨åˆ†ï¼‰ ã€‚
+     * 1ã€å¯¹æ‰€æœ‰å¾…ç­¾åå‚æ•°æŒ‰ç…§å­—æ®µåçš„ASCII ç ä»å°åˆ°å¤§æ’åºï¼ˆå­—å…¸åºï¼‰åï¼Œ
+     * 2ã€ä½¿ç”¨URLé”®å€¼å¯¹çš„æ ¼å¼ï¼ˆå³key1=value1&key2=value2â€¦ï¼‰æ‹¼æ¥æˆå­—ç¬¦ä¸²string1ã€‚
+     * è¿™é‡Œéœ€è¦æ³¨æ„çš„æ˜¯æ‰€æœ‰å‚æ•°åå‡ä¸ºå°å†™å­—ç¬¦ã€‚å¯¹string1ä½œsha1åŠ å¯†ï¼Œå­—æ®µåå’Œå­—æ®µå€¼éƒ½é‡‡ç”¨åŸå§‹å€¼ï¼Œä¸è¿›è¡ŒURL è½¬ä¹‰ã€‚
      * */
     /*
-     * »ñÈ¡Ëæ»ú×Ö·û´®
-     * mt_rand() Ê¹ÓÃ Mersenne Twister Ëã·¨·µ»ØËæ»úÕûÊı¡£
-     * mt_rand(min,max)Èç¹ûÃ»ÓĞÌá¹©¿ÉÑ¡²ÎÊı min ºÍ max£¬mt_rand() ·µ»Ø 0 µ½ RAND_MAX Ö®¼äµÄÎ±Ëæ»úÊı¡£
-     * ÏëÒª 5 µ½ 15£¨°üÀ¨ 5 ºÍ 15£©Ö®¼äµÄËæ»úÊı£¬ÓÃ mt_rand(5, 15)¡£
-     * ´Ëº¯Êırand()¿ìËÄ±¶
+     * è·å–éšæœºå­—ç¬¦ä¸²
+     * mt_rand() ä½¿ç”¨ Mersenne Twister ç®—æ³•è¿”å›éšæœºæ•´æ•°ã€‚
+     * mt_rand(min,max)å¦‚æœæ²¡æœ‰æä¾›å¯é€‰å‚æ•° min å’Œ maxï¼Œmt_rand() è¿”å› 0 åˆ° RAND_MAX ä¹‹é—´çš„ä¼ªéšæœºæ•°ã€‚
+     * æƒ³è¦ 5 åˆ° 15ï¼ˆåŒ…æ‹¬ 5 å’Œ 15ï¼‰ä¹‹é—´çš„éšæœºæ•°ï¼Œç”¨ mt_rand(5, 15)ã€‚
+     * æ­¤å‡½æ•°rand()å¿«å››å€
      * */
     /*
-     * 1.Ç©ÃûÓÃµÄnoncestrºÍtimestamp±ØĞëÓëwx.configÖĞµÄnonceStrºÍtimestampÏàÍ¬¡£
-     * 2.Ç©ÃûÓÃµÄurl±ØĞëÊÇµ÷ÓÃJS½Ó¿ÚÒ³ÃæµÄÍêÕûURL¡£
-     * 3.³öÓÚ°²È«¿¼ÂÇ£¬¿ª·¢Õß±ØĞëÔÚ·şÎñÆ÷¶ËÊµÏÖÇ©ÃûµÄÂß¼­¡£
-     * ×¢Òâ£º
-     * È·±£Äã»ñÈ¡ÓÃÀ´Ç©ÃûµÄurlÊÇ¶¯Ì¬»ñÈ¡µÄ£¬¶¯Ì¬Ò³Ãæ¿É²Î¼ûÊµÀı´úÂëÖĞphpµÄÊµÏÖ·½Ê½¡£
-     * Èç¹ûÊÇhtmlµÄ¾²Ì¬Ò³ÃæÔÚÇ°¶ËÍ¨¹ıajax½«url´«µ½ºóÌ¨Ç©Ãû£¬Ç°¶ËĞèÒªÓÃjs»ñÈ¡µ±Ç°Ò³Ãæ³ıÈ¥'#'hash²¿·ÖµÄÁ´½Ó£¨¿ÉÓÃlocation.href.split('#')[0]»ñÈ¡,¶øÇÒĞèÒªencodeURIComponent£©£¬
-     * ÒòÎªÒ³ÃæÒ»µ©·ÖÏí£¬Î¢ĞÅ¿Í»§¶Ë»áÔÚÄãµÄÁ´½ÓÄ©Î²¼ÓÈëÆäËü²ÎÊı£¬Èç¹û²»ÊÇ¶¯Ì¬»ñÈ¡µ±Ç°Á´½Ó£¬½«µ¼ÖÂ·ÖÏíºóµÄÒ³ÃæÇ©ÃûÊ§°Ü¡£
+     * 1.ç­¾åç”¨çš„noncestrå’Œtimestampå¿…é¡»ä¸wx.configä¸­çš„nonceStrå’Œtimestampç›¸åŒã€‚
+     * 2.ç­¾åç”¨çš„urlå¿…é¡»æ˜¯è°ƒç”¨JSæ¥å£é¡µé¢çš„å®Œæ•´URLã€‚
+     * 3.å‡ºäºå®‰å…¨è€ƒè™‘ï¼Œå¼€å‘è€…å¿…é¡»åœ¨æœåŠ¡å™¨ç«¯å®ç°ç­¾åçš„é€»è¾‘ã€‚
+     * æ³¨æ„ï¼š
+     * ç¡®ä¿ä½ è·å–ç”¨æ¥ç­¾åçš„urlæ˜¯åŠ¨æ€è·å–çš„ï¼ŒåŠ¨æ€é¡µé¢å¯å‚è§å®ä¾‹ä»£ç ä¸­phpçš„å®ç°æ–¹å¼ã€‚
+     * å¦‚æœæ˜¯htmlçš„é™æ€é¡µé¢åœ¨å‰ç«¯é€šè¿‡ajaxå°†urlä¼ åˆ°åå°ç­¾åï¼Œå‰ç«¯éœ€è¦ç”¨jsè·å–å½“å‰é¡µé¢é™¤å»'#'hashéƒ¨åˆ†çš„é“¾æ¥ï¼ˆå¯ç”¨location.href.split('#')[0]è·å–,è€Œä¸”éœ€è¦encodeURIComponentï¼‰ï¼Œ
+     * å› ä¸ºé¡µé¢ä¸€æ—¦åˆ†äº«ï¼Œå¾®ä¿¡å®¢æˆ·ç«¯ä¼šåœ¨ä½ çš„é“¾æ¥æœ«å°¾åŠ å…¥å…¶å®ƒå‚æ•°ï¼Œå¦‚æœä¸æ˜¯åŠ¨æ€è·å–å½“å‰é“¾æ¥ï¼Œå°†å¯¼è‡´åˆ†äº«åçš„é¡µé¢ç­¾åå¤±è´¥ã€‚
      * */
     public function getSignPackage()
     {
@@ -121,7 +120,7 @@ class JSSDK{
         $url = $this->getUrl();
         if($jsapiTicket_data['errcode']==0){
             $jsapiTicket = $jsapiTicket_data['ticket'];
-            // ÕâÀï²ÎÊıµÄË³ĞòÒª°´ÕÕ key Öµ ASCII ÂëÉıĞòÅÅĞò
+            // è¿™é‡Œå‚æ•°çš„é¡ºåºè¦æŒ‰ç…§ key å€¼ ASCII ç å‡åºæ’åº
             $string = "jsapi_ticket=$jsapiTicket&noncestr=$nonceStr&timestamp=$timestamp&url=$url";
             $signature = sha1($string);
             return  array(
@@ -148,7 +147,7 @@ class JSSDK{
         }
     }
     /*
-     * »ñÈ¡nonceStr
+     * è·å–nonceStr
      * */
     private function getNonceStr($length = 16)
     {
@@ -160,8 +159,8 @@ class JSSDK{
         return $nonceStr;
     }
     /*
-     * »ñÈ¡url
-     * url£¨µ±Ç°ÍøÒ³µÄURL£¬²»°üº¬#¼°ÆäºóÃæ²¿·Ö£©
+     * è·å–url
+     * urlï¼ˆå½“å‰ç½‘é¡µçš„URLï¼Œä¸åŒ…å«#åŠå…¶åé¢éƒ¨åˆ†ï¼‰
      * */
     private function getUrl(){
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
@@ -169,15 +168,15 @@ class JSSDK{
         return $url;
     }
     /*
-     * Î¢ĞÅAPIµ÷ÓÃ·½·¨
+     * å¾®ä¿¡APIè°ƒç”¨æ–¹æ³•
      * */
     private function api_request($url,$data=null){
-        //³õÊ¼»¯cURL·½·¨
+        //åˆå§‹åŒ–cURLæ–¹æ³•
         $ch = curl_init();
-        //ÉèÖÃcURL²ÎÊı£¨»ù±¾²ÎÊı£©
+        //è®¾ç½®cURLå‚æ•°ï¼ˆåŸºæœ¬å‚æ•°ï¼‰
         $opts = array(
-            //ÔÚ¾ÖÓòÍøÄÚ·ÃÎÊhttpsÕ¾µãÊ±ĞèÒªÉèÖÃÒÔÏÂÁ½Ïî£¬¹Ø±ÕsslÑéÖ¤£¡
-            //´ËÁ½ÏîÕıÊ½ÉÏÏßÊ±ĞèÒª¸ü¸Ä£¨²»¼ì²éºÍÑéÖ¤ÈÏÖ¤£©
+            //åœ¨å±€åŸŸç½‘å†…è®¿é—®httpsç«™ç‚¹æ—¶éœ€è¦è®¾ç½®ä»¥ä¸‹ä¸¤é¡¹ï¼Œå…³é—­ssléªŒè¯ï¼
+            //æ­¤ä¸¤é¡¹æ­£å¼ä¸Šçº¿æ—¶éœ€è¦æ›´æ”¹ï¼ˆä¸æ£€æŸ¥å’ŒéªŒè¯è®¤è¯ï¼‰
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_TIMEOUT => 500,
@@ -185,21 +184,20 @@ class JSSDK{
             CURLOPT_URL => $url,
         );
         curl_setopt_array($ch, $opts);
-        //postÇëÇó²ÎÊı
+        //postè¯·æ±‚å‚æ•°
         if (!empty($data)) {
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         }
-        //Ö´ĞĞcURL²Ù×÷
+        //æ‰§è¡ŒcURLæ“ä½œ
         $output = curl_exec($ch);
-        if (curl_errno($ch)) {    //cURL²Ù×÷·¢Éú´íÎó´¦Àí¡£
+        if (curl_errno($ch)) {    //cURLæ“ä½œå‘ç”Ÿé”™è¯¯å¤„ç†ã€‚
             var_dump(curl_error($ch));
             die;
         }
-        //¹Ø±ÕcURL
+        //å…³é—­cURL
         curl_close($ch);
         $res = json_decode($output);
-        return ($res);   //·µ»ØjsonÊı¾İ
+        return ($res);   //è¿”å›jsonæ•°æ®
     }
-
 }
