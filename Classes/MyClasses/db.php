@@ -1,50 +1,64 @@
+Skip to content
+This repository
+Search
+Pull requests
+Issues
+Gist
+@helencoder
+Unwatch 1
+Star 0
+Fork 0 helencoder/BlogResources
+Code  Issues 0  Pull requests 0  Wiki  Pulse  Graphs  Settings
+Branch: master Find file Copy pathBlogResources/Classes/MyClasses/db.php
+929a92a  on 26 Apr
+@helencoder helencoder BlogResources
+1 contributor
+RawBlameHistory     Executable File  501 lines (495 sloc)  15.1 KB
 <?php
 /**
  * Author: helen
  * CreateTime: 2016/4/12 20:14
- * description:  ˝æ›ø‚≤Ÿ◊˜¿‡(Ωˆ∂‘Ω”MySQL ˝æ›ø‚,÷˜“™¿˚”√MySQLi∫Ø ˝)
+ * description: Êï∞ÊçÆÂ∫ìÊìç‰ΩúÁ±ª(‰ªÖÂØπÊé•MySQLÊï∞ÊçÆÂ∫ì,‰∏ªË¶ÅÂà©Áî®MySQLiÂáΩÊï∞)
  */
 class Database{
-
-    //MySQL÷˜ª˙µÿ÷∑
+    //MySQL‰∏ªÊú∫Âú∞ÂùÄ
     private $_host;
-    //MySQL”√ªß√˚
+    //MySQLÁî®Êà∑Âêç
     private $_user;
-    //MySQL”√ªß√‹¬Î
+    //MySQLÁî®Êà∑ÂØÜÁ†Å
     private $_password;
-    //÷∏∂® ˝æ›ø‚√˚≥∆
+    //ÊåáÂÆöÊï∞ÊçÆÂ∫ìÂêçÁß∞
     private $_database;
-    //MySQL ˝æ›ø‚∂Àø⁄∫≈
+    //MySQLÊï∞ÊçÆÂ∫ìÁ´ØÂè£Âè∑
     private $_port;
     private $_socket;
-    //µ±«∞ ˝æ›ø‚∂‘œÛ
+    //ÂΩìÂâçÊï∞ÊçÆÂ∫ìÂØπË±°
     private $_dbObj;
-    // ˝æ›ø‚±Ì
+    //Êï∞ÊçÆÂ∫ìË°®
     private $_table;
-    // ˝æ›ø‚±Ì∂‘œÛ
+    //Êï∞ÊçÆÂ∫ìË°®ÂØπË±°
     private $_tableObj;
-    // ◊ÓΩ¸¥ÌŒÛ–≈œ¢
+    // ÊúÄËøëÈîôËØØ‰ø°ÊÅØ
     protected $error            =   '';
-    //  ˝æ›–≈œ¢
+    // Êï∞ÊçÆ‰ø°ÊÅØ
     protected $data             =   array();
-    // ≤È—Ø±Ì¥Ô Ω≤Œ ˝
+    // Êü•ËØ¢Ë°®ËææÂºèÂèÇÊï∞
     protected $options          =   array();
-    protected $_validate        =   array();  // ◊‘∂Ø—È÷§∂®“Â
-    protected $_auto            =   array();  // ◊‘∂ØÕÍ≥…∂®“Â
-    protected $_map             =   array();  // ◊÷∂Œ”≥…‰∂®“Â
-    protected $_scope           =   array();  // √¸√˚∑∂Œß∂®“Â
-    // ¡¥≤Ÿ◊˜∑Ω∑®¡–±Ì
+    protected $_validate        =   array();  // Ëá™Âä®È™åËØÅÂÆö‰πâ
+    protected $_auto            =   array();  // Ëá™Âä®ÂÆåÊàêÂÆö‰πâ
+    protected $_map             =   array();  // Â≠óÊÆµÊò†Â∞ÑÂÆö‰πâ
+    protected $_scope           =   array();  // ÂëΩÂêçËåÉÂõ¥ÂÆö‰πâ
+    // ÈìæÊìç‰ΩúÊñπÊ≥ïÂàóË°®
     protected $methods          =   array('strict','order','alias','having','group','lock','distinct','auto','filter','validate','result','token','index','force');
-
     /**
-     * Database¿‡≥ı ºªØ∫Ø ˝
-     * »°µ√DB¿‡µƒ µ¿˝∂‘œÛ ◊÷∂ŒºÏ≤È
+     * DatabaseÁ±ªÂàùÂßãÂåñÂáΩÊï∞
+     * ÂèñÂæóDBÁ±ªÁöÑÂÆû‰æãÂØπË±° Â≠óÊÆµÊ£ÄÊü•
      * @access public
-     * @param string $host MySQL ˝æ›ø‚÷˜ª˙√˚
-     * @param string $user MySQL ˝æ›ø‚”√ªß√˚
-     * @param string $password MySQL ˝æ›ø‚√‹¬Î
-     * @param string $database ÷∏∂®≤Ÿ◊˜µƒ ˝æ›ø‚
-     * @return mixed   ˝æ›ø‚¡¨Ω”–≈œ¢°¢¥ÌŒÛ–≈œ¢
+     * @param string $host MySQLÊï∞ÊçÆÂ∫ì‰∏ªÊú∫Âêç
+     * @param string $user MySQLÊï∞ÊçÆÂ∫ìÁî®Êà∑Âêç
+     * @param string $password MySQLÊï∞ÊçÆÂ∫ìÂØÜÁ†Å
+     * @param string $database ÊåáÂÆöÊìç‰ΩúÁöÑÊï∞ÊçÆÂ∫ì
+     * @return mixed  Êï∞ÊçÆÂ∫ìËøûÊé•‰ø°ÊÅØ„ÄÅÈîôËØØ‰ø°ÊÅØ
      */
     public function __construct($host,$user,$passowrd,$database,$port=3306){
         $this->_initialize();
@@ -67,94 +81,90 @@ class Database{
         }
     }
     /**
-     * ¥ÌŒÛ–≈œ¢∫Ø ˝
-     * ∑µªÿ ˝æ›ø‚≤Ÿ◊˜π˝≥Ã÷–◊Ó∫Û“ª¥Œ÷¥–– ±µƒ¥ÌŒÛ–≈œ¢
+     * ÈîôËØØ‰ø°ÊÅØÂáΩÊï∞
+     * ËøîÂõûÊï∞ÊçÆÂ∫ìÊìç‰ΩúËøáÁ®ã‰∏≠ÊúÄÂêé‰∏ÄÊ¨°ÊâßË°åÊó∂ÁöÑÈîôËØØ‰ø°ÊÅØ
      * @access public
-     * @return mixed   ˝æ›ø‚¡¨Ω”¥ÌŒÛ–≈œ¢(’˝≥£∑µªÿ'')
+     * @return mixed  Êï∞ÊçÆÂ∫ìËøûÊé•ÈîôËØØ‰ø°ÊÅØ(Ê≠£Â∏∏ËøîÂõû'')
      */
     public function error(){
         return $this->error;
     }
-    // ªÿµ˜∑Ω∑® ≥ı ºªØƒ£–Õ
+    // ÂõûË∞ÉÊñπÊ≥ï ÂàùÂßãÂåñÊ®°Âûã
     protected function _initialize() {}
     /**
-     * …Ë÷√ ˝æ›∂‘œÛµƒ÷µ
+     * ËÆæÁΩÆÊï∞ÊçÆÂØπË±°ÁöÑÂÄº
      * @access public
-     * @param string $name √˚≥∆
-     * @param mixed $value ÷µ
+     * @param string $name ÂêçÁß∞
+     * @param mixed $value ÂÄº
      * @return void
      */
     public function __set($name,$value) {
-        // …Ë÷√ ˝æ›∂‘œÛ Ù–‘
+        // ËÆæÁΩÆÊï∞ÊçÆÂØπË±°Â±ûÊÄß
         $this->data[$name] = $value;
     }
-
     /**
-     * ªÒ»° ˝æ›∂‘œÛµƒ÷µ
+     * Ëé∑ÂèñÊï∞ÊçÆÂØπË±°ÁöÑÂÄº
      * @access public
-     * @param string $name √˚≥∆
+     * @param string $name ÂêçÁß∞
      * @return mixed
      */
     public function __get($name) {
         return isset($this->data[$name])?$this->data[$name]:null;
     }
-
     /**
-     * ºÏ≤‚ ˝æ›∂‘œÛµƒ÷µ
+     * Ê£ÄÊµãÊï∞ÊçÆÂØπË±°ÁöÑÂÄº
      * @access public
-     * @param string $name √˚≥∆
+     * @param string $name ÂêçÁß∞
      * @return boolean
      */
     public function __isset($name) {
         return isset($this->data[$name]);
     }
-
     /**
-     * œ˙ªŸ ˝æ›∂‘œÛµƒ÷µ
+     * ÈîÄÊØÅÊï∞ÊçÆÂØπË±°ÁöÑÂÄº
      * @access public
-     * @param string $name √˚≥∆
+     * @param string $name ÂêçÁß∞
      * @return void
      */
     public function __unset($name) {
         unset($this->data[$name]);
     }
     /**
-     * ¿˚”√__call∑Ω∑® µœ÷“ª–©Ãÿ ‚µƒ∑Ω∑®(∂‘”⁄µ˜”√¿‡÷–≤ª¥Ê‘⁄∑Ω∑®µƒΩ‚æˆ∑Ω∞∏)
+     * Âà©Áî®__callÊñπÊ≥ïÂÆûÁé∞‰∏Ä‰∫õÁâπÊÆäÁöÑÊñπÊ≥ï(ÂØπ‰∫éË∞ÉÁî®Á±ª‰∏≠‰∏çÂ≠òÂú®ÊñπÊ≥ïÁöÑËß£ÂÜ≥ÊñπÊ°à)
      * @access public
-     * @param string $method ∑Ω∑®√˚≥∆
-     * @param array $args µ˜”√≤Œ ˝
+     * @param string $method ÊñπÊ≥ïÂêçÁß∞
+     * @param array $args Ë∞ÉÁî®ÂèÇÊï∞
      * @return mixed
      */
     public function __call($method,$args) {
         /*if(in_array(strtolower($method),$this->methods,true)) {
-            // ¡¨π·≤Ÿ◊˜µƒ µœ÷
+            // ËøûË¥ØÊìç‰ΩúÁöÑÂÆûÁé∞
             $this->options[strtolower($method)] =   $args[0];
             return $this;
         }elseif(in_array(strtolower($method),array('count','sum','min','max','avg'),true)){
-            // Õ≥º∆≤È—Øµƒ µœ÷
+            // ÁªüËÆ°Êü•ËØ¢ÁöÑÂÆûÁé∞
             $field =  isset($args[0])?$args[0]:'*';
             return ;
         }elseif(strtolower(substr($method,0,5))=='getby') {
-            // ∏˘æ›ƒ≥∏ˆ◊÷∂ŒªÒ»°º«¬º
+            // Ê†πÊçÆÊüê‰∏™Â≠óÊÆµËé∑ÂèñËÆ∞ÂΩï
             $field   =   parse_name(substr($method,5));
             $where[$field] =  $args[0];
             return ;
         }elseif(strtolower(substr($method,0,10))=='getfieldby') {
-            // ∏˘æ›ƒ≥∏ˆ◊÷∂ŒªÒ»°º«¬ºµƒƒ≥∏ˆ÷µ
+            // Ê†πÊçÆÊüê‰∏™Â≠óÊÆµËé∑ÂèñËÆ∞ÂΩïÁöÑÊüê‰∏™ÂÄº
             $name   =   parse_name(substr($method,10));
             $where[$name] =$args[0];
             return ;
-        }elseif(isset($this->_scope[$method])){// √¸√˚∑∂Œßµƒµ•∂¿µ˜”√÷ß≥÷
+        }elseif(isset($this->_scope[$method])){// ÂëΩÂêçËåÉÂõ¥ÁöÑÂçïÁã¨Ë∞ÉÁî®ÊîØÊåÅ
             return ;
         }else{
-
         }*/
     }
     /*
-     * —°‘Ò ˝æ›ø‚
+     * ÈÄâÊã©Êï∞ÊçÆÂ∫ì
      * @access public
-     * @param string $database —°‘Òµƒ ˝æ›ø‚√˚≥∆
-     * @return mixed  ˝æ›ø‚¡¨Ω”–≈œ¢
+     * @param string $database ÈÄâÊã©ÁöÑÊï∞ÊçÆÂ∫ìÂêçÁß∞
+     * @return mixed Êï∞ÊçÆÂ∫ìËøûÊé•‰ø°ÊÅØ
      * */
     public function select_db($database){
         $select_db = mysqli_select_db($this->_dbObj,$database);
@@ -169,11 +179,11 @@ class Database{
         }
     }
     /*
-     *  ˝æ›ø‚”√ªß∏¸ªª
+     * Êï∞ÊçÆÂ∫ìÁî®Êà∑Êõ¥Êç¢
      * @access public
-     * @param string $user  ˝æ›ø‚”√ªß√˚≥∆
-     * @param string $password  ˝æ›ø‚”√ªß√‹¬Î
-     * @return mixed  ˝æ›ø‚¡¨Ω”–≈œ¢
+     * @param string $user Êï∞ÊçÆÂ∫ìÁî®Êà∑ÂêçÁß∞
+     * @param string $password Êï∞ÊçÆÂ∫ìÁî®Êà∑ÂØÜÁ†Å
+     * @return mixed Êï∞ÊçÆÂ∫ìËøûÊé•‰ø°ÊÅØ
      * */
     public function change_user($user,$password){
         $change_user = mysqli_change_user($this->_dbObj,$user,$password,$this->_database);
@@ -189,9 +199,9 @@ class Database{
         }
     }
     /*
-     * ≤È—Ø ˝æ›ø‚÷–À˘”–µƒ±Ì√˚
+     * Êü•ËØ¢Êï∞ÊçÆÂ∫ì‰∏≠ÊâÄÊúâÁöÑË°®Âêç
      * @access public
-     * @return array  ˝æ›±Ìµƒ ˝¡ø∫Õ±Ì√˚
+     * @return array Êï∞ÊçÆË°®ÁöÑÊï∞ÈáèÂíåË°®Âêç
      * */
     public function tables(){
         $sql = 'show tables';
@@ -215,10 +225,10 @@ class Database{
         }
     }
     /*
-     * ªÒ»°÷∏∂®±Ì÷–À˘”––≈œ¢
+     * Ëé∑ÂèñÊåáÂÆöË°®‰∏≠ÊâÄÊúâ‰ø°ÊÅØ
      * @access public
-     * @param string $table  ˝æ›±Ì√˚≥∆
-     * @return array  ˝æ›±ÌµƒœÍœ∏–≈œ¢
+     * @param string $table Êï∞ÊçÆË°®ÂêçÁß∞
+     * @return array Êï∞ÊçÆË°®ÁöÑËØ¶ÁªÜ‰ø°ÊÅØ
      * */
     public function select_table($table){
         $sql = 'select * from '.$table;
@@ -235,10 +245,10 @@ class Database{
         }
     }
     /*
-     * ªÒ»°÷∏∂®±Ìµƒ◊÷∂ŒœÍœ∏–≈œ¢
+     * Ëé∑ÂèñÊåáÂÆöË°®ÁöÑÂ≠óÊÆµËØ¶ÁªÜ‰ø°ÊÅØ
      * @access public
-     * @param string $table  ˝æ›±Ì√˚≥∆
-     * @return array  ˝æ›±Ìµƒ◊÷∂ŒœÍœ∏–≈œ¢
+     * @param string $table Êï∞ÊçÆË°®ÂêçÁß∞
+     * @return array Êï∞ÊçÆË°®ÁöÑÂ≠óÊÆµËØ¶ÁªÜ‰ø°ÊÅØ
      * */
     public function select_table_fields($table){
         $sql = 'show fields from '.$table;
@@ -254,10 +264,10 @@ class Database{
         }
     }
     /*
-     * ªÒ»° ˝æ›±Ì÷–÷∏∂®◊÷∂Œ–≈œ¢£®‘ –Ì∂‡◊÷∂ŒÕ¨ ±≤È—Ø£©
+     * Ëé∑ÂèñÊï∞ÊçÆË°®‰∏≠ÊåáÂÆöÂ≠óÊÆµ‰ø°ÊÅØÔºàÂÖÅËÆ∏Â§öÂ≠óÊÆµÂêåÊó∂Êü•ËØ¢Ôºâ
      * @access public
-     * @param mixed $field ÷∏∂®◊÷∂Œ£®◊÷∑˚¥Æ¥´»Î π”√£¨º‰∏Ù£©
-     * @return array  ˝æ›±Ì÷–÷∏∂®◊÷∂Œ–≈œ¢
+     * @param mixed $field ÊåáÂÆöÂ≠óÊÆµÔºàÂ≠óÁ¨¶‰∏≤‰º†ÂÖ•‰ΩøÁî®ÔºåÈó¥ÈöîÔºâ
+     * @return array Êï∞ÊçÆË°®‰∏≠ÊåáÂÆöÂ≠óÊÆµ‰ø°ÊÅØ
      * */
     public function getField($field){
         $fields = self::param_handle($field);
@@ -271,10 +281,10 @@ class Database{
         return $field_msg;
     }
     /*
-     * mysqli_query∫Ø ˝Ω·π˚¥¶¿Ì∫Ø ˝
+     * mysqli_queryÂáΩÊï∞ÁªìÊûúÂ§ÑÁêÜÂáΩÊï∞
      * @access protected
-     * @param object $obj mysqli_query∫Ø ˝Ω·π˚
-     * @return array  ˝æ›±Ì÷–÷∏∂®◊÷∂Œ–≈œ¢
+     * @param object $obj mysqli_queryÂáΩÊï∞ÁªìÊûú
+     * @return array Êï∞ÊçÆË°®‰∏≠ÊåáÂÆöÂ≠óÊÆµ‰ø°ÊÅØ
      * */
     protected function query_handle($obj){
         $res = array();
@@ -285,10 +295,10 @@ class Database{
         return $res;
     }
     /*
-     * ¥´»Î≤Œ ˝¥¶¿Ì∫Ø ˝
+     * ‰º†ÂÖ•ÂèÇÊï∞Â§ÑÁêÜÂáΩÊï∞
      * @access protected
-     * @param mixed $param ¥´»Î≤Œ ˝
-     * @return array ¥¶¿Ì∫Û ˝◊È ˝æ›
+     * @param mixed $param ‰º†ÂÖ•ÂèÇÊï∞
+     * @return array Â§ÑÁêÜÂêéÊï∞ÁªÑÊï∞ÊçÆ
      * */
     public function param_handle($param){
         if(is_string($param)&&!empty($param)){
@@ -301,10 +311,10 @@ class Database{
         return $params;
     }
     /*
-     * ≤È—Ø±Ì¥Ô Ω≤Œ ˝¥¶¿Ì∫Ø ˝
+     * Êü•ËØ¢Ë°®ËææÂºèÂèÇÊï∞Â§ÑÁêÜÂáΩÊï∞
      * @access protected
-     * @param mixed $param ¥´»Î≤Œ ˝(where limit order)
-     * @return string ¥¶¿Ì∫Û◊÷∑˚¥Æ ˝æ›
+     * @param mixed $param ‰º†ÂÖ•ÂèÇÊï∞(where limit order)
+     * @return string Â§ÑÁêÜÂêéÂ≠óÁ¨¶‰∏≤Êï∞ÊçÆ
      * */
     public function options_handle($param){
         if(is_numeric($param)){
@@ -328,9 +338,9 @@ class Database{
         return $option;
     }
     /*
-     * ≤È—Ø±Ì¥Ô Ω$options¥¶¿Ì∫Ø ˝
+     * Êü•ËØ¢Ë°®ËææÂºè$optionsÂ§ÑÁêÜÂáΩÊï∞
      * @access protected
-     * @return string ¥¶¿Ì∫Û◊÷∑˚¥Æ ˝æ›
+     * @return string Â§ÑÁêÜÂêéÂ≠óÁ¨¶‰∏≤Êï∞ÊçÆ
      * */
     protected function option(){
         $options = $this->options;
@@ -347,9 +357,9 @@ class Database{
         return $option;
     }
     /*
-     * ∏˘æ›≤È—Ø±Ì¥Ô Ω≤È—Ø ˝æ›(∑˚∫œÃıº˛µƒÀ˘”–º«¬º)
+     * Ê†πÊçÆÊü•ËØ¢Ë°®ËææÂºèÊü•ËØ¢Êï∞ÊçÆ(Á¨¶ÂêàÊù°‰ª∂ÁöÑÊâÄÊúâËÆ∞ÂΩï)
      * @access public
-     * @return array ¬˙◊„≤È—Ø±Ì¥Ô ΩµƒÃÿ∂® ˝æ›
+     * @return array Êª°Ë∂≥Êü•ËØ¢Ë°®ËææÂºèÁöÑÁâπÂÆöÊï∞ÊçÆ
      * */
     public function find(){
         $option = self::option();
@@ -359,9 +369,9 @@ class Database{
         return $msg;
     }
     /*
-     * ≤È—Ø±Ì¥Ô Ω where¥¶¿Ì∫Ø ˝
+     * Êü•ËØ¢Ë°®ËææÂºè whereÂ§ÑÁêÜÂáΩÊï∞
      * @access public
-     * @param mixed $where where≤È—ØÃıº˛
+     * @param mixed $where whereÊü•ËØ¢Êù°‰ª∂
      * @return object $this
      * */
     public function where($where){
@@ -369,9 +379,9 @@ class Database{
         return $this;
     }
     /*
-     * ≤È—Ø±Ì¥Ô Ω limit¥¶¿Ì∫Ø ˝
+     * Êü•ËØ¢Ë°®ËææÂºè limitÂ§ÑÁêÜÂáΩÊï∞
      * @access public
-     * @param mixed $limit limit≤È—ØÃıº˛( ˝◊÷)
+     * @param mixed $limit limitÊü•ËØ¢Êù°‰ª∂(Êï∞Â≠ó)
      * @return object $this
      * */
     public function limit($limit){
@@ -379,10 +389,10 @@ class Database{
         return $this;
     }
     /*
-     * ≤È—Ø±Ì¥Ô Ω order¥¶¿Ì∫Ø ˝
+     * Êü•ËØ¢Ë°®ËææÂºè orderÂ§ÑÁêÜÂáΩÊï∞
      * @access public
-     * @param string $order order≤È—ØÃıº˛
-     * @param string $type order≤È—ØÃıº˛µƒÀ≥–Ú£®ƒ¨»œΩµ–Ú£©
+     * @param string $order orderÊü•ËØ¢Êù°‰ª∂
+     * @param string $type orderÊü•ËØ¢Êù°‰ª∂ÁöÑÈ°∫Â∫èÔºàÈªòËÆ§ÈôçÂ∫èÔºâ
      * @return object $this
      * */
     public function order($order,$type='desc'){
@@ -391,9 +401,9 @@ class Database{
         return $this;
     }
     /*
-     *  ˝æ›¥¶¿Ì∫Ø ˝(◊Ó∂‡¥¶¿Ì∂˛Œ¨ ˝æ›)
+     * Êï∞ÊçÆÂ§ÑÁêÜÂáΩÊï∞(ÊúÄÂ§öÂ§ÑÁêÜ‰∫åÁª¥Êï∞ÊçÆ)
      * @access public
-     * @param array $data –Ë“™≤Â»Îµƒ ˝æ›
+     * @param array $data ÈúÄË¶ÅÊèíÂÖ•ÁöÑÊï∞ÊçÆ
      * @return object $this
      * */
     public function data(array $data){
@@ -401,11 +411,11 @@ class Database{
         $fields = array();
         if(is_array($data)){
             foreach($data as $key=>$value){
-                if(is_array($value)){       //∂˛Œ¨ ˝◊È
+                if(is_array($value)){       //‰∫åÁª¥Êï∞ÁªÑ
                     $tip = 1;
                     array_push($values,'('.implode(',',array_values($value)).')');
                     array_push($fields,'('.implode(',',array_keys($value)).')');
-                }else{      //“ªŒ¨ ˝◊È
+                }else{      //‰∏ÄÁª¥Êï∞ÁªÑ
                     $tip = 0;
                 }
             }
@@ -421,9 +431,9 @@ class Database{
         return $this;
     }
     /*
-     *  ˝æ›–¬‘ˆ∫Ø ˝
+     * Êï∞ÊçÆÊñ∞Â¢ûÂáΩÊï∞
      * @access public
-     * @return mixed  ˝æ›ø‚–¬‘ˆ–≈œ¢
+     * @return mixed Êï∞ÊçÆÂ∫ìÊñ∞Â¢û‰ø°ÊÅØ
      * */
     public function add(){
         $fields = $this->data['fields'];
@@ -433,10 +443,10 @@ class Database{
         return $res;
     }
     /*
-     *  ˝æ›∏¸–¬∫Ø ˝£®“ªŒ¨ ˝◊È£©
+     * Êï∞ÊçÆÊõ¥Êñ∞ÂáΩÊï∞Ôºà‰∏ÄÁª¥Êï∞ÁªÑÔºâ
      * @access public
-     * @param array $data –Ë“™∏¸–¬µƒ ˝æ›
-     * @return mixed  ˝æ›ø‚–¬‘ˆ–≈œ¢
+     * @param array $data ÈúÄË¶ÅÊõ¥Êñ∞ÁöÑÊï∞ÊçÆ
+     * @return mixed Êï∞ÊçÆÂ∫ìÊñ∞Â¢û‰ø°ÊÅØ
      * */
     function save(array $data){
         $tip = array();
@@ -453,9 +463,9 @@ class Database{
         return $res;
     }
     /*
-     *  ˝æ›…æ≥˝∫Ø ˝
+     * Êï∞ÊçÆÂà†Èô§ÂáΩÊï∞
      * @access public
-     * @return mixed  ˝æ›ø‚…æ≥˝–≈œ¢
+     * @return mixed Êï∞ÊçÆÂ∫ìÂà†Èô§‰ø°ÊÅØ
      * */
     public function delete(){
         $sql = 'DELETE FROM '.$this->_table.' WHERE '.$this->options['where'];
@@ -463,29 +473,29 @@ class Database{
         return $res;
     }
     /*
-     * SQL”Ôæ‰≤È—Ø
+     * SQLËØ≠Âè•Êü•ËØ¢
      * */
     public function query($sql){
         $search_res = mysqli_query($this->_dbObj,$sql);
         return $search_res;
     }
     /*
-     * mysql÷–≤È—Ø”Ôæ‰
+     * mysql‰∏≠Êü•ËØ¢ËØ≠Âè•
      * */
     protected function sql(){
         /*
-         * ª˘±æSQL”Ôæ‰
-         * ≤Â»Î ˝æ›£∫INSERT INTO tb_name(id,name,score)VALUES(NULL,'’≈»˝',140),(NULL,'’≈Àƒ',178),(NULL,'’≈ŒÂ',134);
-         * ∏¸–¬”Ôæ‰£∫UPDATE tb_name SET score=189 WHERE id=2;
-         * …æ≥˝ ˝æ›£∫DELETE FROM tb_name WHERE id=3;
-         * WHERE”Ôæ‰£∫SELECT * FROM tb_name WHERE id=3;
-         * HAVING ”Ôæ‰£∫SELECT * FROM tb_name GROUP BY score HAVING count(*)>2
-         * œ‡πÿÃıº˛øÿ÷∆∑˚£∫=°¢>°¢<°¢<>°¢IN(1,2,3......)°¢BETWEEN a AND b°¢NOT AND °¢OR Linke()”√∑®÷–      %  Œ™∆•≈‰»Œ“‚°¢  _  ∆•≈‰“ª∏ˆ◊÷∑˚£®ø…“‘ «∫∫◊÷£©IS NULL ø’÷µºÏ≤‚
-         * MySQLµƒ’˝‘Ú±Ì¥Ô Ω£∫SELECT * FROM tb_name WHERE name REGEXP '^[A-D]'   //’“≥ˆ“‘A-D Œ™ø™Õ∑µƒname
+         * Âü∫Êú¨SQLËØ≠Âè•
+         * ÊèíÂÖ•Êï∞ÊçÆÔºöINSERT INTO tb_name(id,name,score)VALUES(NULL,'Âº†‰∏â',140),(NULL,'Âº†Âõõ',178),(NULL,'Âº†‰∫î',134);
+         * Êõ¥Êñ∞ËØ≠Âè•ÔºöUPDATE tb_name SET score=189 WHERE id=2;
+         * Âà†Èô§Êï∞ÊçÆÔºöDELETE FROM tb_name WHERE id=3;
+         * WHEREËØ≠Âè•ÔºöSELECT * FROM tb_name WHERE id=3;
+         * HAVING ËØ≠Âè•ÔºöSELECT * FROM tb_name GROUP BY score HAVING count(*)>2
+         * Áõ∏ÂÖ≥Êù°‰ª∂ÊéßÂà∂Á¨¶Ôºö=„ÄÅ>„ÄÅ<„ÄÅ<>„ÄÅIN(1,2,3......)„ÄÅBETWEEN a AND b„ÄÅNOT AND „ÄÅOR Linke()Áî®Ê≥ï‰∏≠      %  ‰∏∫ÂåπÈÖç‰ªªÊÑè„ÄÅ  _  ÂåπÈÖç‰∏Ä‰∏™Â≠óÁ¨¶ÔºàÂèØ‰ª•ÊòØÊ±âÂ≠óÔºâIS NULL Á©∫ÂÄºÊ£ÄÊµã
+         * MySQLÁöÑÊ≠£ÂàôË°®ËææÂºèÔºöSELECT * FROM tb_name WHERE name REGEXP '^[A-D]'   //ÊâæÂá∫‰ª•A-D ‰∏∫ÂºÄÂ§¥ÁöÑname
          * */
     }
     /*
-     * πÿ±’¡¨Ω”
+     * ÂÖ≥Èó≠ËøûÊé•
      * */
     public function close(){
         $close = mysqli_close($this->_dbObj);
