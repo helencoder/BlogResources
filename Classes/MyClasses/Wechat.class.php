@@ -2,14 +2,13 @@
 /**
  * Author: helen
  * CreateTime: 2015/12/9 20:14
- * description: Î¢ĞÅ¹«ÖÚÆ½Ì¨½Ó¿ÚAPI
+ * description: å¾®ä¿¡å…¬ä¼—å¹³å°æ¥å£API
  */
 class Wechat{
-
     /**
-     * @FunctionDescription:ÑéÖ¤¿ª·¢Õß·şÎñÆ÷urlÓĞĞ§ĞÔ
-     * @Param:token(ÁîÅÆ ÓÃ»§ÊÖ¶¯ÊäÈëµÄÅäÖÃĞÅÏ¢)
-     * @Return:echostr£¨Ëæ»ú×Ö·û´®£©
+     * @FunctionDescription:éªŒè¯å¼€å‘è€…æœåŠ¡å™¨urlæœ‰æ•ˆæ€§
+     * @Param:token(ä»¤ç‰Œ ç”¨æˆ·æ‰‹åŠ¨è¾“å…¥çš„é…ç½®ä¿¡æ¯)
+     * @Return:echostrï¼ˆéšæœºå­—ç¬¦ä¸²ï¼‰
      * @Description:
      * @Author:helen zheng
      */
@@ -20,88 +19,84 @@ class Wechat{
             exit;
         }
     }
-
     /**
-     * @FunctionDescription:¼ìÑésignatureº¯Êı
-     * @Param:token(ÁîÅÆ ÓÃ»§ÊÖ¶¯ÊäÈëµÄÅäÖÃĞÅÏ¢)
+     * @FunctionDescription:æ£€éªŒsignatureå‡½æ•°
+     * @Param:token(ä»¤ç‰Œ ç”¨æˆ·æ‰‹åŠ¨è¾“å…¥çš„é…ç½®ä¿¡æ¯)
      * @Return:true/false
-     * @Description:Î¢ĞÅ·şÎñÆ÷·¢ËÍgetÇëÇó½«signature¡¢timestamp¡¢nonce¡¢echostrËÄ¸ö²ÎÊı·¢ËÍµ½¿ª·¢ÕßÌá¹©µÄurl£¬ÀûÓÃ½ÓÊÕµ½µÄ²ÎÊı½øĞĞÑéÖ¤¡£
+     * @Description:å¾®ä¿¡æœåŠ¡å™¨å‘é€getè¯·æ±‚å°†signatureã€timestampã€nonceã€echostrå››ä¸ªå‚æ•°å‘é€åˆ°å¼€å‘è€…æä¾›çš„urlï¼Œåˆ©ç”¨æ¥æ”¶åˆ°çš„å‚æ•°è¿›è¡ŒéªŒè¯ã€‚
      * @Author:helen zheng
      */
     function checkSignature($token){
-        /*»ñÈ¡Î¢ĞÅ·¢ËÍÈ·ÈÏµÄ²ÎÊı¡£*/
-        $signature = $_GET['signature'];    /*Î¢ĞÅ¼ÓÃÜÇ©Ãû£¬signature½áºÏÁË¿ª·¢ÕßÌîĞ´µÄtoken²ÎÊıºÍÇëÇóÖĞµÄtimestamp²ÎÊı¡¢nonce²ÎÊı¡£*/
-        $timestamp = $_GET['timestamp'];    /*Ê±¼ä´Á */
-        $nonce = $_GET['nonce'];            /*Ëæ»úÊı */
-        $echostr = $_GET['echostr'];        /*Ëæ»ú×Ö·û´®*/
-        /*¼ÓÃÜ/Ğ£ÑéÁ÷³Ì*/
-        /*1. ½«token¡¢timestamp¡¢nonceÈı¸ö²ÎÊı½øĞĞ×ÖµäĞòÅÅĞò*/
+        /*è·å–å¾®ä¿¡å‘é€ç¡®è®¤çš„å‚æ•°ã€‚*/
+        $signature = $_GET['signature'];    /*å¾®ä¿¡åŠ å¯†ç­¾åï¼Œsignatureç»“åˆäº†å¼€å‘è€…å¡«å†™çš„tokenå‚æ•°å’Œè¯·æ±‚ä¸­çš„timestampå‚æ•°ã€nonceå‚æ•°ã€‚*/
+        $timestamp = $_GET['timestamp'];    /*æ—¶é—´æˆ³ */
+        $nonce = $_GET['nonce'];            /*éšæœºæ•° */
+        $echostr = $_GET['echostr'];        /*éšæœºå­—ç¬¦ä¸²*/
+        /*åŠ å¯†/æ ¡éªŒæµç¨‹*/
+        /*1. å°†tokenã€timestampã€nonceä¸‰ä¸ªå‚æ•°è¿›è¡Œå­—å…¸åºæ’åº*/
         $array = array($token,$timestamp,$nonce);
         sort($array,SORT_STRING);
-        /*2. ½«Èı¸ö²ÎÊı×Ö·û´®Æ´½Ó³ÉÒ»¸ö×Ö·û´®½øĞĞsha1¼ÓÃÜ*/
+        /*2. å°†ä¸‰ä¸ªå‚æ•°å­—ç¬¦ä¸²æ‹¼æ¥æˆä¸€ä¸ªå­—ç¬¦ä¸²è¿›è¡Œsha1åŠ å¯†*/
         $str = sha1( implode($array) );
-        /*3. ¿ª·¢Õß»ñµÃ¼ÓÃÜºóµÄ×Ö·û´®¿ÉÓësignature¶Ô±È£¬±êÊ¶¸ÃÇëÇóÀ´Ô´ÓÚÎ¢ĞÅ*/
+        /*3. å¼€å‘è€…è·å¾—åŠ å¯†åçš„å­—ç¬¦ä¸²å¯ä¸signatureå¯¹æ¯”ï¼Œæ ‡è¯†è¯¥è¯·æ±‚æ¥æºäºå¾®ä¿¡*/
         if( $str==$signature && $echostr ){
             return ture;
         }else{
             return false;
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡access_token
-     * @Param:AppID£¨µÚÈı·½ÓÃ»§Î¨Ò»Æ¾Ö¤ £©,AppSecret£¨µÚÈı·½ÓÃ»§Î¨Ò»Æ¾Ö¤ÃÜÔ¿£©
-     * @Return:access_token£¨ string£¨length=117£©£©
-     * @Description:access_tokenµÄ´æ´¢ÖÁÉÙÒª±£Áô512¸ö×Ö·û¿Õ¼ä¡£access_tokenµÄÓĞĞ§ÆÚÄ¿Ç°Îª2¸öĞ¡Ê±£¬Ğè¶¨Ê±Ë¢ĞÂ£¬ÖØ¸´»ñÈ¡½«µ¼ÖÂÉÏ´Î»ñÈ¡µÄaccess_tokenÊ§Ğ§¡£
+     * @FunctionDescription:è·å–access_token
+     * @Param:AppIDï¼ˆç¬¬ä¸‰æ–¹ç”¨æˆ·å”¯ä¸€å‡­è¯ ï¼‰,AppSecretï¼ˆç¬¬ä¸‰æ–¹ç”¨æˆ·å”¯ä¸€å‡­è¯å¯†é’¥ï¼‰
+     * @Return:access_tokenï¼ˆ stringï¼ˆlength=117ï¼‰ï¼‰
+     * @Description:access_tokençš„å­˜å‚¨è‡³å°‘è¦ä¿ç•™512ä¸ªå­—ç¬¦ç©ºé—´ã€‚access_tokençš„æœ‰æ•ˆæœŸç›®å‰ä¸º2ä¸ªå°æ—¶ï¼Œéœ€å®šæ—¶åˆ·æ–°ï¼Œé‡å¤è·å–å°†å¯¼è‡´ä¸Šæ¬¡è·å–çš„access_tokenå¤±æ•ˆã€‚
      * @Author:helen zheng
      */
     public function getToken($appid,$appsecret){
         $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$appid.'&secret='.$appsecret;
         $result = $this->request_get($url);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡Î¢ĞÅ·şÎñÆ÷µÄIPµØÖ·ÁĞ±í
-     * @Param:access_token(¹«ÖÚºÅµÄaccess_token )
+     * @FunctionDescription:è·å–å¾®ä¿¡æœåŠ¡å™¨çš„IPåœ°å€åˆ—è¡¨
+     * @Param:access_token(å…¬ä¼—å·çš„access_token )
      * @Return:
-     * @Description:°²È«ÑéÖ¤
+     * @Description:å®‰å…¨éªŒè¯
      * @Author:helen zheng
      */
     public function getWeixinIP($access_token){
         $url = 'https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token='.$access_token;
         $result = $this->request_get($url);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:½ÓÊÕÏûÏ¢ÏìÓ¦(»Ø¸´)º¯Êı£¨¿ÉÓë×Ô¶¨Òå»Ø¸´½Ó¿Ú¡¢ÓïÒåÀí½â½Ó¿Ú¡¢¿Í·ş½Ó¿Ú½áºÏ£©
+     * @FunctionDescription:æ¥æ”¶æ¶ˆæ¯å“åº”(å›å¤)å‡½æ•°ï¼ˆå¯ä¸è‡ªå®šä¹‰å›å¤æ¥å£ã€è¯­ä¹‰ç†è§£æ¥å£ã€å®¢æœæ¥å£ç»“åˆï¼‰
      * @Param:
-     * @Return:½ÓÊÕÏûÏ¢ÀàĞÍ
-     * @Description:?µ±ÆÕÍ¨Î¢ĞÅÓÃ»§Ïò¹«ÖÚÕËºÅ·¢ÏûÏ¢Ê±£¬Î¢ĞÅ·şÎñÆ÷½«POSTÏûÏ¢µÄXMLÊı¾İ°üµ½¿ª·¢ÕßÌîĞ´µÄURLÉÏ¡£
+     * @Return:æ¥æ”¶æ¶ˆæ¯ç±»å‹
+     * @Description:?å½“æ™®é€šå¾®ä¿¡ç”¨æˆ·å‘å…¬ä¼—è´¦å·å‘æ¶ˆæ¯æ—¶ï¼Œå¾®ä¿¡æœåŠ¡å™¨å°†POSTæ¶ˆæ¯çš„XMLæ•°æ®åŒ…åˆ°å¼€å‘è€…å¡«å†™çš„URLä¸Šã€‚
      * @Author:helen zheng
      */
     public function responseMsg(){
-        /*1,»ñÈ¡µ½Î¢ĞÅÍÆËÍ¹ıÀ´postÊı¾İ£¨xml¸ñÊ½£©*/
+        /*1,è·å–åˆ°å¾®ä¿¡æ¨é€è¿‡æ¥postæ•°æ®ï¼ˆxmlæ ¼å¼ï¼‰*/
         $postArr = $GLOBALS['HTTP_RAW_POST_DATA'];
-        /*2,´¦ÀíÏûÏ¢ÀàĞÍ£¬²¢ÉèÖÃ»Ø¸´ÀàĞÍºÍÄÚÈİ*/
+        /*2,å¤„ç†æ¶ˆæ¯ç±»å‹ï¼Œå¹¶è®¾ç½®å›å¤ç±»å‹å’Œå†…å®¹*/
         $postObj = simplexml_load_string($postArr);
-        /*ÅĞ¶ÏÓÃ»§·¢ËÍÏûÏ¢µÄÀàĞÍ(ÆÕÍ¨ÏûÏ¢¡¢ÊÂ¼şÍÆËÍ)*/
+        /*åˆ¤æ–­ç”¨æˆ·å‘é€æ¶ˆæ¯çš„ç±»å‹(æ™®é€šæ¶ˆæ¯ã€äº‹ä»¶æ¨é€)*/
         $MsgType = strtolower($postObj->MsgType);
         $Event = strtolower($postObj->Event);
-        if(isset($Event)){  /*ÊÂ¼şÍÆËÍ*/
+        if(isset($Event)){  /*äº‹ä»¶æ¨é€*/
             switch($Event){
-                case 'subscribe'            : /*return '¶©ÔÄÊÂ¼ş£¨É¨Ãè´ø²ÎÊı¶şÎ¬ÂëÊÂ¼ş(ÓÃ»§Î´¹Ø×¢)£©';*/
+                case 'subscribe'            : /*return 'è®¢é˜…äº‹ä»¶ï¼ˆæ‰«æå¸¦å‚æ•°äºŒç»´ç äº‹ä»¶(ç”¨æˆ·æœªå…³æ³¨)ï¼‰';*/
                     $template = '<xml>
                                     <ToUserName><![CDATA[toUser]]></ToUserName>
                                     <FromUserName><![CDATA[FromUser]]></FromUserName>
@@ -110,7 +105,7 @@ class Wechat{
                                     <Event><![CDATA[subscribe]]></Event>
                                 </xml>';
                     break;
-                case 'unsubscribe'          : /*return 'È¡Ïû¶©ÔÄÊÂ¼ş';*/
+                case 'unsubscribe'          : /*return 'å–æ¶ˆè®¢é˜…äº‹ä»¶';*/
                     $template ='<xml>
                                     <ToUserName><![CDATA[toUser]]></ToUserName>
                                     <FromUserName><![CDATA[FromUser]]></FromUserName>
@@ -119,7 +114,7 @@ class Wechat{
                                     <Event><![CDATA[unsubscribe]]></Event>
                                 </xml>';
                     break;
-                case 'scan'                 : /*return 'É¨Ãè´ø²ÎÊı¶şÎ¬ÂëÊÂ¼ş(ÓÃ»§ÒÑ¹Ø×¢)';*/
+                case 'scan'                 : /*return 'æ‰«æå¸¦å‚æ•°äºŒç»´ç äº‹ä»¶(ç”¨æˆ·å·²å…³æ³¨)';*/
                     $template = '<xml>
                                     <ToUserName><![CDATA[toUser]]></ToUserName>
                                     <FromUserName><![CDATA[FromUser]]></FromUserName>
@@ -130,7 +125,7 @@ class Wechat{
                                     <Ticket><![CDATA[TICKET]]></Ticket>
                                 </xml>';
                     break;
-                case 'location'             : /*return 'ÉÏ±¨µØÀíÎ»ÖÃÊÂ¼ş';*/
+                case 'location'             : /*return 'ä¸ŠæŠ¥åœ°ç†ä½ç½®äº‹ä»¶';*/
                     $template = '<xml>
                                     <ToUserName><![CDATA[toUser]]></ToUserName>
                                     <FromUserName><![CDATA[fromUser]]></FromUserName>
@@ -142,7 +137,7 @@ class Wechat{
                                     <Precision>119.385040</Precision>
                                 </xml>';
                     break;
-                case 'click'                : /*return '×Ô¶¨Òå²Ëµ¥ÊÂ¼ş£¨µã»÷²Ëµ¥À­È¡ÏûÏ¢Ê±µÄÊÂ¼şÍÆËÍ£©';*/
+                case 'click'                : /*return 'è‡ªå®šä¹‰èœå•äº‹ä»¶ï¼ˆç‚¹å‡»èœå•æ‹‰å–æ¶ˆæ¯æ—¶çš„äº‹ä»¶æ¨é€ï¼‰';*/
                     $template = '<xml>
                                     <ToUserName><![CDATA[toUser]]></ToUserName>
                                     <FromUserName><![CDATA[FromUser]]></FromUserName>
@@ -152,7 +147,7 @@ class Wechat{
                                     <EventKey><![CDATA[EVENTKEY]]></EventKey>
                                 </xml>';
                     break;
-                case 'view'                 : /*return '×Ô¶¨Òå²Ëµ¥ÊÂ¼ş£¨µã»÷²Ëµ¥Ìø×ªÁ´½ÓÊ±µÄÊÂ¼şÍÆËÍ£©';*/
+                case 'view'                 : /*return 'è‡ªå®šä¹‰èœå•äº‹ä»¶ï¼ˆç‚¹å‡»èœå•è·³è½¬é“¾æ¥æ—¶çš„äº‹ä»¶æ¨é€ï¼‰';*/
                     $template = '<xml>
                                     <ToUserName><![CDATA[toUser]]></ToUserName>
                                     <FromUserName><![CDATA[FromUser]]></FromUserName>
@@ -162,7 +157,7 @@ class Wechat{
                                     <EventKey><![CDATA[www.qq.com]]></EventKey>
                                 </xml>';
                     break;
-                case 'scancode_push'        : /*return '×Ô¶¨Òå²Ëµ¥ÊÂ¼ş£¨É¨ÂëÍÆÊÂ¼şµÄÊÂ¼şÍÆËÍ £©'*/
+                case 'scancode_push'        : /*return 'è‡ªå®šä¹‰èœå•äº‹ä»¶ï¼ˆæ‰«ç æ¨äº‹ä»¶çš„äº‹ä»¶æ¨é€ ï¼‰'*/
                     $template = '<xml>
                                     <ToUserName><![CDATA[gh_e136c6e50636]]></ToUserName>
                                     <FromUserName><![CDATA[oMgHVjngRipVsoxg6TuX3vz6glDg]]></FromUserName>
@@ -176,7 +171,7 @@ class Wechat{
                                     </ScanCodeInfo>
                                 </xml>';
                     break;
-                case 'scancode_waitmsg'     : /*return '×Ô¶¨Òå²Ëµ¥ÊÂ¼ş£¨É¨ÂëÍÆÊÂ¼şÇÒµ¯³ö¡°ÏûÏ¢½ÓÊÕÖĞ¡±ÌáÊ¾¿òµÄÊÂ¼şÍÆËÍ  £©'*/
+                case 'scancode_waitmsg'     : /*return 'è‡ªå®šä¹‰èœå•äº‹ä»¶ï¼ˆæ‰«ç æ¨äº‹ä»¶ä¸”å¼¹å‡ºâ€œæ¶ˆæ¯æ¥æ”¶ä¸­â€æç¤ºæ¡†çš„äº‹ä»¶æ¨é€  ï¼‰'*/
                     $template = '<xml>
                                     <ToUserName><![CDATA[gh_e136c6e50636]]></ToUserName>
                                     <FromUserName><![CDATA[oMgHVjngRipVsoxg6TuX3vz6glDg]]></FromUserName>
@@ -190,7 +185,7 @@ class Wechat{
                                     </ScanCodeInfo>
                                 </xml>';
                     break;
-                case 'pic_sysphoto'         : /*return '×Ô¶¨Òå²Ëµ¥ÊÂ¼ş£¨µ¯³öÏµÍ³ÅÄÕÕ·¢Í¼µÄÊÂ¼şÍÆËÍ  £©'*/
+                case 'pic_sysphoto'         : /*return 'è‡ªå®šä¹‰èœå•äº‹ä»¶ï¼ˆå¼¹å‡ºç³»ç»Ÿæ‹ç…§å‘å›¾çš„äº‹ä»¶æ¨é€  ï¼‰'*/
                     $template = '<xml>
                                     <ToUserName><![CDATA[gh_e136c6e50636]]></ToUserName>
                                     <FromUserName><![CDATA[oMgHVjngRipVsoxg6TuX3vz6glDg]]></FromUserName>
@@ -208,7 +203,7 @@ class Wechat{
                                     </SendPicsInfo>
                                 </xml>';
                     break;
-                case 'pic_photo_or_album'   : /*return '×Ô¶¨Òå²Ëµ¥ÊÂ¼ş£¨µ¯³öÅÄÕÕ»òÕßÏà²á·¢Í¼µÄÊÂ¼şÍÆËÍ £©'*/
+                case 'pic_photo_or_album'   : /*return 'è‡ªå®šä¹‰èœå•äº‹ä»¶ï¼ˆå¼¹å‡ºæ‹ç…§æˆ–è€…ç›¸å†Œå‘å›¾çš„äº‹ä»¶æ¨é€ ï¼‰'*/
                     $template = '<xml>
                                     <ToUserName><![CDATA[gh_e136c6e50636]]></ToUserName>
                                     <FromUserName><![CDATA[oMgHVjngRipVsoxg6TuX3vz6glDg]]></FromUserName>
@@ -226,7 +221,7 @@ class Wechat{
                                     </SendPicsInfo>
                                 </xml>';
                     break;
-                case 'pic_weixin'           : /*return '×Ô¶¨Òå²Ëµ¥ÊÂ¼ş£¨µ¯³öÎ¢ĞÅÏà²á·¢Í¼Æ÷µÄÊÂ¼şÍÆËÍ £©'*/
+                case 'pic_weixin'           : /*return 'è‡ªå®šä¹‰èœå•äº‹ä»¶ï¼ˆå¼¹å‡ºå¾®ä¿¡ç›¸å†Œå‘å›¾å™¨çš„äº‹ä»¶æ¨é€ ï¼‰'*/
                     $template = '<xml>
                                     <ToUserName><![CDATA[gh_e136c6e50636]]></ToUserName>
                                     <FromUserName><![CDATA[oMgHVjngRipVsoxg6TuX3vz6glDg]]></FromUserName>
@@ -244,7 +239,7 @@ class Wechat{
                                     </SendPicsInfo>
                                 </xml>';
                     break;
-                case 'location_select'      : /*return '×Ô¶¨Òå²Ëµ¥ÊÂ¼ş£¨µ¯³öµØÀíÎ»ÖÃÑ¡ÔñÆ÷µÄÊÂ¼şÍÆËÍ£©'*/
+                case 'location_select'      : /*return 'è‡ªå®šä¹‰èœå•äº‹ä»¶ï¼ˆå¼¹å‡ºåœ°ç†ä½ç½®é€‰æ‹©å™¨çš„äº‹ä»¶æ¨é€ï¼‰'*/
                     $template = '<xml>
                                     <ToUserName><![CDATA[gh_e136c6e50636]]></ToUserName>
                                     <FromUserName><![CDATA[oMgHVjngRipVsoxg6TuX3vz6glDg]]></FromUserName>
@@ -256,46 +251,46 @@ class Wechat{
                                         <Location_X><![CDATA[23]]></Location_X>
                                         <Location_Y><![CDATA[113]]></Location_Y>
                                         <Scale><![CDATA[15]]></Scale>
-                                        <Label><![CDATA[ ¹ãÖİÊĞº£ÖéÇø¿Í´åÒÕÔ·Â· 106ºÅ]]></Label>
+                                        <Label><![CDATA[ å¹¿å·å¸‚æµ·ç åŒºå®¢æ‘è‰ºè‹‘è·¯ 106å·]]></Label>
                                         <Poiname><![CDATA[]]></Poiname>
                                     </SendLocationInfo>
                                 </xml>';
                     break;
-                default                     : /*return 'Î´ÖªÊÂ¼şÀàĞÍ';*/
+                default                     : /*return 'æœªçŸ¥äº‹ä»¶ç±»å‹';*/
                     break;
             }
-        }else{  /*ÆÕÍ¨ÏûÏ¢(×Ô¶¯»Ø¸´À©Õ¹)*/
+        }else{  /*æ™®é€šæ¶ˆæ¯(è‡ªåŠ¨å›å¤æ‰©å±•)*/
             switch($MsgType){
-                case 'text'       : /*return 'ÎÄ±¾ĞÅÏ¢';*/
-                    $Content = 'Äú·¢ËÍµÄÎªÎÄ±¾£¬ÄÚÈİÎª:'.$postObj->Content;
+                case 'text'       : /*return 'æ–‡æœ¬ä¿¡æ¯';*/
+                    $Content = 'æ‚¨å‘é€çš„ä¸ºæ–‡æœ¬ï¼Œå†…å®¹ä¸º:'.$postObj->Content;
                     break;
-                case 'image'      : /*return 'Í¼Æ¬ÏûÏ¢';*/
-                    $Content = 'Äú·¢ËÍµÄÎªÍ¼Æ¬£¬Í¼Æ¬Á´½ÓÎª:'.$postObj->PicUrl;
+                case 'image'      : /*return 'å›¾ç‰‡æ¶ˆæ¯';*/
+                    $Content = 'æ‚¨å‘é€çš„ä¸ºå›¾ç‰‡ï¼Œå›¾ç‰‡é“¾æ¥ä¸º:'.$postObj->PicUrl;
                     break;
-                case 'voice'      : /*return 'ÓïÒôÏûÏ¢';*/
-                    $Content = 'Äú·¢ËÍµÄÎªÓïÒô£¬Ã½ÌåIDÎª:'.$postObj->MediaId;
+                case 'voice'      : /*return 'è¯­éŸ³æ¶ˆæ¯';*/
+                    $Content = 'æ‚¨å‘é€çš„ä¸ºè¯­éŸ³ï¼Œåª’ä½“IDä¸º:'.$postObj->MediaId;
                     break;
-                case 'video'      : /*return 'ÊÓÆµÏûÏ¢';*/
-                    $Content = 'Äú·¢ËÍµÄÎªÊÓÆµ£¬Ã½ÌåIDÎª:'.$postObj->MediaId;
+                case 'video'      : /*return 'è§†é¢‘æ¶ˆæ¯';*/
+                    $Content = 'æ‚¨å‘é€çš„ä¸ºè§†é¢‘ï¼Œåª’ä½“IDä¸º:'.$postObj->MediaId;
                     break;
-                case 'shortvideo' : /*return 'Ğ¡ÊÓÆµÏûÏ¢';*/
-                    $Content = 'Äú·¢ËÍµÄÎªĞ¡ÊÓÆµ£¬Ã½ÌåIDÎª:'.$postObj->MediaId;
+                case 'shortvideo' : /*return 'å°è§†é¢‘æ¶ˆæ¯';*/
+                    $Content = 'æ‚¨å‘é€çš„ä¸ºå°è§†é¢‘ï¼Œåª’ä½“IDä¸º:'.$postObj->MediaId;
                     break;
-                case 'location'   : /*return 'µØÀíÎ»ÖÃÏûÏ¢';*/
-                    $Content = 'Äú·¢ËÍµÄÎªµØÀíÎ»ÖÃÏûÏ¢£¬Î»ÖÃÎª: '.$postObj->Label.'Î³¶ÈÎª: '.$postObj->Location_X.'¾­¶ÈÎª: '.$postObj->Location_Y;
+                case 'location'   : /*return 'åœ°ç†ä½ç½®æ¶ˆæ¯';*/
+                    $Content = 'æ‚¨å‘é€çš„ä¸ºåœ°ç†ä½ç½®æ¶ˆæ¯ï¼Œä½ç½®ä¸º: '.$postObj->Label.'çº¬åº¦ä¸º: '.$postObj->Location_X.'ç»åº¦ä¸º: '.$postObj->Location_Y;
                     break;
-                case 'link'       : /*return 'Á´½ÓÏûÏ¢';*/
-                    $Content = 'Äú·¢ËÍµÄÎªÁ´½ÓÏûÏ¢£¬±êÌâÎª: '.$postObj->Title.'ÄÚÈİÎª: '.$postObj->Description.'Á´½ÓµØÖ·Îª: '.$postObj->Url;
+                case 'link'       : /*return 'é“¾æ¥æ¶ˆæ¯';*/
+                    $Content = 'æ‚¨å‘é€çš„ä¸ºé“¾æ¥æ¶ˆæ¯ï¼Œæ ‡é¢˜ä¸º: '.$postObj->Title.'å†…å®¹ä¸º: '.$postObj->Description.'é“¾æ¥åœ°å€ä¸º: '.$postObj->Url;
                     break;
-                default           : /*return 'Î´ÖªÏûÏ¢ÀàĞÍ';*/
-                    $Content = '±§Ç¸£¬ÇëÖØĞÂÊäÈë£¡';
+                default           : /*return 'æœªçŸ¥æ¶ˆæ¯ç±»å‹';*/
+                    $Content = 'æŠ±æ­‰ï¼Œè¯·é‡æ–°è¾“å…¥ï¼';
                     break;
             }
         }
-        /*ÏìÓ¦ÏûÏ¢*/
+        /*å“åº”æ¶ˆæ¯*/
         $FromUserName = $postObj->ToUserName;
         $ToUserName   = $postObj->FromUserName;
-        $MsgType = 'text';  /*ÔİÊ±ÏìÓ¦¾ùÀûÓÃÎÄ±¾ÏûÏ¢µÄĞÎÊ½*/
+        $MsgType = 'text';  /*æš‚æ—¶å“åº”å‡åˆ©ç”¨æ–‡æœ¬æ¶ˆæ¯çš„å½¢å¼*/
         $CreateTime = time();
         $template = "<xml>
                             <ToUserName><![CDATA[%s]]></ToUserName>
@@ -307,26 +302,25 @@ class Wechat{
         $info = sprintf($template,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
         echo $info;
     }
-
     /**
-     * @FunctionDescription:·¢ËÍ£¨»Ø¸´£©ÏûÏ¢
-     * @Param:»Ø¸´ÏûÏ¢ÀàĞÍ(»Ø¸´Í¼ÎÄÏûÏ¢£¬ĞèÌí¼ÓµÚ¶ş¸ö²ÎÊı ÀàĞÍÎªarray ËÄ¸ö×Ö¶Î£¨title¡¢description¡¢picUrl¡¢url£© )
+     * @FunctionDescription:å‘é€ï¼ˆå›å¤ï¼‰æ¶ˆæ¯
+     * @Param:å›å¤æ¶ˆæ¯ç±»å‹(å›å¤å›¾æ–‡æ¶ˆæ¯ï¼Œéœ€æ·»åŠ ç¬¬äºŒä¸ªå‚æ•° ç±»å‹ä¸ºarray å››ä¸ªå­—æ®µï¼ˆtitleã€descriptionã€picUrlã€urlï¼‰ )
      * @Return:
-     * @Description:¸ù¾İ»Ø¸´ÏûÏ¢Ñ¡¶¨µÄÀàĞÍ½øĞĞÌØ¶¨ÀàĞÍµÄ»Ø¸´
+     * @Description:æ ¹æ®å›å¤æ¶ˆæ¯é€‰å®šçš„ç±»å‹è¿›è¡Œç‰¹å®šç±»å‹çš„å›å¤
      * @Author:helen zheng
      */
     public function transmitMsg($MsgType,$array=null){
-        /*1,»ñÈ¡µ½Î¢ĞÅÍÆËÍ¹ıÀ´postÊı¾İ£¨xml¸ñÊ½£©*/
+        /*1,è·å–åˆ°å¾®ä¿¡æ¨é€è¿‡æ¥postæ•°æ®ï¼ˆxmlæ ¼å¼ï¼‰*/
         $postArr = $GLOBALS['HTTP_RAW_POST_DATA'];
-        /*2,´¦ÀíÏûÏ¢ÀàĞÍ£¬²¢ÉèÖÃ»Ø¸´ÀàĞÍºÍÄÚÈİ*/
+        /*2,å¤„ç†æ¶ˆæ¯ç±»å‹ï¼Œå¹¶è®¾ç½®å›å¤ç±»å‹å’Œå†…å®¹*/
         $postObj = simplexml_load_string($postArr);
-        /*ÅĞ¶ÏÓÃ»§·¢ËÍÏûÏ¢µÄÀàĞÍ(ÆÕÍ¨ÏûÏ¢¡¢ÊÂ¼şÍÆËÍ)*/
-        /*ÏìÓ¦ÏûÏ¢*/
+        /*åˆ¤æ–­ç”¨æˆ·å‘é€æ¶ˆæ¯çš„ç±»å‹(æ™®é€šæ¶ˆæ¯ã€äº‹ä»¶æ¨é€)*/
+        /*å“åº”æ¶ˆæ¯*/
         $FromUserName = $postObj->ToUserName;
         $ToUserName   = $postObj->FromUserName;
         $CreateTime = time();
-        switch($MsgType){   /*»Ø¸´ÏûÏ¢*/
-            case 'text'       : /*return 'ÎÄ±¾ĞÅÏ¢';*/
+        switch($MsgType){   /*å›å¤æ¶ˆæ¯*/
+            case 'text'       : /*return 'æ–‡æœ¬ä¿¡æ¯';*/
                 $Content  = '';
                 $template = '<xml>
                                 <ToUserName><![CDATA[%s]]></ToUserName>
@@ -337,7 +331,7 @@ class Wechat{
                             </xml>';
                 $info = sprintf($template,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
                 break;
-            case 'image'      : /*return 'Í¼Æ¬ÏûÏ¢';*/
+            case 'image'      : /*return 'å›¾ç‰‡æ¶ˆæ¯';*/
                 $MediaId  = '';
                 $template = '<xml>
                                 <ToUserName><![CDATA[%s]]></ToUserName>
@@ -350,7 +344,7 @@ class Wechat{
                             </xml>';
                 $info = sprintf($template,$ToUserName,$FromUserName,$CreateTime,$MsgType,$MediaId);
                 break;
-            case 'voice'      : /*return 'ÓïÒôÏûÏ¢';*/
+            case 'voice'      : /*return 'è¯­éŸ³æ¶ˆæ¯';*/
                 $MediaId  = '';
                 $template = '<xml>
                                 <ToUserName><![CDATA[%s]]></ToUserName>
@@ -363,7 +357,7 @@ class Wechat{
                             </xml>';
                 $info = sprintf($template,$ToUserName,$FromUserName,$CreateTime,$MsgType,$MediaId);
                 break;
-            case 'video'      : /*return 'ÊÓÆµÏûÏ¢';*/
+            case 'video'      : /*return 'è§†é¢‘æ¶ˆæ¯';*/
                 $MediaId     = '';
                 $Title       = '';
                 $Description = '';
@@ -380,7 +374,7 @@ class Wechat{
                             </xml>';
                 $info = sprintf($template,$ToUserName,$FromUserName,$CreateTime,$MsgType,$MediaId,$Title,$Description);
                 break;
-            case 'music'      : /*return 'ÒôÀÖÏûÏ¢';*/
+            case 'music'      : /*return 'éŸ³ä¹æ¶ˆæ¯';*/
                 $Title        = '';
                 $Description  = '';
                 $MusicUrl     = '';
@@ -400,7 +394,7 @@ class Wechat{
                                 </Music>
                             </xml>';
                 $info = sprintf($template,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Title,$Description,$MusicUrl,$HQMusicUrl,$ThumbMediaId);
-            case 'news'       : /*return 'Í¼ÎÄÏûÏ¢'(¸ù¾İ´«ÈëµÄÊı¾İ¿É·¢ËÍ¶àÌõÍ¼ÎÄÏûÏ¢);*/
+            case 'news'       : /*return 'å›¾æ–‡æ¶ˆæ¯'(æ ¹æ®ä¼ å…¥çš„æ•°æ®å¯å‘é€å¤šæ¡å›¾æ–‡æ¶ˆæ¯);*/
                 $template = "<xml>
                             <ToUserName><![CDATA[%s]]></ToUserName>
                             <FromUserName><![CDATA[%s]]></FromUserName>
@@ -419,40 +413,37 @@ class Wechat{
                 $template .="</Articles>
                             </xml> ";
                 $info = sprintf( $template, $ToUserName, $FromUserName, $CreateTime, $MsgType );
-            default           : return 'Î´ÖªÏûÏ¢ÀàĞÍ£¬ÇëÖØĞÂÊäÈë';
+            default           : return 'æœªçŸ¥æ¶ˆæ¯ç±»å‹ï¼Œè¯·é‡æ–°è¾“å…¥';
         }
         echo $info;
     }
-
     /**
-     * @FunctionDescription:¿Í·ş½Ó¿Ú
-     * @Description:µ±ÓÃ»§Ö÷¶¯·¢ÏûÏ¢¸ø¹«ÖÚºÅµÄÊ±ºò£¨°üÀ¨·¢ËÍĞÅÏ¢¡¢µã»÷×Ô¶¨Òå²Ëµ¥¡¢¶©ÔÄÊÂ¼ş¡¢É¨Ãè¶şÎ¬ÂëÊÂ¼ş¡¢Ö§¸¶³É¹¦ÊÂ¼ş¡¢ÓÃ»§Î¬È¨£©£¬Î¢ĞÅ½«»á°ÑÏûÏ¢Êı¾İÍÆËÍ¸ø¿ª·¢Õß£¬
-     * @Description:¿ª·¢ÕßÔÚÒ»¶ÎÊ±¼äÄÚ£¨Ä¿Ç°ĞŞ¸ÄÎª48Ğ¡Ê±£©¿ÉÒÔµ÷ÓÃ¿Í·şÏûÏ¢½Ó¿Ú£¬Í¨¹ıPOSTÒ»¸öJSONÊı¾İ°üÀ´·¢ËÍÏûÏ¢¸øÆÕÍ¨ÓÃ»§£¬ÔÚ48Ğ¡Ê±ÄÚ²»ÏŞÖÆ·¢ËÍ´ÎÊı¡£
+     * @FunctionDescription:å®¢æœæ¥å£
+     * @Description:å½“ç”¨æˆ·ä¸»åŠ¨å‘æ¶ˆæ¯ç»™å…¬ä¼—å·çš„æ—¶å€™ï¼ˆåŒ…æ‹¬å‘é€ä¿¡æ¯ã€ç‚¹å‡»è‡ªå®šä¹‰èœå•ã€è®¢é˜…äº‹ä»¶ã€æ‰«æäºŒç»´ç äº‹ä»¶ã€æ”¯ä»˜æˆåŠŸäº‹ä»¶ã€ç”¨æˆ·ç»´æƒï¼‰ï¼Œå¾®ä¿¡å°†ä¼šæŠŠæ¶ˆæ¯æ•°æ®æ¨é€ç»™å¼€å‘è€…ï¼Œ
+     * @Description:å¼€å‘è€…åœ¨ä¸€æ®µæ—¶é—´å†…ï¼ˆç›®å‰ä¿®æ”¹ä¸º48å°æ—¶ï¼‰å¯ä»¥è°ƒç”¨å®¢æœæ¶ˆæ¯æ¥å£ï¼Œé€šè¿‡POSTä¸€ä¸ªJSONæ•°æ®åŒ…æ¥å‘é€æ¶ˆæ¯ç»™æ™®é€šç”¨æˆ·ï¼Œåœ¨48å°æ—¶å†…ä¸é™åˆ¶å‘é€æ¬¡æ•°ã€‚
      * @Author:helen zheng
      */
-
     /**
-     * @FunctionDescription:Ìí¼Ó¿Í·şÕÊºÅ(post)
-     * @Param:access_token¡¢custom_service_data(kf_account£¨ÍêÕû¿Í·şÕËºÅ£¬¸ñÊ½Îª£ºÕËºÅÇ°×º@¹«ÖÚºÅÎ¢ĞÅºÅ £©¡¢nickname£¨¿Í·şêÇ³Æ£¬×î³¤6¸öºº×Ö»ò12¸öÓ¢ÎÄ×Ö·û £©¡¢password£¨¿Í·şÕËºÅµÇÂ¼ÃÜÂë£©)
-     * @Return:0 £¨ok£©
-     * @Description:Ã¿¸ö¹«ÖÚºÅ×î¶àÌí¼Ó10¸ö¿Í·şÕËºÅ
+     * @FunctionDescription:æ·»åŠ å®¢æœå¸å·(post)
+     * @Param:access_tokenã€custom_service_data(kf_accountï¼ˆå®Œæ•´å®¢æœè´¦å·ï¼Œæ ¼å¼ä¸ºï¼šè´¦å·å‰ç¼€@å…¬ä¼—å·å¾®ä¿¡å· ï¼‰ã€nicknameï¼ˆå®¢æœæ˜µç§°ï¼Œæœ€é•¿6ä¸ªæ±‰å­—æˆ–12ä¸ªè‹±æ–‡å­—ç¬¦ ï¼‰ã€passwordï¼ˆå®¢æœè´¦å·ç™»å½•å¯†ç ï¼‰)
+     * @Return:0 ï¼ˆokï¼‰
+     * @Description:æ¯ä¸ªå…¬ä¼—å·æœ€å¤šæ·»åŠ 10ä¸ªå®¢æœè´¦å·
      * @Author:helen zheng
      */
     public function customerServiceAccountAdd($access_token,$custom_service_data){
         $url = 'https://api.weixin.qq.com/customservice/kfaccount/add?access_token='.$access_token;
         $result = $this->request_post($url,$custom_service_data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:ĞŞ¸Ä¿Í·şÕËºÅ£¨post£©
-     * @Param:access_token¡¢custom_service_data(kf_account£¨ÍêÕû¿Í·şÕËºÅ£¬¸ñÊ½Îª£ºÕËºÅÇ°×º@¹«ÖÚºÅÎ¢ĞÅºÅ £©¡¢nickname£¨¿Í·şêÇ³Æ£¬×î³¤6¸öºº×Ö»ò12¸öÓ¢ÎÄ×Ö·û £©¡¢password£¨¿Í·şÕËºÅµÇÂ¼ÃÜÂë£©)
-     * @Return:0 £¨ok£©
+     * @FunctionDescription:ä¿®æ”¹å®¢æœè´¦å·ï¼ˆpostï¼‰
+     * @Param:access_tokenã€custom_service_data(kf_accountï¼ˆå®Œæ•´å®¢æœè´¦å·ï¼Œæ ¼å¼ä¸ºï¼šè´¦å·å‰ç¼€@å…¬ä¼—å·å¾®ä¿¡å· ï¼‰ã€nicknameï¼ˆå®¢æœæ˜µç§°ï¼Œæœ€é•¿6ä¸ªæ±‰å­—æˆ–12ä¸ªè‹±æ–‡å­—ç¬¦ ï¼‰ã€passwordï¼ˆå®¢æœè´¦å·ç™»å½•å¯†ç ï¼‰)
+     * @Return:0 ï¼ˆokï¼‰
      * @Description:
      * @Author:helen zheng
      */
@@ -460,15 +451,14 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/customservice/kfaccount/update?access_token='.$access_token;
         $result = $this->request_post($url,$custom_service_data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:É¾³ı¿Í·şÕÊºÅ(get)
+     * @FunctionDescription:åˆ é™¤å®¢æœå¸å·(get)
      * @Param:
      * @Return:
      * @Description:
@@ -478,106 +468,100 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/customservice/kfaccount/del?access_token='.$access_token;
         $result = $this->request_get($url);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:ÉèÖÃ¿Í·şÕÊºÅµÄÍ·Ïñ(post)
-     * @Param:access_token,data(kf_account(¿Í·şÕËºÅ),img_data(Í¼Æ¬))
+     * @FunctionDescription:è®¾ç½®å®¢æœå¸å·çš„å¤´åƒ(post)
+     * @Param:access_token,data(kf_account(å®¢æœè´¦å·),img_data(å›¾ç‰‡))
      * @Return:0 (ok)
-     * @Description:µ÷ÓÃ±¾½Ó¿ÚÀ´ÉÏ´«Í¼Æ¬×÷Îª¿Í·şÈËÔ±µÄÍ·Ïñ£¬Í·ÏñÍ¼Æ¬ÎÄ¼ş±ØĞëÊÇjpg¸ñÊ½£¬ÍÆ¼öÊ¹ÓÃ640*640´óĞ¡µÄÍ¼Æ¬ÒÔ´ïµ½×î¼ÑĞ§¹û¡£
+     * @Description:è°ƒç”¨æœ¬æ¥å£æ¥ä¸Šä¼ å›¾ç‰‡ä½œä¸ºå®¢æœäººå‘˜çš„å¤´åƒï¼Œå¤´åƒå›¾ç‰‡æ–‡ä»¶å¿…é¡»æ˜¯jpgæ ¼å¼ï¼Œæ¨èä½¿ç”¨640*640å¤§å°çš„å›¾ç‰‡ä»¥è¾¾åˆ°æœ€ä½³æ•ˆæœã€‚
      * @Author:helen zheng
      */
     public function customerServiceAccountImg($access_token,$kf_account,$img_data){
         $url = 'http://api.weixin.qq.com/customservice/kfaccount/uploadheadimg?access_token='.$access_token.'&kf_account='.$kf_account;
         $result = $this->request_post($url,$img_data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡ËùÓĞ¿Í·şÕËºÅ(get)
+     * @FunctionDescription:è·å–æ‰€æœ‰å®¢æœè´¦å·(get)
      * @Param:access_token
      * @Return:
-     * @Description:Í¨¹ı±¾½Ó¿Ú£¬»ñÈ¡¹«ÖÚºÅÖĞËùÉèÖÃµÄ¿Í·ş»ù±¾ĞÅÏ¢£¬°üÀ¨¿Í·ş¹¤ºÅ¡¢¿Í·şêÇ³Æ¡¢¿Í·şµÇÂ¼ÕËºÅ¡£
+     * @Description:é€šè¿‡æœ¬æ¥å£ï¼Œè·å–å…¬ä¼—å·ä¸­æ‰€è®¾ç½®çš„å®¢æœåŸºæœ¬ä¿¡æ¯ï¼ŒåŒ…æ‹¬å®¢æœå·¥å·ã€å®¢æœæ˜µç§°ã€å®¢æœç™»å½•è´¦å·ã€‚
      * @Author:helen zheng
      */
     public function customerServiceAccountList($access_token){
         $url = 'https://api.weixin.qq.com/cgi-bin/customservice/getkflist?access_token='.$access_token;
         $result = $this->request_get($url);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:¿Í·ş½Ó¿Ú-·¢ÏûÏ¢(post)
-     * @Param:access_token¡¢data(touser¡¢msgtype¡¢content¡¢media_id ¡¢thumb_media_id )
+     * @FunctionDescription:å®¢æœæ¥å£-å‘æ¶ˆæ¯(post)
+     * @Param:access_tokenã€data(touserã€msgtypeã€contentã€media_id ã€thumb_media_id )
      * @Return:
-     * @Description:·¢ËÍÏûÏ¢ÀàĞÍ£ºÎÄ±¾ÏûÏ¢¡¢Í¼Æ¬ÏûÏ¢¡¢ÓïÒôÏûÏ¢¡¢ÊÓÆµÏûÏ¢¡¢ÒôÀÖÏûÏ¢¡¢Í¼ÎÄÏûÏ¢£¨µã»÷Ìø×ªµ½ÍâÁ´/Í¼ÎÄÏûÏ¢Ò³Ãæ Í¼ÎÄÏûÏ¢ÌõÊıÏŞÖÆÔÚ8ÌõÒÔÄÚ£¬×¢Òâ£¬Èç¹ûÍ¼ÎÄÊı³¬¹ı8£¬Ôò½«»áÎŞÏìÓ¦¡£ £©¡¢·¢ËÍ¿¨È¯
+     * @Description:å‘é€æ¶ˆæ¯ç±»å‹ï¼šæ–‡æœ¬æ¶ˆæ¯ã€å›¾ç‰‡æ¶ˆæ¯ã€è¯­éŸ³æ¶ˆæ¯ã€è§†é¢‘æ¶ˆæ¯ã€éŸ³ä¹æ¶ˆæ¯ã€å›¾æ–‡æ¶ˆæ¯ï¼ˆç‚¹å‡»è·³è½¬åˆ°å¤–é“¾/å›¾æ–‡æ¶ˆæ¯é¡µé¢ å›¾æ–‡æ¶ˆæ¯æ¡æ•°é™åˆ¶åœ¨8æ¡ä»¥å†…ï¼Œæ³¨æ„ï¼Œå¦‚æœå›¾æ–‡æ•°è¶…è¿‡8ï¼Œåˆ™å°†ä¼šæ— å“åº”ã€‚ ï¼‰ã€å‘é€å¡åˆ¸
      * @Author:helen zheng
      */
     public function customerServiceSend($access_token,$data){
         $url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$access_token;
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:¸ß¼¶Èº·¢½Ó¿Ú
-     * @Description:¶ÔÓÚÈÏÖ¤¶©ÔÄºÅ£¬Èº·¢½Ó¿ÚÃ¿Ìì¿É³É¹¦µ÷ÓÃ1´Î£¬´Ë´ÎÈº·¢¿ÉÑ¡Ôñ·¢ËÍ¸øÈ«²¿ÓÃ»§»òÄ³¸ö·Ö×é£»
-     * @Description:¶ÔÓÚÈÏÖ¤·şÎñºÅËäÈ»¿ª·¢ÕßÊ¹ÓÃ¸ß¼¶Èº·¢½Ó¿ÚµÄÃ¿ÈÕµ÷ÓÃÏŞÖÆÎª100´Î£¬µ«ÊÇÓÃ»§Ã¿ÔÂÖ»ÄÜ½ÓÊÕ4Ìõ£¬ÎŞÂÛÔÚ¹«ÖÚÆ½Ì¨ÍøÕ¾ÉÏ£¬»¹ÊÇÊ¹ÓÃ½Ó¿ÚÈº·¢£¬ÓÃ»§Ã¿ÔÂÖ»ÄÜ½ÓÊÕ4ÌõÈº·¢ÏûÏ¢£¬¶àÓÚ4ÌõµÄÈº·¢½«¶Ô¸ÃÓÃ»§·¢ËÍÊ§°Ü£»
+     * @FunctionDescription:é«˜çº§ç¾¤å‘æ¥å£
+     * @Description:å¯¹äºè®¤è¯è®¢é˜…å·ï¼Œç¾¤å‘æ¥å£æ¯å¤©å¯æˆåŠŸè°ƒç”¨1æ¬¡ï¼Œæ­¤æ¬¡ç¾¤å‘å¯é€‰æ‹©å‘é€ç»™å…¨éƒ¨ç”¨æˆ·æˆ–æŸä¸ªåˆ†ç»„ï¼›
+     * @Description:å¯¹äºè®¤è¯æœåŠ¡å·è™½ç„¶å¼€å‘è€…ä½¿ç”¨é«˜çº§ç¾¤å‘æ¥å£çš„æ¯æ—¥è°ƒç”¨é™åˆ¶ä¸º100æ¬¡ï¼Œä½†æ˜¯ç”¨æˆ·æ¯æœˆåªèƒ½æ¥æ”¶4æ¡ï¼Œæ— è®ºåœ¨å…¬ä¼—å¹³å°ç½‘ç«™ä¸Šï¼Œè¿˜æ˜¯ä½¿ç”¨æ¥å£ç¾¤å‘ï¼Œç”¨æˆ·æ¯æœˆåªèƒ½æ¥æ”¶4æ¡ç¾¤å‘æ¶ˆæ¯ï¼Œå¤šäº4æ¡çš„ç¾¤å‘å°†å¯¹è¯¥ç”¨æˆ·å‘é€å¤±è´¥ï¼›
      * @Author:helen zheng
      */
-
     /**
-     * @FunctionDescription:ÉÏ´«Í¼ÎÄÏûÏ¢ÄÚµÄÍ¼Æ¬»ñÈ¡URL¡¾¶©ÔÄºÅÓë·şÎñºÅÈÏÖ¤ºó¾ù¿ÉÓÃ¡¿(post)
-     * @Param:  access_token 	ÊÇ 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                media 	        ÊÇ 	form-dataÖĞÃ½ÌåÎÄ¼ş±êÊ¶£¬ÓĞfilename¡¢filelength¡¢content-typeµÈĞÅÏ¢
-     * @Return: url (ÉÏ´«Í¼Æ¬µÄURL£¬¿ÉÓÃÓÚºóĞøÈº·¢ÖĞ£¬·ÅÖÃµ½Í¼ÎÄÏûÏ¢ÖĞ)¡£
-     * @Description:±¾½Ó¿ÚËùÉÏ´«µÄÍ¼Æ¬²»Õ¼ÓÃ¹«ÖÚºÅµÄËØ²Ä¿âÖĞÍ¼Æ¬ÊıÁ¿µÄ5000¸öµÄÏŞÖÆ¡£Í¼Æ¬½öÖ§³Öjpg/png¸ñÊ½£¬´óĞ¡±ØĞëÔÚ1MBÒÔÏÂ¡£
+     * @FunctionDescription:ä¸Šä¼ å›¾æ–‡æ¶ˆæ¯å†…çš„å›¾ç‰‡è·å–URLã€è®¢é˜…å·ä¸æœåŠ¡å·è®¤è¯åå‡å¯ç”¨ã€‘(post)
+     * @Param:  access_token 	æ˜¯ 	è°ƒç”¨æ¥å£å‡­è¯
+    media 	        æ˜¯ 	form-dataä¸­åª’ä½“æ–‡ä»¶æ ‡è¯†ï¼Œæœ‰filenameã€filelengthã€content-typeç­‰ä¿¡æ¯
+     * @Return: url (ä¸Šä¼ å›¾ç‰‡çš„URLï¼Œå¯ç”¨äºåç»­ç¾¤å‘ä¸­ï¼Œæ”¾ç½®åˆ°å›¾æ–‡æ¶ˆæ¯ä¸­)ã€‚
+     * @Description:æœ¬æ¥å£æ‰€ä¸Šä¼ çš„å›¾ç‰‡ä¸å ç”¨å…¬ä¼—å·çš„ç´ æåº“ä¸­å›¾ç‰‡æ•°é‡çš„5000ä¸ªçš„é™åˆ¶ã€‚å›¾ç‰‡ä»…æ”¯æŒjpg/pngæ ¼å¼ï¼Œå¤§å°å¿…é¡»åœ¨1MBä»¥ä¸‹ã€‚
      * @Author:helen zheng
      */
     public function uploadImg($access_token,$img_data){
         $url = 'https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token='.$access_token;
         $result = $this->request_post($url,$img_data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:ÉÏ´«Í¼ÎÄÏûÏ¢ËØ²Ä¡¾¶©ÔÄºÅÓë·şÎñºÅÈÏÖ¤ºó¾ù¿ÉÓÃ¡¿(post)
-     * @Param:  Articles 	        ÊÇ 	Í¼ÎÄÏûÏ¢£¬Ò»¸öÍ¼ÎÄÏûÏ¢Ö§³Ö1µ½8ÌõÍ¼ÎÄ
-                thumb_media_id 	    ÊÇ 	Í¼ÎÄÏûÏ¢ËõÂÔÍ¼µÄmedia_id£¬¿ÉÒÔÔÚ»ù´¡Ö§³Ö-ÉÏ´«¶àÃ½ÌåÎÄ¼ş½Ó¿ÚÖĞ»ñµÃ
-                author 	            ·ñ 	Í¼ÎÄÏûÏ¢µÄ×÷Õß
-                title 	            ÊÇ 	Í¼ÎÄÏûÏ¢µÄ±êÌâ
-                content_source_url 	·ñ 	ÔÚÍ¼ÎÄÏûÏ¢Ò³Ãæµã»÷¡°ÔÄ¶ÁÔ­ÎÄ¡±ºóµÄÒ³Ãæ
-                content 	        ÊÇ 	Í¼ÎÄÏûÏ¢Ò³ÃæµÄÄÚÈİ£¬Ö§³ÖHTML±êÇ©¡£¾ß±¸Î¢ĞÅÖ§¸¶È¨ÏŞµÄ¹«ÖÚºÅ£¬¿ÉÒÔÊ¹ÓÃa±êÇ©£¬ÆäËû¹«ÖÚºÅ²»ÄÜÊ¹ÓÃ
-                digest 	            ·ñ 	Í¼ÎÄÏûÏ¢µÄÃèÊö
-                show_cover_pic 	    ·ñ 	ÊÇ·ñÏÔÊ¾·âÃæ£¬1ÎªÏÔÊ¾£¬0Îª²»ÏÔÊ¾
-     * @Return: type 	    Ã½ÌåÎÄ¼şÀàĞÍ£¬·Ö±ğÓĞÍ¼Æ¬£¨image£©¡¢ÓïÒô£¨voice£©¡¢ÊÓÆµ£¨video£©ºÍËõÂÔÍ¼£¨thumb£©£¬´ÎÊıÎªnews£¬¼´Í¼ÎÄÏûÏ¢
-                media_id 	Ã½ÌåÎÄ¼ş/Í¼ÎÄÏûÏ¢ÉÏ´«ºó»ñÈ¡µÄÎ¨Ò»±êÊ¶
-                created_at 	Ã½ÌåÎÄ¼şÉÏ´«Ê±¼ä
+     * @FunctionDescription:ä¸Šä¼ å›¾æ–‡æ¶ˆæ¯ç´ æã€è®¢é˜…å·ä¸æœåŠ¡å·è®¤è¯åå‡å¯ç”¨ã€‘(post)
+     * @Param:  Articles 	        æ˜¯ 	å›¾æ–‡æ¶ˆæ¯ï¼Œä¸€ä¸ªå›¾æ–‡æ¶ˆæ¯æ”¯æŒ1åˆ°8æ¡å›¾æ–‡
+    thumb_media_id 	    æ˜¯ 	å›¾æ–‡æ¶ˆæ¯ç¼©ç•¥å›¾çš„media_idï¼Œå¯ä»¥åœ¨åŸºç¡€æ”¯æŒ-ä¸Šä¼ å¤šåª’ä½“æ–‡ä»¶æ¥å£ä¸­è·å¾—
+    author 	            å¦ 	å›¾æ–‡æ¶ˆæ¯çš„ä½œè€…
+    title 	            æ˜¯ 	å›¾æ–‡æ¶ˆæ¯çš„æ ‡é¢˜
+    content_source_url 	å¦ 	åœ¨å›¾æ–‡æ¶ˆæ¯é¡µé¢ç‚¹å‡»â€œé˜…è¯»åŸæ–‡â€åçš„é¡µé¢
+    content 	        æ˜¯ 	å›¾æ–‡æ¶ˆæ¯é¡µé¢çš„å†…å®¹ï¼Œæ”¯æŒHTMLæ ‡ç­¾ã€‚å…·å¤‡å¾®ä¿¡æ”¯ä»˜æƒé™çš„å…¬ä¼—å·ï¼Œå¯ä»¥ä½¿ç”¨aæ ‡ç­¾ï¼Œå…¶ä»–å…¬ä¼—å·ä¸èƒ½ä½¿ç”¨
+    digest 	            å¦ 	å›¾æ–‡æ¶ˆæ¯çš„æè¿°
+    show_cover_pic 	    å¦ 	æ˜¯å¦æ˜¾ç¤ºå°é¢ï¼Œ1ä¸ºæ˜¾ç¤ºï¼Œ0ä¸ºä¸æ˜¾ç¤º
+     * @Return: type 	    åª’ä½“æ–‡ä»¶ç±»å‹ï¼Œåˆ†åˆ«æœ‰å›¾ç‰‡ï¼ˆimageï¼‰ã€è¯­éŸ³ï¼ˆvoiceï¼‰ã€è§†é¢‘ï¼ˆvideoï¼‰å’Œç¼©ç•¥å›¾ï¼ˆthumbï¼‰ï¼Œæ¬¡æ•°ä¸ºnewsï¼Œå³å›¾æ–‡æ¶ˆæ¯
+    media_id 	åª’ä½“æ–‡ä»¶/å›¾æ–‡æ¶ˆæ¯ä¸Šä¼ åè·å–çš„å”¯ä¸€æ ‡è¯†
+    created_at 	åª’ä½“æ–‡ä»¶ä¸Šä¼ æ—¶é—´
      * @Description:
      * @Author:helen zheng
      */
@@ -585,29 +569,28 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token='.$access_token;
         $result = $this->request_post($url,$news_data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:¸ù¾İ·Ö×é½øĞĞÈº·¢¡¾¶©ÔÄºÅÓë·şÎñºÅÈÏÖ¤ºó¾ù¿ÉÓÃ¡¿(post)
-     * @Param:  filter 	        ÊÇ 	ÓÃÓÚÉè¶¨Í¼ÎÄÏûÏ¢µÄ½ÓÊÕÕß
-                is_to_all 	    ·ñ 	ÓÃÓÚÉè¶¨ÊÇ·ñÏòÈ«²¿ÓÃ»§·¢ËÍ£¬ÖµÎªtrue»òfalse£¬Ñ¡Ôñtrue¸ÃÏûÏ¢Èº·¢¸øËùÓĞÓÃ»§£¬Ñ¡Ôñfalse¿É¸ù¾İgroup_id·¢ËÍ¸øÖ¸¶¨Èº×éµÄÓÃ»§
-                group_id 	    ·ñ 	Èº·¢µ½µÄ·Ö×éµÄgroup_id£¬²Î¼ÓÓÃ»§¹ÜÀíÖĞÓÃ»§·Ö×é½Ó¿Ú£¬Èôis_to_allÖµÎªtrue£¬¿É²»ÌîĞ´group_id
-                mpnews 	        ÊÇ 	ÓÃÓÚÉè¶¨¼´½«·¢ËÍµÄÍ¼ÎÄÏûÏ¢
-                media_id 	    ÊÇ 	ÓÃÓÚÈº·¢µÄÏûÏ¢µÄmedia_id
-                msgtype 	    ÊÇ 	Èº·¢µÄÏûÏ¢ÀàĞÍ£¬Í¼ÎÄÏûÏ¢Îªmpnews£¬ÎÄ±¾ÏûÏ¢Îªtext£¬ÓïÒôÎªvoice£¬ÒôÀÖÎªmusic£¬Í¼Æ¬Îªimage£¬ÊÓÆµÎªvideo£¬¿¨È¯Îªwxcard
-                title 	        ·ñ 	ÏûÏ¢µÄ±êÌâ
-                description 	·ñ 	ÏûÏ¢µÄÃèÊö
-                thumb_media_id 	ÊÇ 	ÊÓÆµËõÂÔÍ¼µÄÃ½ÌåID
-     * @Return: type 	      Ã½ÌåÎÄ¼şÀàĞÍ£¬·Ö±ğÓĞÍ¼Æ¬£¨image£©¡¢ÓïÒô£¨voice£©¡¢ÊÓÆµ£¨video£©ºÍËõÂÔÍ¼£¨thumb£©£¬Í¼ÎÄÏûÏ¢Îªnews
-                errcode 	  ´íÎóÂë
-                errmsg 	      ´íÎóĞÅÏ¢
-                msg_id 	      ÏûÏ¢·¢ËÍÈÎÎñµÄID
-                msg_data_id   ÏûÏ¢µÄÊı¾İID£¬¸Ã×Ö¶ÎÖ»ÓĞÔÚÈº·¢Í¼ÎÄÏûÏ¢Ê±£¬²Å»á³öÏÖ¡£¿ÉÒÔÓÃÓÚÔÚÍ¼ÎÄ·ÖÎöÊı¾İ½Ó¿ÚÖĞ£¬»ñÈ¡µ½¶ÔÓ¦µÄÍ¼ÎÄÏûÏ¢µÄÊı¾İ£¬ÊÇÍ¼ÎÄ·ÖÎöÊı¾İ½Ó¿ÚÖĞµÄmsgid×Ö¶ÎÖĞµÄÇ°°ë²¿·Ö£¬Ïê¼ûÍ¼ÎÄ·ÖÎöÊı¾İ½Ó¿ÚÖĞµÄmsgid×Ö¶ÎµÄ½éÉÜ¡£
+     * @FunctionDescription:æ ¹æ®åˆ†ç»„è¿›è¡Œç¾¤å‘ã€è®¢é˜…å·ä¸æœåŠ¡å·è®¤è¯åå‡å¯ç”¨ã€‘(post)
+     * @Param:  filter 	        æ˜¯ 	ç”¨äºè®¾å®šå›¾æ–‡æ¶ˆæ¯çš„æ¥æ”¶è€…
+    is_to_all 	    å¦ 	ç”¨äºè®¾å®šæ˜¯å¦å‘å…¨éƒ¨ç”¨æˆ·å‘é€ï¼Œå€¼ä¸ºtrueæˆ–falseï¼Œé€‰æ‹©trueè¯¥æ¶ˆæ¯ç¾¤å‘ç»™æ‰€æœ‰ç”¨æˆ·ï¼Œé€‰æ‹©falseå¯æ ¹æ®group_idå‘é€ç»™æŒ‡å®šç¾¤ç»„çš„ç”¨æˆ·
+    group_id 	    å¦ 	ç¾¤å‘åˆ°çš„åˆ†ç»„çš„group_idï¼Œå‚åŠ ç”¨æˆ·ç®¡ç†ä¸­ç”¨æˆ·åˆ†ç»„æ¥å£ï¼Œè‹¥is_to_allå€¼ä¸ºtrueï¼Œå¯ä¸å¡«å†™group_id
+    mpnews 	        æ˜¯ 	ç”¨äºè®¾å®šå³å°†å‘é€çš„å›¾æ–‡æ¶ˆæ¯
+    media_id 	    æ˜¯ 	ç”¨äºç¾¤å‘çš„æ¶ˆæ¯çš„media_id
+    msgtype 	    æ˜¯ 	ç¾¤å‘çš„æ¶ˆæ¯ç±»å‹ï¼Œå›¾æ–‡æ¶ˆæ¯ä¸ºmpnewsï¼Œæ–‡æœ¬æ¶ˆæ¯ä¸ºtextï¼Œè¯­éŸ³ä¸ºvoiceï¼ŒéŸ³ä¹ä¸ºmusicï¼Œå›¾ç‰‡ä¸ºimageï¼Œè§†é¢‘ä¸ºvideoï¼Œå¡åˆ¸ä¸ºwxcard
+    title 	        å¦ 	æ¶ˆæ¯çš„æ ‡é¢˜
+    description 	å¦ 	æ¶ˆæ¯çš„æè¿°
+    thumb_media_id 	æ˜¯ 	è§†é¢‘ç¼©ç•¥å›¾çš„åª’ä½“ID
+     * @Return: type 	      åª’ä½“æ–‡ä»¶ç±»å‹ï¼Œåˆ†åˆ«æœ‰å›¾ç‰‡ï¼ˆimageï¼‰ã€è¯­éŸ³ï¼ˆvoiceï¼‰ã€è§†é¢‘ï¼ˆvideoï¼‰å’Œç¼©ç•¥å›¾ï¼ˆthumbï¼‰ï¼Œå›¾æ–‡æ¶ˆæ¯ä¸ºnews
+    errcode 	  é”™è¯¯ç 
+    errmsg 	      é”™è¯¯ä¿¡æ¯
+    msg_id 	      æ¶ˆæ¯å‘é€ä»»åŠ¡çš„ID
+    msg_data_id   æ¶ˆæ¯çš„æ•°æ®IDï¼Œè¯¥å­—æ®µåªæœ‰åœ¨ç¾¤å‘å›¾æ–‡æ¶ˆæ¯æ—¶ï¼Œæ‰ä¼šå‡ºç°ã€‚å¯ä»¥ç”¨äºåœ¨å›¾æ–‡åˆ†ææ•°æ®æ¥å£ä¸­ï¼Œè·å–åˆ°å¯¹åº”çš„å›¾æ–‡æ¶ˆæ¯çš„æ•°æ®ï¼Œæ˜¯å›¾æ–‡åˆ†ææ•°æ®æ¥å£ä¸­çš„msgidå­—æ®µä¸­çš„å‰åŠéƒ¨åˆ†ï¼Œè¯¦è§å›¾æ–‡åˆ†ææ•°æ®æ¥å£ä¸­çš„msgidå­—æ®µçš„ä»‹ç»ã€‚
      * @Description:
      * @Author:helen zheng
      */
@@ -615,27 +598,26 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token='.$access_token;
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:¸ù¾İOpenIDÁĞ±íÈº·¢¡¾¶©ÔÄºÅ²»¿ÉÓÃ£¬·şÎñºÅÈÏÖ¤ºó¿ÉÓÃ¡¿(post)
-     * @Param:  touser 	        ÊÇ 	ÌîĞ´Í¼ÎÄÏûÏ¢µÄ½ÓÊÕÕß£¬Ò»´®OpenIDÁĞ±í£¬OpenID×îÉÙ2¸ö£¬×î¶à10000¸ö
-                mpnews 	        ÊÇ 	ÓÃÓÚÉè¶¨¼´½«·¢ËÍµÄÍ¼ÎÄÏûÏ¢
-                media_id 	    ÊÇ 	ÓÃÓÚÈº·¢µÄÍ¼ÎÄÏûÏ¢µÄmedia_id
-                msgtype 	    ÊÇ 	Èº·¢µÄÏûÏ¢ÀàĞÍ£¬Í¼ÎÄÏûÏ¢Îªmpnews£¬ÎÄ±¾ÏûÏ¢Îªtext£¬ÓïÒôÎªvoice£¬ÒôÀÖÎªmusic£¬Í¼Æ¬Îªimage£¬ÊÓÆµÎªvideo£¬¿¨È¯Îªwxcard
-                title 	        ·ñ 	ÏûÏ¢µÄ±êÌâ
-                description 	·ñ 	ÏûÏ¢µÄÃèÊö
-                thumb_media_id 	ÊÇ 	ÊÓÆµËõÂÔÍ¼µÄÃ½ÌåID
-     * @Return: type 	        Ã½ÌåÎÄ¼şÀàĞÍ£¬·Ö±ğÓĞÍ¼Æ¬£¨image£©¡¢ÓïÒô£¨voice£©¡¢ÊÓÆµ£¨video£©ºÍËõÂÔÍ¼£¨thumb£©£¬´ÎÊıÎªnews£¬¼´Í¼ÎÄÏûÏ¢
-                errcode 	    ´íÎóÂë
-                errmsg 	        ´íÎóĞÅÏ¢
-                msg_id 	        ÏûÏ¢·¢ËÍÈÎÎñµÄID
-                msg_data_id 	ÏûÏ¢µÄÊı¾İID£¬£¬¸Ã×Ö¶ÎÖ»ÓĞÔÚÈº·¢Í¼ÎÄÏûÏ¢Ê±£¬²Å»á³öÏÖ¡£¿ÉÒÔÓÃÓÚÔÚÍ¼ÎÄ·ÖÎöÊı¾İ½Ó¿ÚÖĞ£¬»ñÈ¡µ½¶ÔÓ¦µÄÍ¼ÎÄÏûÏ¢µÄÊı¾İ£¬ÊÇÍ¼ÎÄ·ÖÎöÊı¾İ½Ó¿ÚÖĞµÄmsgid×Ö¶ÎÖĞµÄÇ°°ë²¿·Ö£¬Ïê¼ûÍ¼ÎÄ·ÖÎöÊı¾İ½Ó¿ÚÖĞµÄmsgid×Ö¶ÎµÄ½éÉÜ¡£
+     * @FunctionDescription:æ ¹æ®OpenIDåˆ—è¡¨ç¾¤å‘ã€è®¢é˜…å·ä¸å¯ç”¨ï¼ŒæœåŠ¡å·è®¤è¯åå¯ç”¨ã€‘(post)
+     * @Param:  touser 	        æ˜¯ 	å¡«å†™å›¾æ–‡æ¶ˆæ¯çš„æ¥æ”¶è€…ï¼Œä¸€ä¸²OpenIDåˆ—è¡¨ï¼ŒOpenIDæœ€å°‘2ä¸ªï¼Œæœ€å¤š10000ä¸ª
+    mpnews 	        æ˜¯ 	ç”¨äºè®¾å®šå³å°†å‘é€çš„å›¾æ–‡æ¶ˆæ¯
+    media_id 	    æ˜¯ 	ç”¨äºç¾¤å‘çš„å›¾æ–‡æ¶ˆæ¯çš„media_id
+    msgtype 	    æ˜¯ 	ç¾¤å‘çš„æ¶ˆæ¯ç±»å‹ï¼Œå›¾æ–‡æ¶ˆæ¯ä¸ºmpnewsï¼Œæ–‡æœ¬æ¶ˆæ¯ä¸ºtextï¼Œè¯­éŸ³ä¸ºvoiceï¼ŒéŸ³ä¹ä¸ºmusicï¼Œå›¾ç‰‡ä¸ºimageï¼Œè§†é¢‘ä¸ºvideoï¼Œå¡åˆ¸ä¸ºwxcard
+    title 	        å¦ 	æ¶ˆæ¯çš„æ ‡é¢˜
+    description 	å¦ 	æ¶ˆæ¯çš„æè¿°
+    thumb_media_id 	æ˜¯ 	è§†é¢‘ç¼©ç•¥å›¾çš„åª’ä½“ID
+     * @Return: type 	        åª’ä½“æ–‡ä»¶ç±»å‹ï¼Œåˆ†åˆ«æœ‰å›¾ç‰‡ï¼ˆimageï¼‰ã€è¯­éŸ³ï¼ˆvoiceï¼‰ã€è§†é¢‘ï¼ˆvideoï¼‰å’Œç¼©ç•¥å›¾ï¼ˆthumbï¼‰ï¼Œæ¬¡æ•°ä¸ºnewsï¼Œå³å›¾æ–‡æ¶ˆæ¯
+    errcode 	    é”™è¯¯ç 
+    errmsg 	        é”™è¯¯ä¿¡æ¯
+    msg_id 	        æ¶ˆæ¯å‘é€ä»»åŠ¡çš„ID
+    msg_data_id 	æ¶ˆæ¯çš„æ•°æ®IDï¼Œï¼Œè¯¥å­—æ®µåªæœ‰åœ¨ç¾¤å‘å›¾æ–‡æ¶ˆæ¯æ—¶ï¼Œæ‰ä¼šå‡ºç°ã€‚å¯ä»¥ç”¨äºåœ¨å›¾æ–‡åˆ†ææ•°æ®æ¥å£ä¸­ï¼Œè·å–åˆ°å¯¹åº”çš„å›¾æ–‡æ¶ˆæ¯çš„æ•°æ®ï¼Œæ˜¯å›¾æ–‡åˆ†ææ•°æ®æ¥å£ä¸­çš„msgidå­—æ®µä¸­çš„å‰åŠéƒ¨åˆ†ï¼Œè¯¦è§å›¾æ–‡åˆ†ææ•°æ®æ¥å£ä¸­çš„msgidå­—æ®µçš„ä»‹ç»ã€‚
      * @Description:
      * @Author:helen zheng
      */
@@ -643,57 +625,54 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token='.$access_token;
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:É¾³ıÈº·¢¡¾¶©ÔÄºÅÓë·şÎñºÅÈÏÖ¤ºó¾ù¿ÉÓÃ¡¿(post)
-     * @Param: msg_id 	ÊÇ 	·¢ËÍ³öÈ¥µÄÏûÏ¢ID
+     * @FunctionDescription:åˆ é™¤ç¾¤å‘ã€è®¢é˜…å·ä¸æœåŠ¡å·è®¤è¯åå‡å¯ç”¨ã€‘(post)
+     * @Param: msg_id 	æ˜¯ 	å‘é€å‡ºå»çš„æ¶ˆæ¯ID
      * @Return: 0 (ok)
-     * @Description:Èº·¢Ö»ÓĞÔÚ¸Õ·¢³öµÄ°ëĞ¡Ê±ÄÚ¿ÉÒÔÉ¾³ı£¬·¢³ö°ëĞ¡Ê±Ö®ºó½«ÎŞ·¨±»É¾³ı¡£
+     * @Description:ç¾¤å‘åªæœ‰åœ¨åˆšå‘å‡ºçš„åŠå°æ—¶å†…å¯ä»¥åˆ é™¤ï¼Œå‘å‡ºåŠå°æ—¶ä¹‹åå°†æ— æ³•è¢«åˆ é™¤ã€‚
      * @Author:helen zheng
      */
     public function sendallDelete($access_token,$msg_id){
         $url = 'https://api.weixin.qq.com/cgi-bin/message/mass/delete?access_token='.$access_token;
         $result = $this->request_post($url,$msg_id);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:Ô¤ÀÀ½Ó¿Ú¡¾¶©ÔÄºÅÓë·şÎñºÅÈÏÖ¤ºó¾ù¿ÉÓÃ¡¿(post)
-     * @Param:  touser 	    ½ÓÊÕÏûÏ¢ÓÃ»§¶ÔÓ¦¸Ã¹«ÖÚºÅµÄopenid£¬¸Ã×Ö¶ÎÒ²¿ÉÒÔ¸ÄÎªtowxname£¬ÒÔÊµÏÖ¶ÔÎ¢ĞÅºÅµÄÔ¤ÀÀ
-                msgtype 	Èº·¢µÄÏûÏ¢ÀàĞÍ£¬Í¼ÎÄÏûÏ¢Îªmpnews£¬ÎÄ±¾ÏûÏ¢Îªtext£¬ÓïÒôÎªvoice£¬ÒôÀÖÎªmusic£¬Í¼Æ¬Îªimage£¬ÊÓÆµÎªvideo£¬¿¨È¯Îªwxcard
-                media_id 	ÓÃÓÚÈº·¢µÄÏûÏ¢µÄmedia_id
-                content 	·¢ËÍÎÄ±¾ÏûÏ¢Ê±ÎÄ±¾µÄÄÚÈİ
-     * @Return: msg_id 	    ÏûÏ¢ID
-     * @Description:¿ª·¢Õß¿ÉÍ¨¹ı¸Ã½Ó¿Ú·¢ËÍÏûÏ¢¸øÖ¸¶¨ÓÃ»§£¬ÔÚÊÖ»ú¶Ë²é¿´ÏûÏ¢µÄÑùÊ½ºÍÅÅ°æ¡£ÎªÁËÂú×ãµÚÈı·½Æ½Ì¨¿ª·¢ÕßµÄĞèÇó£¬ÔÚ±£Áô¶ÔopenIDÔ¤ÀÀÄÜÁ¦µÄÍ¬Ê±£¬Ôö¼ÓÁË¶ÔÖ¸¶¨Î¢ĞÅºÅ·¢ËÍÔ¤ÀÀµÄÄÜÁ¦£¬µ«¸ÃÄÜÁ¦Ã¿ÈÕµ÷ÓÃ´ÎÊıÓĞÏŞÖÆ£¨100´Î£©£¬ÇëÎğÀÄÓÃ¡£
+     * @FunctionDescription:é¢„è§ˆæ¥å£ã€è®¢é˜…å·ä¸æœåŠ¡å·è®¤è¯åå‡å¯ç”¨ã€‘(post)
+     * @Param:  touser 	    æ¥æ”¶æ¶ˆæ¯ç”¨æˆ·å¯¹åº”è¯¥å…¬ä¼—å·çš„openidï¼Œè¯¥å­—æ®µä¹Ÿå¯ä»¥æ”¹ä¸ºtowxnameï¼Œä»¥å®ç°å¯¹å¾®ä¿¡å·çš„é¢„è§ˆ
+    msgtype 	ç¾¤å‘çš„æ¶ˆæ¯ç±»å‹ï¼Œå›¾æ–‡æ¶ˆæ¯ä¸ºmpnewsï¼Œæ–‡æœ¬æ¶ˆæ¯ä¸ºtextï¼Œè¯­éŸ³ä¸ºvoiceï¼ŒéŸ³ä¹ä¸ºmusicï¼Œå›¾ç‰‡ä¸ºimageï¼Œè§†é¢‘ä¸ºvideoï¼Œå¡åˆ¸ä¸ºwxcard
+    media_id 	ç”¨äºç¾¤å‘çš„æ¶ˆæ¯çš„media_id
+    content 	å‘é€æ–‡æœ¬æ¶ˆæ¯æ—¶æ–‡æœ¬çš„å†…å®¹
+     * @Return: msg_id 	    æ¶ˆæ¯ID
+     * @Description:å¼€å‘è€…å¯é€šè¿‡è¯¥æ¥å£å‘é€æ¶ˆæ¯ç»™æŒ‡å®šç”¨æˆ·ï¼Œåœ¨æ‰‹æœºç«¯æŸ¥çœ‹æ¶ˆæ¯çš„æ ·å¼å’Œæ’ç‰ˆã€‚ä¸ºäº†æ»¡è¶³ç¬¬ä¸‰æ–¹å¹³å°å¼€å‘è€…çš„éœ€æ±‚ï¼Œåœ¨ä¿ç•™å¯¹openIDé¢„è§ˆèƒ½åŠ›çš„åŒæ—¶ï¼Œå¢åŠ äº†å¯¹æŒ‡å®šå¾®ä¿¡å·å‘é€é¢„è§ˆçš„èƒ½åŠ›ï¼Œä½†è¯¥èƒ½åŠ›æ¯æ—¥è°ƒç”¨æ¬¡æ•°æœ‰é™åˆ¶ï¼ˆ100æ¬¡ï¼‰ï¼Œè¯·å‹¿æ»¥ç”¨ã€‚
      * @Author:helen zheng
      */
     public function preview($access_token,$data){
         $url = 'https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token='.$access_token;
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:²éÑ¯Èº·¢ÏûÏ¢·¢ËÍ×´Ì¬¡¾¶©ÔÄºÅÓë·şÎñºÅÈÏÖ¤ºó¾ù¿ÉÓÃ¡¿(post)
-     * @Param:  msg_id 	    Èº·¢ÏûÏ¢ºó·µ»ØµÄÏûÏ¢id
-     * @Return: msg_id 	    Èº·¢ÏûÏ¢ºó·µ»ØµÄÏûÏ¢id
-                msg_status 	ÏûÏ¢·¢ËÍºóµÄ×´Ì¬£¬SEND_SUCCESS±íÊ¾·¢ËÍ³É¹¦
+     * @FunctionDescription:æŸ¥è¯¢ç¾¤å‘æ¶ˆæ¯å‘é€çŠ¶æ€ã€è®¢é˜…å·ä¸æœåŠ¡å·è®¤è¯åå‡å¯ç”¨ã€‘(post)
+     * @Param:  msg_id 	    ç¾¤å‘æ¶ˆæ¯åè¿”å›çš„æ¶ˆæ¯id
+     * @Return: msg_id 	    ç¾¤å‘æ¶ˆæ¯åè¿”å›çš„æ¶ˆæ¯id
+    msg_status 	æ¶ˆæ¯å‘é€åçš„çŠ¶æ€ï¼ŒSEND_SUCCESSè¡¨ç¤ºå‘é€æˆåŠŸ
      * @Description:
      * @Author:helen zheng
      */
@@ -701,42 +680,39 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/message/mass/get?access_token='.$access_token;
         $result = $this->request_post($url,$msg_id);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:Ä£°åÏûÏ¢½Ó¿Ú(post)
-     * @Description:Ä£°åÏûÏ¢½öÓÃÓÚ¹«ÖÚºÅÏòÓÃ»§·¢ËÍÖØÒªµÄ·şÎñÍ¨Öª£¬Ö»ÄÜÓÃÓÚ·ûºÏÆäÒªÇóµÄ·şÎñ³¡¾°ÖĞ.
-     * @Description:Ö»ÓĞÈÏÖ¤ºóµÄ·şÎñºÅ²Å¿ÉÒÔÉêÇëÄ£°åÏûÏ¢µÄÊ¹ÓÃÈ¨ÏŞ²¢»ñµÃ¸ÃÈ¨ÏŞ£»
+     * @FunctionDescription:æ¨¡æ¿æ¶ˆæ¯æ¥å£(post)
+     * @Description:æ¨¡æ¿æ¶ˆæ¯ä»…ç”¨äºå…¬ä¼—å·å‘ç”¨æˆ·å‘é€é‡è¦çš„æœåŠ¡é€šçŸ¥ï¼Œåªèƒ½ç”¨äºç¬¦åˆå…¶è¦æ±‚çš„æœåŠ¡åœºæ™¯ä¸­.
+     * @Description:åªæœ‰è®¤è¯åçš„æœåŠ¡å·æ‰å¯ä»¥ç”³è¯·æ¨¡æ¿æ¶ˆæ¯çš„ä½¿ç”¨æƒé™å¹¶è·å¾—è¯¥æƒé™ï¼›
      * @Author:helen zheng
      */
-
     /**
-     * @FunctionDescription:ÉèÖÃËùÊôĞĞÒµ(post)
-     * @Param:  industry_id1 	ÊÇ 	¹«ÖÚºÅÄ£°åÏûÏ¢ËùÊôĞĞÒµ±àºÅ
-                industry_id2 	ÊÇ 	¹«ÖÚºÅÄ£°åÏûÏ¢ËùÊôĞĞÒµ±àºÅ
+     * @FunctionDescription:è®¾ç½®æ‰€å±è¡Œä¸š(post)
+     * @Param:  industry_id1 	æ˜¯ 	å…¬ä¼—å·æ¨¡æ¿æ¶ˆæ¯æ‰€å±è¡Œä¸šç¼–å·
+    industry_id2 	æ˜¯ 	å…¬ä¼—å·æ¨¡æ¿æ¶ˆæ¯æ‰€å±è¡Œä¸šç¼–å·
      * @Return:
-     * @Description:ÉèÖÃĞĞÒµ¿ÉÔÚMPÖĞÍê³É£¬Ã¿ÔÂ¿ÉĞŞ¸ÄĞĞÒµ1´Î£¬ÕËºÅ½ö¿ÉÊ¹ÓÃËùÊôĞĞÒµÖĞÏà¹ØµÄÄ£°å
+     * @Description:è®¾ç½®è¡Œä¸šå¯åœ¨MPä¸­å®Œæˆï¼Œæ¯æœˆå¯ä¿®æ”¹è¡Œä¸š1æ¬¡ï¼Œè´¦å·ä»…å¯ä½¿ç”¨æ‰€å±è¡Œä¸šä¸­ç›¸å…³çš„æ¨¡æ¿
      * @Author:helen zheng
      */
     public function setIndustry($access_token,$data){
         $url = 'https://api.weixin.qq.com/cgi-bin/template/api_set_industry?access_token='.$access_token;
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñµÃÄ£°åID(post)
-     * @Param: template_id_short 	ÊÇ 	Ä£°å¿âÖĞÄ£°åµÄ±àºÅ£¬ÓĞ¡°TM**¡±ºÍ¡°OPENTMTM**¡±µÈĞÎÊ½
+     * @FunctionDescription:è·å¾—æ¨¡æ¿ID(post)
+     * @Param: template_id_short 	æ˜¯ 	æ¨¡æ¿åº“ä¸­æ¨¡æ¿çš„ç¼–å·ï¼Œæœ‰â€œTM**â€å’Œâ€œOPENTMTM**â€ç­‰å½¢å¼
      * @Return:template_id
      * @Description:
      * @Author:helen zheng
@@ -745,15 +721,14 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/template/api_add_template?access_token='.$access_token;
         $result = $this->request_post($url,$template_id_short);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:·¢ËÍÄ£°åÏûÏ¢(post)
+     * @FunctionDescription:å‘é€æ¨¡æ¿æ¶ˆæ¯(post)
      * @Param:
      * @Return: msgid
      * @Description:
@@ -763,161 +738,154 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$access_token;
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡×Ô¶¯»Ø¸´¹æÔò(get)
+     * @FunctionDescription:è·å–è‡ªåŠ¨å›å¤è§„åˆ™(get)
      * @Param:
-     * @Return: is_add_friend_reply_open 	    ¹Ø×¢ºó×Ô¶¯»Ø¸´ÊÇ·ñ¿ªÆô£¬0´ú±íÎ´¿ªÆô£¬1´ú±í¿ªÆô
-                is_autoreply_open 	            ÏûÏ¢×Ô¶¯»Ø¸´ÊÇ·ñ¿ªÆô£¬0´ú±íÎ´¿ªÆô£¬1´ú±í¿ªÆô
-                add_friend_autoreply_info 	    ¹Ø×¢ºó×Ô¶¯»Ø¸´µÄĞÅÏ¢
-                type 	                        ×Ô¶¯»Ø¸´µÄÀàĞÍ¡£¹Ø×¢ºó×Ô¶¯»Ø¸´ºÍÏûÏ¢×Ô¶¯»Ø¸´µÄÀàĞÍ½öÖ§³ÖÎÄ±¾£¨text£©¡¢Í¼Æ¬£¨img£©¡¢ÓïÒô£¨voice£©¡¢ÊÓÆµ£¨video£©£¬¹Ø¼ü´Ê×Ô¶¯»Ø¸´Ôò»¹¶àÁËÍ¼ÎÄÏûÏ¢£¨news£©
-                content 	                    ¶ÔÓÚÎÄ±¾ÀàĞÍ£¬contentÊÇÎÄ±¾ÄÚÈİ£¬¶ÔÓÚÍ¼ÎÄ¡¢Í¼Æ¬¡¢ÓïÒô¡¢ÊÓÆµÀàĞÍ£¬contentÊÇmediaID
-                message_default_autoreply_info 	ÏûÏ¢×Ô¶¯»Ø¸´µÄĞÅÏ¢
-                keyword_autoreply_info 	        ¹Ø¼ü´Ê×Ô¶¯»Ø¸´µÄĞÅÏ¢
-                rule_name 	                    ¹æÔòÃû³Æ
-                create_time 	                ´´½¨Ê±¼ä
-                reply_mode 	                    »Ø¸´Ä£Ê½£¬reply_all´ú±íÈ«²¿»Ø¸´£¬random_one´ú±íËæ»ú»Ø¸´ÆäÖĞÒ»Ìõ
-                keyword_list_info 	            Æ¥ÅäµÄ¹Ø¼ü´ÊÁĞ±í
-                match_mode 	                    Æ¥ÅäÄ£Ê½£¬contain´ú±íÏûÏ¢ÖĞº¬ÓĞ¸Ã¹Ø¼ü´Ê¼´¿É£¬equal±íÊ¾ÏûÏ¢ÄÚÈİ±ØĞëºÍ¹Ø¼ü´ÊÑÏ¸ñÏàÍ¬
-                news_info 	                    Í¼ÎÄÏûÏ¢µÄĞÅÏ¢
-                title 	                        Í¼ÎÄÏûÏ¢µÄ±êÌâ
-                digest 	                        ÕªÒª
-                author 	                        ×÷Õß
-                show_cover 	                    ÊÇ·ñÏÔÊ¾·âÃæ£¬0Îª²»ÏÔÊ¾£¬1ÎªÏÔÊ¾
-                cover_url 	                    ·âÃæÍ¼Æ¬µÄURL
-                content_url 	                ÕıÎÄµÄURL
-                source_url 	                    Ô­ÎÄµÄURL£¬ÈôÖÃ¿ÕÔòÎŞ²é¿´Ô­ÎÄÈë¿Ú
-     * @Description:¿ª·¢Õß¿ÉÒÔÍ¨¹ı¸Ã½Ó¿Ú£¬»ñÈ¡¹«ÖÚºÅµ±Ç°Ê¹ÓÃµÄ×Ô¶¯»Ø¸´¹æÔò£¬°üÀ¨¹Ø×¢ºó×Ô¶¯»Ø¸´¡¢ÏûÏ¢×Ô¶¯»Ø¸´£¨60·ÖÖÓÄÚ´¥·¢Ò»´Î£©¡¢¹Ø¼ü´Ê×Ô¶¯»Ø¸´¡£
+     * @Return: is_add_friend_reply_open 	    å…³æ³¨åè‡ªåŠ¨å›å¤æ˜¯å¦å¼€å¯ï¼Œ0ä»£è¡¨æœªå¼€å¯ï¼Œ1ä»£è¡¨å¼€å¯
+    is_autoreply_open 	            æ¶ˆæ¯è‡ªåŠ¨å›å¤æ˜¯å¦å¼€å¯ï¼Œ0ä»£è¡¨æœªå¼€å¯ï¼Œ1ä»£è¡¨å¼€å¯
+    add_friend_autoreply_info 	    å…³æ³¨åè‡ªåŠ¨å›å¤çš„ä¿¡æ¯
+    type 	                        è‡ªåŠ¨å›å¤çš„ç±»å‹ã€‚å…³æ³¨åè‡ªåŠ¨å›å¤å’Œæ¶ˆæ¯è‡ªåŠ¨å›å¤çš„ç±»å‹ä»…æ”¯æŒæ–‡æœ¬ï¼ˆtextï¼‰ã€å›¾ç‰‡ï¼ˆimgï¼‰ã€è¯­éŸ³ï¼ˆvoiceï¼‰ã€è§†é¢‘ï¼ˆvideoï¼‰ï¼Œå…³é”®è¯è‡ªåŠ¨å›å¤åˆ™è¿˜å¤šäº†å›¾æ–‡æ¶ˆæ¯ï¼ˆnewsï¼‰
+    content 	                    å¯¹äºæ–‡æœ¬ç±»å‹ï¼Œcontentæ˜¯æ–‡æœ¬å†…å®¹ï¼Œå¯¹äºå›¾æ–‡ã€å›¾ç‰‡ã€è¯­éŸ³ã€è§†é¢‘ç±»å‹ï¼Œcontentæ˜¯mediaID
+    message_default_autoreply_info 	æ¶ˆæ¯è‡ªåŠ¨å›å¤çš„ä¿¡æ¯
+    keyword_autoreply_info 	        å…³é”®è¯è‡ªåŠ¨å›å¤çš„ä¿¡æ¯
+    rule_name 	                    è§„åˆ™åç§°
+    create_time 	                åˆ›å»ºæ—¶é—´
+    reply_mode 	                    å›å¤æ¨¡å¼ï¼Œreply_allä»£è¡¨å…¨éƒ¨å›å¤ï¼Œrandom_oneä»£è¡¨éšæœºå›å¤å…¶ä¸­ä¸€æ¡
+    keyword_list_info 	            åŒ¹é…çš„å…³é”®è¯åˆ—è¡¨
+    match_mode 	                    åŒ¹é…æ¨¡å¼ï¼Œcontainä»£è¡¨æ¶ˆæ¯ä¸­å«æœ‰è¯¥å…³é”®è¯å³å¯ï¼Œequalè¡¨ç¤ºæ¶ˆæ¯å†…å®¹å¿…é¡»å’Œå…³é”®è¯ä¸¥æ ¼ç›¸åŒ
+    news_info 	                    å›¾æ–‡æ¶ˆæ¯çš„ä¿¡æ¯
+    title 	                        å›¾æ–‡æ¶ˆæ¯çš„æ ‡é¢˜
+    digest 	                        æ‘˜è¦
+    author 	                        ä½œè€…
+    show_cover 	                    æ˜¯å¦æ˜¾ç¤ºå°é¢ï¼Œ0ä¸ºä¸æ˜¾ç¤ºï¼Œ1ä¸ºæ˜¾ç¤º
+    cover_url 	                    å°é¢å›¾ç‰‡çš„URL
+    content_url 	                æ­£æ–‡çš„URL
+    source_url 	                    åŸæ–‡çš„URLï¼Œè‹¥ç½®ç©ºåˆ™æ— æŸ¥çœ‹åŸæ–‡å…¥å£
+     * @Description:å¼€å‘è€…å¯ä»¥é€šè¿‡è¯¥æ¥å£ï¼Œè·å–å…¬ä¼—å·å½“å‰ä½¿ç”¨çš„è‡ªåŠ¨å›å¤è§„åˆ™ï¼ŒåŒ…æ‹¬å…³æ³¨åè‡ªåŠ¨å›å¤ã€æ¶ˆæ¯è‡ªåŠ¨å›å¤ï¼ˆ60åˆ†é’Ÿå†…è§¦å‘ä¸€æ¬¡ï¼‰ã€å…³é”®è¯è‡ªåŠ¨å›å¤ã€‚
      * @Author:helen zheng
      */
     public function getCurrentAutoreplyInfo($access_token){
         $url = 'https://api.weixin.qq.com/cgi-bin/get_current_autoreply_info?access_token='.$access_token;
         $result = $this->request_get($url);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:ËØ²Ä¹ÜÀí
-     * @Description:¶Ô¶àÃ½ÌåÎÄ¼ş¡¢¶àÃ½ÌåÏûÏ¢µÄ»ñÈ¡ºÍµ÷ÓÃµÈ²Ù×÷£¬ÊÇÍ¨¹ımedia_idÀ´½øĞĞµÄ¡£
-     * @Description:ËØ²Ä¹ÜÀí½Ó¿Ú¶ÔËùÓĞÈÏÖ¤µÄ¶©ÔÄºÅºÍ·şÎñºÅ¿ª·Å£¨×¢£º×Ô¶¨Òå²Ëµ¥½Ó¿ÚºÍËØ²Ä¹ÜÀí½Ó¿ÚÏòµÚÈı·½Æ½Ì¨ÆìÏÂÎ´ÈÏÖ¤¶©ÔÄºÅ¿ª·Å£©¡£
-     * @Description:Í¼Æ¬´óĞ¡²»³¬¹ı2M£¬Ö§³Öbmp/png/jpeg/jpg/gif¸ñÊ½£¬ÓïÒô´óĞ¡²»³¬¹ı5M£¬³¤¶È²»³¬¹ı60Ãë£¬Ö§³Ömp3/wma/wav/amr¸ñÊ½
+     * @FunctionDescription:ç´ æç®¡ç†
+     * @Description:å¯¹å¤šåª’ä½“æ–‡ä»¶ã€å¤šåª’ä½“æ¶ˆæ¯çš„è·å–å’Œè°ƒç”¨ç­‰æ“ä½œï¼Œæ˜¯é€šè¿‡media_idæ¥è¿›è¡Œçš„ã€‚
+     * @Description:ç´ æç®¡ç†æ¥å£å¯¹æ‰€æœ‰è®¤è¯çš„è®¢é˜…å·å’ŒæœåŠ¡å·å¼€æ”¾ï¼ˆæ³¨ï¼šè‡ªå®šä¹‰èœå•æ¥å£å’Œç´ æç®¡ç†æ¥å£å‘ç¬¬ä¸‰æ–¹å¹³å°æ——ä¸‹æœªè®¤è¯è®¢é˜…å·å¼€æ”¾ï¼‰ã€‚
+     * @Description:å›¾ç‰‡å¤§å°ä¸è¶…è¿‡2Mï¼Œæ”¯æŒbmp/png/jpeg/jpg/gifæ ¼å¼ï¼Œè¯­éŸ³å¤§å°ä¸è¶…è¿‡5Mï¼Œé•¿åº¦ä¸è¶…è¿‡60ç§’ï¼Œæ”¯æŒmp3/wma/wav/amræ ¼å¼
      * @Author:helen zheng
      */
-
     /**
-     * @FunctionDescription:ĞÂÔöÁÙÊ±ËØ²Ä£¨±¾½Ó¿Ú¼´ÎªÔ­¡°ÉÏ´«¶àÃ½ÌåÎÄ¼ş¡±½Ó¿Ú¡££©£¨post£©
-     * @Param:  access_token 	ÊÇ 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                type 	        ÊÇ 	Ã½ÌåÎÄ¼şÀàĞÍ£¬·Ö±ğÓĞÍ¼Æ¬£¨image£©¡¢ÓïÒô£¨voice£©¡¢ÊÓÆµ£¨video£©ºÍËõÂÔÍ¼£¨thumb£©
-                media 	        ÊÇ 	form-dataÖĞÃ½ÌåÎÄ¼ş±êÊ¶£¬ÓĞfilename¡¢filelength¡¢content-typeµÈĞÅÏ¢
-     * @Return: type 	    Ã½ÌåÎÄ¼şÀàĞÍ£¬·Ö±ğÓĞÍ¼Æ¬£¨image£©¡¢ÓïÒô£¨voice£©¡¢ÊÓÆµ£¨video£©ºÍËõÂÔÍ¼£¨thumb£¬Ö÷ÒªÓÃÓÚÊÓÆµÓëÒôÀÖ¸ñÊ½µÄËõÂÔÍ¼£©
-                media_id 	Ã½ÌåÎÄ¼şÉÏ´«ºó£¬»ñÈ¡Ê±µÄÎ¨Ò»±êÊ¶
-                created_at 	Ã½ÌåÎÄ¼şÉÏ´«Ê±¼ä´Á
-     * @Description:¶ÔÓÚÁÙÊ±ËØ²Ä£¬Ã¿¸öËØ²Ä£¨media_id£©»áÔÚ¿ª·¢ÕßÉÏ´«»ò·ÛË¿·¢ËÍµ½Î¢ĞÅ·şÎñÆ÷3Ììºó×Ô¶¯É¾³ı¡£media_idÊÇ¿É¸´ÓÃµÄ¡£
-     * @Description:ÉÏ´«µÄÁÙÊ±¶àÃ½ÌåÎÄ¼şÓĞ¸ñÊ½ºÍ´óĞ¡ÏŞÖÆ£¬ÈçÏÂ£º
-                        Í¼Æ¬£¨image£©: 1M£¬Ö§³ÖJPG¸ñÊ½
-                        ÓïÒô£¨voice£©£º2M£¬²¥·Å³¤¶È²»³¬¹ı60s£¬Ö§³ÖAMR\MP3¸ñÊ½
-                        ÊÓÆµ£¨video£©£º10MB£¬Ö§³ÖMP4¸ñÊ½
-                        ËõÂÔÍ¼£¨thumb£©£º64KB£¬Ö§³ÖJPG¸ñÊ½
+     * @FunctionDescription:æ–°å¢ä¸´æ—¶ç´ æï¼ˆæœ¬æ¥å£å³ä¸ºåŸâ€œä¸Šä¼ å¤šåª’ä½“æ–‡ä»¶â€æ¥å£ã€‚ï¼‰ï¼ˆpostï¼‰
+     * @Param:  access_token 	æ˜¯ 	è°ƒç”¨æ¥å£å‡­è¯
+    type 	        æ˜¯ 	åª’ä½“æ–‡ä»¶ç±»å‹ï¼Œåˆ†åˆ«æœ‰å›¾ç‰‡ï¼ˆimageï¼‰ã€è¯­éŸ³ï¼ˆvoiceï¼‰ã€è§†é¢‘ï¼ˆvideoï¼‰å’Œç¼©ç•¥å›¾ï¼ˆthumbï¼‰
+    media 	        æ˜¯ 	form-dataä¸­åª’ä½“æ–‡ä»¶æ ‡è¯†ï¼Œæœ‰filenameã€filelengthã€content-typeç­‰ä¿¡æ¯
+     * @Return: type 	    åª’ä½“æ–‡ä»¶ç±»å‹ï¼Œåˆ†åˆ«æœ‰å›¾ç‰‡ï¼ˆimageï¼‰ã€è¯­éŸ³ï¼ˆvoiceï¼‰ã€è§†é¢‘ï¼ˆvideoï¼‰å’Œç¼©ç•¥å›¾ï¼ˆthumbï¼Œä¸»è¦ç”¨äºè§†é¢‘ä¸éŸ³ä¹æ ¼å¼çš„ç¼©ç•¥å›¾ï¼‰
+    media_id 	åª’ä½“æ–‡ä»¶ä¸Šä¼ åï¼Œè·å–æ—¶çš„å”¯ä¸€æ ‡è¯†
+    created_at 	åª’ä½“æ–‡ä»¶ä¸Šä¼ æ—¶é—´æˆ³
+     * @Description:å¯¹äºä¸´æ—¶ç´ æï¼Œæ¯ä¸ªç´ æï¼ˆmedia_idï¼‰ä¼šåœ¨å¼€å‘è€…ä¸Šä¼ æˆ–ç²‰ä¸å‘é€åˆ°å¾®ä¿¡æœåŠ¡å™¨3å¤©åè‡ªåŠ¨åˆ é™¤ã€‚media_idæ˜¯å¯å¤ç”¨çš„ã€‚
+     * @Description:ä¸Šä¼ çš„ä¸´æ—¶å¤šåª’ä½“æ–‡ä»¶æœ‰æ ¼å¼å’Œå¤§å°é™åˆ¶ï¼Œå¦‚ä¸‹ï¼š
+    å›¾ç‰‡ï¼ˆimageï¼‰: 1Mï¼Œæ”¯æŒJPGæ ¼å¼
+    è¯­éŸ³ï¼ˆvoiceï¼‰ï¼š2Mï¼Œæ’­æ”¾é•¿åº¦ä¸è¶…è¿‡60sï¼Œæ”¯æŒAMR\MP3æ ¼å¼
+    è§†é¢‘ï¼ˆvideoï¼‰ï¼š10MBï¼Œæ”¯æŒMP4æ ¼å¼
+    ç¼©ç•¥å›¾ï¼ˆthumbï¼‰ï¼š64KBï¼Œæ”¯æŒJPGæ ¼å¼
      * @Author:helen zheng
      */
     public function mediaUpload($access_token,$type,$data){
         $url = 'https://api.weixin.qq.com/cgi-bin/media/upload?access_token='.$access_token.'&type='.$type;
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡ÁÙÊ±ËØ²Ä (±¾½Ó¿Ú¼´ÎªÔ­¡°ÏÂÔØ¶àÃ½ÌåÎÄ¼ş¡±½Ó¿Ú¡£)(get)
-     * @Param:  access_token 	ÊÇ 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                media_id 	    ÊÇ 	Ã½ÌåÎÄ¼şID
+     * @FunctionDescription:è·å–ä¸´æ—¶ç´ æ (æœ¬æ¥å£å³ä¸ºåŸâ€œä¸‹è½½å¤šåª’ä½“æ–‡ä»¶â€æ¥å£ã€‚)(get)
+     * @Param:  access_token 	æ˜¯ 	è°ƒç”¨æ¥å£å‡­è¯
+    media_id 	    æ˜¯ 	åª’ä½“æ–‡ä»¶ID
      * @Return:
-     * @Description:Ê¹ÓÃ±¾½Ó¿Ú»ñÈ¡ÁÙÊ±ËØ²Ä£¨¼´ÏÂÔØÁÙÊ±µÄ¶àÃ½ÌåÎÄ¼ş£©¡£Çë×¢Òâ£¬ÊÓÆµÎÄ¼ş²»Ö§³ÖhttpsÏÂÔØ£¬µ÷ÓÃ¸Ã½Ó¿ÚĞèhttpĞ­Òé¡£
+     * @Description:ä½¿ç”¨æœ¬æ¥å£è·å–ä¸´æ—¶ç´ æï¼ˆå³ä¸‹è½½ä¸´æ—¶çš„å¤šåª’ä½“æ–‡ä»¶ï¼‰ã€‚è¯·æ³¨æ„ï¼Œè§†é¢‘æ–‡ä»¶ä¸æ”¯æŒhttpsä¸‹è½½ï¼Œè°ƒç”¨è¯¥æ¥å£éœ€httpåè®®ã€‚
      * @Author:helen zheng
      */
     public function mediaGet($access_token,$media_id){
         $url = 'https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$access_token.'&media_id='.$media_id;
         $result = $this->request_get($url);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:ĞÂÔöÓÀ¾ÃÍ¼ÎÄËØ²Ä(post)
-     * @Param:  title 	            ÊÇ 	±êÌâ
-                thumb_media_id 	    ÊÇ 	Í¼ÎÄÏûÏ¢µÄ·âÃæÍ¼Æ¬ËØ²Äid£¨±ØĞëÊÇÓÀ¾ÃmediaID£©
-                author 	            ÊÇ 	×÷Õß
-                digest 	            ÊÇ 	Í¼ÎÄÏûÏ¢µÄÕªÒª£¬½öÓĞµ¥Í¼ÎÄÏûÏ¢²ÅÓĞÕªÒª£¬¶àÍ¼ÎÄ´Ë´¦Îª¿Õ
-                show_cover_pic 	    ÊÇ 	ÊÇ·ñÏÔÊ¾·âÃæ£¬0Îªfalse£¬¼´²»ÏÔÊ¾£¬1Îªtrue£¬¼´ÏÔÊ¾
-                content 	        ÊÇ 	Í¼ÎÄÏûÏ¢µÄ¾ßÌåÄÚÈİ£¬Ö§³ÖHTML±êÇ©£¬±ØĞëÉÙÓÚ2Íò×Ö·û£¬Ğ¡ÓÚ1M£¬ÇÒ´Ë´¦»áÈ¥³ıJS
-                content_source_url 	ÊÇ 	Í¼ÎÄÏûÏ¢µÄÔ­ÎÄµØÖ·£¬¼´µã»÷¡°ÔÄ¶ÁÔ­ÎÄ¡±ºóµÄURL
-     * @Return: media_id ·µ»ØµÄ¼´ÎªĞÂÔöµÄÍ¼ÎÄÏûÏ¢ËØ²ÄµÄmedia_id¡£
-     * @Description:ÓÀ¾ÃËØ²ÄµÄÊıÁ¿ÊÇÓĞÉÏÏŞµÄ£¬Çë½÷É÷ĞÂÔö¡£Í¼ÎÄÏûÏ¢ËØ²ÄºÍÍ¼Æ¬ËØ²ÄµÄÉÏÏŞÎª5000£¬ÆäËûÀàĞÍÎª1000.ËØ²ÄµÄ¸ñÊ½´óĞ¡µÈÒªÇóÓë¹«ÖÚÆ½Ì¨¹ÙÍøÒ»ÖÂ¡£
+     * @FunctionDescription:æ–°å¢æ°¸ä¹…å›¾æ–‡ç´ æ(post)
+     * @Param:  title 	            æ˜¯ 	æ ‡é¢˜
+    thumb_media_id 	    æ˜¯ 	å›¾æ–‡æ¶ˆæ¯çš„å°é¢å›¾ç‰‡ç´ æidï¼ˆå¿…é¡»æ˜¯æ°¸ä¹…mediaIDï¼‰
+    author 	            æ˜¯ 	ä½œè€…
+    digest 	            æ˜¯ 	å›¾æ–‡æ¶ˆæ¯çš„æ‘˜è¦ï¼Œä»…æœ‰å•å›¾æ–‡æ¶ˆæ¯æ‰æœ‰æ‘˜è¦ï¼Œå¤šå›¾æ–‡æ­¤å¤„ä¸ºç©º
+    show_cover_pic 	    æ˜¯ 	æ˜¯å¦æ˜¾ç¤ºå°é¢ï¼Œ0ä¸ºfalseï¼Œå³ä¸æ˜¾ç¤ºï¼Œ1ä¸ºtrueï¼Œå³æ˜¾ç¤º
+    content 	        æ˜¯ 	å›¾æ–‡æ¶ˆæ¯çš„å…·ä½“å†…å®¹ï¼Œæ”¯æŒHTMLæ ‡ç­¾ï¼Œå¿…é¡»å°‘äº2ä¸‡å­—ç¬¦ï¼Œå°äº1Mï¼Œä¸”æ­¤å¤„ä¼šå»é™¤JS
+    content_source_url 	æ˜¯ 	å›¾æ–‡æ¶ˆæ¯çš„åŸæ–‡åœ°å€ï¼Œå³ç‚¹å‡»â€œé˜…è¯»åŸæ–‡â€åçš„URL
+     * @Return: media_id è¿”å›çš„å³ä¸ºæ–°å¢çš„å›¾æ–‡æ¶ˆæ¯ç´ æçš„media_idã€‚
+     * @Description:æ°¸ä¹…ç´ æçš„æ•°é‡æ˜¯æœ‰ä¸Šé™çš„ï¼Œè¯·è°¨æ…æ–°å¢ã€‚å›¾æ–‡æ¶ˆæ¯ç´ æå’Œå›¾ç‰‡ç´ æçš„ä¸Šé™ä¸º5000ï¼Œå…¶ä»–ç±»å‹ä¸º1000.ç´ æçš„æ ¼å¼å¤§å°ç­‰è¦æ±‚ä¸å…¬ä¼—å¹³å°å®˜ç½‘ä¸€è‡´ã€‚
      * @Author:helen zheng
      */
     public function addPermanentGraphicMaterial($access_token,$news_data){
         $url = 'https://api.weixin.qq.com/cgi-bin/material/add_news?access_token='.$access_token;
         $result = $this->request_post($url,$news_data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:ĞÂÔöÆäËûÀàĞÍÓÀ¾ÃËØ²Ä(post)
-     * @Param:  access_token 	ÊÇ 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                type 	        ÊÇ 	Ã½ÌåÎÄ¼şÀàĞÍ£¬·Ö±ğÓĞÍ¼Æ¬£¨image£©¡¢ÓïÒô£¨voice£©¡¢ÊÓÆµ£¨video£©ºÍËõÂÔÍ¼£¨thumb£©
-                media 	        ÊÇ 	form-dataÖĞÃ½ÌåÎÄ¼ş±êÊ¶£¬ÓĞfilename¡¢filelength¡¢content-typeµÈĞÅÏ¢
+     * @FunctionDescription:æ–°å¢å…¶ä»–ç±»å‹æ°¸ä¹…ç´ æ(post)
+     * @Param:  access_token 	æ˜¯ 	è°ƒç”¨æ¥å£å‡­è¯
+    type 	        æ˜¯ 	åª’ä½“æ–‡ä»¶ç±»å‹ï¼Œåˆ†åˆ«æœ‰å›¾ç‰‡ï¼ˆimageï¼‰ã€è¯­éŸ³ï¼ˆvoiceï¼‰ã€è§†é¢‘ï¼ˆvideoï¼‰å’Œç¼©ç•¥å›¾ï¼ˆthumbï¼‰
+    media 	        æ˜¯ 	form-dataä¸­åª’ä½“æ–‡ä»¶æ ‡è¯†ï¼Œæœ‰filenameã€filelengthã€content-typeç­‰ä¿¡æ¯
      * @Return:
-     * @Description:Í¨¹ıPOST±íµ¥À´µ÷ÓÃ½Ó¿Ú£¬±íµ¥idÎªmedia£¬°üº¬ĞèÒªÉÏ´«µÄËØ²ÄÄÚÈİ£¬ÓĞfilename¡¢filelength¡¢content-typeµÈĞÅÏ¢¡£
-     * @Description:Çë×¢Òâ£ºÍ¼Æ¬ËØ²Ä½«½øÈë¹«ÖÚÆ½Ì¨¹ÙÍøËØ²Ä¹ÜÀíÄ£¿éÖĞµÄÄ¬ÈÏ·Ö×é¡£
+     * @Description:é€šè¿‡POSTè¡¨å•æ¥è°ƒç”¨æ¥å£ï¼Œè¡¨å•idä¸ºmediaï¼ŒåŒ…å«éœ€è¦ä¸Šä¼ çš„ç´ æå†…å®¹ï¼Œæœ‰filenameã€filelengthã€content-typeç­‰ä¿¡æ¯ã€‚
+     * @Description:è¯·æ³¨æ„ï¼šå›¾ç‰‡ç´ æå°†è¿›å…¥å…¬ä¼—å¹³å°å®˜ç½‘ç´ æç®¡ç†æ¨¡å—ä¸­çš„é»˜è®¤åˆ†ç»„ã€‚
      * @Author:helen zheng
      */
     public function addPermanentOtherMaterial($access_token,$data){
         $url = 'https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=ACCESS_TOKEN';
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡ÓÀ¾ÃËØ²Ä(post)
-     * @Param:  access_token 	ÊÇ 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                media_id 	    ÊÇ 	Òª»ñÈ¡µÄËØ²ÄµÄmedia_id
-     * @Return: title 	            Í¼ÎÄÏûÏ¢µÄ±êÌâ
-                thumb_media_id 	    Í¼ÎÄÏûÏ¢µÄ·âÃæÍ¼Æ¬ËØ²Äid£¨±ØĞëÊÇÓÀ¾ÃmediaID£©
-                show_cover_pic 	    ÊÇ·ñÏÔÊ¾·âÃæ£¬0Îªfalse£¬¼´²»ÏÔÊ¾£¬1Îªtrue£¬¼´ÏÔÊ¾
-                author 	            ×÷Õß
-                digest 	            Í¼ÎÄÏûÏ¢µÄÕªÒª£¬½öÓĞµ¥Í¼ÎÄÏûÏ¢²ÅÓĞÕªÒª£¬¶àÍ¼ÎÄ´Ë´¦Îª¿Õ
-                content 	        Í¼ÎÄÏûÏ¢µÄ¾ßÌåÄÚÈİ£¬Ö§³ÖHTML±êÇ©£¬±ØĞëÉÙÓÚ2Íò×Ö·û£¬Ğ¡ÓÚ1M£¬ÇÒ´Ë´¦»áÈ¥³ıJS
-                url 	            Í¼ÎÄÒ³µÄURL
-                content_source_url 	Í¼ÎÄÏûÏ¢µÄÔ­ÎÄµØÖ·£¬¼´µã»÷¡°ÔÄ¶ÁÔ­ÎÄ¡±ºóµÄURL
+     * @FunctionDescription:è·å–æ°¸ä¹…ç´ æ(post)
+     * @Param:  access_token 	æ˜¯ 	è°ƒç”¨æ¥å£å‡­è¯
+    media_id 	    æ˜¯ 	è¦è·å–çš„ç´ æçš„media_id
+     * @Return: title 	            å›¾æ–‡æ¶ˆæ¯çš„æ ‡é¢˜
+    thumb_media_id 	    å›¾æ–‡æ¶ˆæ¯çš„å°é¢å›¾ç‰‡ç´ æidï¼ˆå¿…é¡»æ˜¯æ°¸ä¹…mediaIDï¼‰
+    show_cover_pic 	    æ˜¯å¦æ˜¾ç¤ºå°é¢ï¼Œ0ä¸ºfalseï¼Œå³ä¸æ˜¾ç¤ºï¼Œ1ä¸ºtrueï¼Œå³æ˜¾ç¤º
+    author 	            ä½œè€…
+    digest 	            å›¾æ–‡æ¶ˆæ¯çš„æ‘˜è¦ï¼Œä»…æœ‰å•å›¾æ–‡æ¶ˆæ¯æ‰æœ‰æ‘˜è¦ï¼Œå¤šå›¾æ–‡æ­¤å¤„ä¸ºç©º
+    content 	        å›¾æ–‡æ¶ˆæ¯çš„å…·ä½“å†…å®¹ï¼Œæ”¯æŒHTMLæ ‡ç­¾ï¼Œå¿…é¡»å°‘äº2ä¸‡å­—ç¬¦ï¼Œå°äº1Mï¼Œä¸”æ­¤å¤„ä¼šå»é™¤JS
+    url 	            å›¾æ–‡é¡µçš„URL
+    content_source_url 	å›¾æ–‡æ¶ˆæ¯çš„åŸæ–‡åœ°å€ï¼Œå³ç‚¹å‡»â€œé˜…è¯»åŸæ–‡â€åçš„URL
      * @Description:
      * @Author:helen zheng
      */
@@ -925,17 +893,16 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/material/get_material?access_token='.$access_token;
         $result = $this->request_post($url,$media_id);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:É¾³ıÓÀ¾ÃËØ²Ä(post)
-     * @Param:  access_token 	ÊÇ 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                media_id 	    ÊÇ 	Òª»ñÈ¡µÄËØ²ÄµÄmedia_id
+     * @FunctionDescription:åˆ é™¤æ°¸ä¹…ç´ æ(post)
+     * @Param:  access_token 	æ˜¯ 	è°ƒç”¨æ¥å£å‡­è¯
+    media_id 	    æ˜¯ 	è¦è·å–çš„ç´ æçš„media_id
      * @Return:
      * @Description:
      * @Author:helen zheng
@@ -944,24 +911,23 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/material/del_material?access_token='.$access_token;
         $result = $this->request_post($url,$media_id);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:ĞŞ¸ÄÓÀ¾ÃÍ¼ÎÄËØ²Ä(post)
-     * @Param:  media_id 	        ÊÇ 	ÒªĞŞ¸ÄµÄÍ¼ÎÄÏûÏ¢µÄid
-                index 	            ÊÇ 	Òª¸üĞÂµÄÎÄÕÂÔÚÍ¼ÎÄÏûÏ¢ÖĞµÄÎ»ÖÃ£¨¶àÍ¼ÎÄÏûÏ¢Ê±£¬´Ë×Ö¶Î²ÅÓĞÒâÒå£©£¬µÚÒ»ÆªÎª0
-                title 	            ÊÇ 	±êÌâ
-                thumb_media_id 	    ÊÇ 	Í¼ÎÄÏûÏ¢µÄ·âÃæÍ¼Æ¬ËØ²Äid£¨±ØĞëÊÇÓÀ¾ÃmediaID£©
-                author 	            ÊÇ 	×÷Õß
-                digest 	            ÊÇ 	Í¼ÎÄÏûÏ¢µÄÕªÒª£¬½öÓĞµ¥Í¼ÎÄÏûÏ¢²ÅÓĞÕªÒª£¬¶àÍ¼ÎÄ´Ë´¦Îª¿Õ
-                show_cover_pic 	    ÊÇ 	ÊÇ·ñÏÔÊ¾·âÃæ£¬0Îªfalse£¬¼´²»ÏÔÊ¾£¬1Îªtrue£¬¼´ÏÔÊ¾
-                content 	        ÊÇ 	Í¼ÎÄÏûÏ¢µÄ¾ßÌåÄÚÈİ£¬Ö§³ÖHTML±êÇ©£¬±ØĞëÉÙÓÚ2Íò×Ö·û£¬Ğ¡ÓÚ1M£¬ÇÒ´Ë´¦»áÈ¥³ıJS
-                content_source_url 	ÊÇ 	Í¼ÎÄÏûÏ¢µÄÔ­ÎÄµØÖ·£¬¼´µã»÷¡°ÔÄ¶ÁÔ­ÎÄ¡±ºóµÄURL
+     * @FunctionDescription:ä¿®æ”¹æ°¸ä¹…å›¾æ–‡ç´ æ(post)
+     * @Param:  media_id 	        æ˜¯ 	è¦ä¿®æ”¹çš„å›¾æ–‡æ¶ˆæ¯çš„id
+    index 	            æ˜¯ 	è¦æ›´æ–°çš„æ–‡ç« åœ¨å›¾æ–‡æ¶ˆæ¯ä¸­çš„ä½ç½®ï¼ˆå¤šå›¾æ–‡æ¶ˆæ¯æ—¶ï¼Œæ­¤å­—æ®µæ‰æœ‰æ„ä¹‰ï¼‰ï¼Œç¬¬ä¸€ç¯‡ä¸º0
+    title 	            æ˜¯ 	æ ‡é¢˜
+    thumb_media_id 	    æ˜¯ 	å›¾æ–‡æ¶ˆæ¯çš„å°é¢å›¾ç‰‡ç´ æidï¼ˆå¿…é¡»æ˜¯æ°¸ä¹…mediaIDï¼‰
+    author 	            æ˜¯ 	ä½œè€…
+    digest 	            æ˜¯ 	å›¾æ–‡æ¶ˆæ¯çš„æ‘˜è¦ï¼Œä»…æœ‰å•å›¾æ–‡æ¶ˆæ¯æ‰æœ‰æ‘˜è¦ï¼Œå¤šå›¾æ–‡æ­¤å¤„ä¸ºç©º
+    show_cover_pic 	    æ˜¯ 	æ˜¯å¦æ˜¾ç¤ºå°é¢ï¼Œ0ä¸ºfalseï¼Œå³ä¸æ˜¾ç¤ºï¼Œ1ä¸ºtrueï¼Œå³æ˜¾ç¤º
+    content 	        æ˜¯ 	å›¾æ–‡æ¶ˆæ¯çš„å…·ä½“å†…å®¹ï¼Œæ”¯æŒHTMLæ ‡ç­¾ï¼Œå¿…é¡»å°‘äº2ä¸‡å­—ç¬¦ï¼Œå°äº1Mï¼Œä¸”æ­¤å¤„ä¼šå»é™¤JS
+    content_source_url 	æ˜¯ 	å›¾æ–‡æ¶ˆæ¯çš„åŸæ–‡åœ°å€ï¼Œå³ç‚¹å‡»â€œé˜…è¯»åŸæ–‡â€åçš„URL
      * @Return: 0 (ok)
      * @Description:
      * @Author:helen zheng
@@ -970,100 +936,95 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/material/update_news?access_token='.$access_token;
         $result = $this->request_post($url,$news_data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡ËØ²Ä×ÜÊı(get)
+     * @FunctionDescription:è·å–ç´ ææ€»æ•°(get)
      * @Param:
-     * @Return: voice_count 	ÓïÒô×ÜÊıÁ¿
-                video_count 	ÊÓÆµ×ÜÊıÁ¿
-                image_count 	Í¼Æ¬×ÜÊıÁ¿
-                news_count 	    Í¼ÎÄ×ÜÊıÁ¿
-     * @Description:¿ª·¢Õß¿ÉÒÔ¸ù¾İ±¾½Ó¿ÚÀ´»ñÈ¡ÓÀ¾ÃËØ²ÄµÄÁĞ±í.1.ÓÀ¾ÃËØ²ÄµÄ×ÜÊı£¬Ò²»á¼ÆËã¹«ÖÚÆ½Ì¨¹ÙÍøËØ²Ä¹ÜÀíÖĞµÄËØ²Ä
-                    2.Í¼Æ¬ºÍÍ¼ÎÄÏûÏ¢ËØ²Ä£¨°üÀ¨µ¥Í¼ÎÄºÍ¶àÍ¼ÎÄ£©µÄ×ÜÊıÉÏÏŞÎª5000£¬ÆäËûËØ²ÄµÄ×ÜÊıÉÏÏŞÎª1000
-                    3.µ÷ÓÃ¸Ã½Ó¿ÚĞèhttpsĞ­Òé
+     * @Return: voice_count 	è¯­éŸ³æ€»æ•°é‡
+    video_count 	è§†é¢‘æ€»æ•°é‡
+    image_count 	å›¾ç‰‡æ€»æ•°é‡
+    news_count 	    å›¾æ–‡æ€»æ•°é‡
+     * @Description:å¼€å‘è€…å¯ä»¥æ ¹æ®æœ¬æ¥å£æ¥è·å–æ°¸ä¹…ç´ æçš„åˆ—è¡¨.1.æ°¸ä¹…ç´ æçš„æ€»æ•°ï¼Œä¹Ÿä¼šè®¡ç®—å…¬ä¼—å¹³å°å®˜ç½‘ç´ æç®¡ç†ä¸­çš„ç´ æ
+    2.å›¾ç‰‡å’Œå›¾æ–‡æ¶ˆæ¯ç´ æï¼ˆåŒ…æ‹¬å•å›¾æ–‡å’Œå¤šå›¾æ–‡ï¼‰çš„æ€»æ•°ä¸Šé™ä¸º5000ï¼Œå…¶ä»–ç´ æçš„æ€»æ•°ä¸Šé™ä¸º1000
+    3.è°ƒç”¨è¯¥æ¥å£éœ€httpsåè®®
      * @Author:helen zheng
      */
     public function getPermanentMaterialCount($access_token){
         $url = 'https://api.weixin.qq.com/cgi-bin/material/get_materialcount?access_token='.$access_token;
         $result = $this->request_get($url);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡ËØ²ÄÁĞ±í
-     * @Param:  type 	ÊÇ 	ËØ²ÄµÄÀàĞÍ£¬Í¼Æ¬£¨image£©¡¢ÊÓÆµ£¨video£©¡¢ÓïÒô £¨voice£©¡¢Í¼ÎÄ£¨news£©
-                offset 	ÊÇ 	´ÓÈ«²¿ËØ²ÄµÄ¸ÃÆ«ÒÆÎ»ÖÃ¿ªÊ¼·µ»Ø£¬0±íÊ¾´ÓµÚÒ»¸öËØ²Ä ·µ»Ø
-                count 	ÊÇ 	·µ»ØËØ²ÄµÄÊıÁ¿£¬È¡ÖµÔÚ1µ½20Ö®¼ä
-     * @Return: total_count 	    ¸ÃÀàĞÍµÄËØ²ÄµÄ×ÜÊı
-                item_count 	        ±¾´Îµ÷ÓÃ»ñÈ¡µÄËØ²ÄµÄÊıÁ¿
-                title 	            Í¼ÎÄÏûÏ¢µÄ±êÌâ
-                thumb_media_id 	    Í¼ÎÄÏûÏ¢µÄ·âÃæÍ¼Æ¬ËØ²Äid£¨±ØĞëÊÇÓÀ¾ÃmediaID£©
-                show_cover_pic 	    ÊÇ·ñÏÔÊ¾·âÃæ£¬0Îªfalse£¬¼´²»ÏÔÊ¾£¬1Îªtrue£¬¼´ÏÔÊ¾
-                author 	            ×÷Õß
-                digest 	            Í¼ÎÄÏûÏ¢µÄÕªÒª£¬½öÓĞµ¥Í¼ÎÄÏûÏ¢²ÅÓĞÕªÒª£¬¶àÍ¼ÎÄ´Ë´¦Îª¿Õ
-                content 	        Í¼ÎÄÏûÏ¢µÄ¾ßÌåÄÚÈİ£¬Ö§³ÖHTML±êÇ©£¬±ØĞëÉÙÓÚ2Íò×Ö·û£¬Ğ¡ÓÚ1M£¬ÇÒ´Ë´¦»áÈ¥³ıJS
-                url 	            Í¼ÎÄÒ³µÄURL£¬»òÕß£¬µ±»ñÈ¡µÄÁĞ±íÊÇÍ¼Æ¬ËØ²ÄÁĞ±íÊ±£¬¸Ã×Ö¶ÎÊÇÍ¼Æ¬µÄURL
-                content_source_url 	Í¼ÎÄÏûÏ¢µÄÔ­ÎÄµØÖ·£¬¼´µã»÷¡°ÔÄ¶ÁÔ­ÎÄ¡±ºóµÄURL
-                update_time 	    ÕâÆªÍ¼ÎÄÏûÏ¢ËØ²ÄµÄ×îºó¸üĞÂÊ±¼ä
-                name 	            ÎÄ¼şÃû³Æ
-     * @Description:¿ª·¢Õß¿ÉÒÔ·ÖÀàĞÍ»ñÈ¡ÓÀ¾ÃËØ²ÄµÄÁĞ±í¡£
+     * @FunctionDescription:è·å–ç´ æåˆ—è¡¨
+     * @Param:  type 	æ˜¯ 	ç´ æçš„ç±»å‹ï¼Œå›¾ç‰‡ï¼ˆimageï¼‰ã€è§†é¢‘ï¼ˆvideoï¼‰ã€è¯­éŸ³ ï¼ˆvoiceï¼‰ã€å›¾æ–‡ï¼ˆnewsï¼‰
+    offset 	æ˜¯ 	ä»å…¨éƒ¨ç´ æçš„è¯¥åç§»ä½ç½®å¼€å§‹è¿”å›ï¼Œ0è¡¨ç¤ºä»ç¬¬ä¸€ä¸ªç´ æ è¿”å›
+    count 	æ˜¯ 	è¿”å›ç´ æçš„æ•°é‡ï¼Œå–å€¼åœ¨1åˆ°20ä¹‹é—´
+     * @Return: total_count 	    è¯¥ç±»å‹çš„ç´ æçš„æ€»æ•°
+    item_count 	        æœ¬æ¬¡è°ƒç”¨è·å–çš„ç´ æçš„æ•°é‡
+    title 	            å›¾æ–‡æ¶ˆæ¯çš„æ ‡é¢˜
+    thumb_media_id 	    å›¾æ–‡æ¶ˆæ¯çš„å°é¢å›¾ç‰‡ç´ æidï¼ˆå¿…é¡»æ˜¯æ°¸ä¹…mediaIDï¼‰
+    show_cover_pic 	    æ˜¯å¦æ˜¾ç¤ºå°é¢ï¼Œ0ä¸ºfalseï¼Œå³ä¸æ˜¾ç¤ºï¼Œ1ä¸ºtrueï¼Œå³æ˜¾ç¤º
+    author 	            ä½œè€…
+    digest 	            å›¾æ–‡æ¶ˆæ¯çš„æ‘˜è¦ï¼Œä»…æœ‰å•å›¾æ–‡æ¶ˆæ¯æ‰æœ‰æ‘˜è¦ï¼Œå¤šå›¾æ–‡æ­¤å¤„ä¸ºç©º
+    content 	        å›¾æ–‡æ¶ˆæ¯çš„å…·ä½“å†…å®¹ï¼Œæ”¯æŒHTMLæ ‡ç­¾ï¼Œå¿…é¡»å°‘äº2ä¸‡å­—ç¬¦ï¼Œå°äº1Mï¼Œä¸”æ­¤å¤„ä¼šå»é™¤JS
+    url 	            å›¾æ–‡é¡µçš„URLï¼Œæˆ–è€…ï¼Œå½“è·å–çš„åˆ—è¡¨æ˜¯å›¾ç‰‡ç´ æåˆ—è¡¨æ—¶ï¼Œè¯¥å­—æ®µæ˜¯å›¾ç‰‡çš„URL
+    content_source_url 	å›¾æ–‡æ¶ˆæ¯çš„åŸæ–‡åœ°å€ï¼Œå³ç‚¹å‡»â€œé˜…è¯»åŸæ–‡â€åçš„URL
+    update_time 	    è¿™ç¯‡å›¾æ–‡æ¶ˆæ¯ç´ æçš„æœ€åæ›´æ–°æ—¶é—´
+    name 	            æ–‡ä»¶åç§°
+     * @Description:å¼€å‘è€…å¯ä»¥åˆ†ç±»å‹è·å–æ°¸ä¹…ç´ æçš„åˆ—è¡¨ã€‚
      * @Author:helen zheng
      */
     public function getPermanentMaterialList($access_token,$data){
         $url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token='.$access_token;
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:ÓÃ»§¹ÜÀí
-     * @Description:¿ª·¢Õß¿ÉÒÔÊ¹ÓÃ½Ó¿Ú£¬¶Ô¹«ÖÚÆ½Ì¨µÄ·Ö×é½øĞĞ²éÑ¯¡¢´´½¨¡¢ĞŞ¸Ä¡¢É¾³ıµÈ²Ù×÷£¬Ò²¿ÉÒÔÊ¹ÓÃ½Ó¿ÚÔÚĞèÒªÊ±ÒÆ¶¯ÓÃ»§µ½Ä³¸ö·Ö×é¡£
+     * @FunctionDescription:ç”¨æˆ·ç®¡ç†
+     * @Description:å¼€å‘è€…å¯ä»¥ä½¿ç”¨æ¥å£ï¼Œå¯¹å…¬ä¼—å¹³å°çš„åˆ†ç»„è¿›è¡ŒæŸ¥è¯¢ã€åˆ›å»ºã€ä¿®æ”¹ã€åˆ é™¤ç­‰æ“ä½œï¼Œä¹Ÿå¯ä»¥ä½¿ç”¨æ¥å£åœ¨éœ€è¦æ—¶ç§»åŠ¨ç”¨æˆ·åˆ°æŸä¸ªåˆ†ç»„ã€‚
      * @Author:helen zheng
      */
-
     /**
-     * @FunctionDescription:´´½¨·Ö×é(post)
-     * @Param:  access_token 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                name 	        ·Ö×éÃû×Ö£¨30¸ö×Ö·ûÒÔÄÚ£©
-     * @Return: id 	            ·Ö×éid£¬ÓÉÎ¢ĞÅ·ÖÅä
-                name 	        ·Ö×éÃû×Ö£¬UTF8±àÂë
-     * @Description:Ò»¸ö¹«ÖÚÕËºÅ£¬×î¶àÖ§³Ö´´½¨100¸ö·Ö×é¡£
+     * @FunctionDescription:åˆ›å»ºåˆ†ç»„(post)
+     * @Param:  access_token 	è°ƒç”¨æ¥å£å‡­è¯
+    name 	        åˆ†ç»„åå­—ï¼ˆ30ä¸ªå­—ç¬¦ä»¥å†…ï¼‰
+     * @Return: id 	            åˆ†ç»„idï¼Œç”±å¾®ä¿¡åˆ†é…
+    name 	        åˆ†ç»„åå­—ï¼ŒUTF8ç¼–ç 
+     * @Description:ä¸€ä¸ªå…¬ä¼—è´¦å·ï¼Œæœ€å¤šæ”¯æŒåˆ›å»º100ä¸ªåˆ†ç»„ã€‚
      * @Author:helen zheng
      */
     public function createGroups($access_token,$group_data){
         $url = 'https://api.weixin.qq.com/cgi-bin/groups/create?access_token='.$access_token;
         $result = $this->request_post($url,$group_data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:²éÑ¯ËùÓĞ·Ö×é(get)
-     * @Param:  access_token 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-     * @Return: groups 	        ¹«ÖÚÆ½Ì¨·Ö×éĞÅÏ¢ÁĞ±í
-                id 	            ·Ö×éid£¬ÓÉÎ¢ĞÅ·ÖÅä
-                name 	        ·Ö×éÃû×Ö£¬UTF8±àÂë
-                count 	        ·Ö×éÄÚÓÃ»§ÊıÁ¿
+     * @FunctionDescription:æŸ¥è¯¢æ‰€æœ‰åˆ†ç»„(get)
+     * @Param:  access_token 	è°ƒç”¨æ¥å£å‡­è¯
+     * @Return: groups 	        å…¬ä¼—å¹³å°åˆ†ç»„ä¿¡æ¯åˆ—è¡¨
+    id 	            åˆ†ç»„idï¼Œç”±å¾®ä¿¡åˆ†é…
+    name 	        åˆ†ç»„åå­—ï¼ŒUTF8ç¼–ç 
+    count 	        åˆ†ç»„å†…ç”¨æˆ·æ•°é‡
      * @Description:
      * @Author:helen zheng
      */
@@ -1071,18 +1032,17 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/groups/get?access_token='.$access_token;
         $result = $this->request_get($url);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:²éÑ¯ÓÃ»§ËùÔÚ·Ö×é(post)
-     * @Param:  access_token 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                openid 	        ÓÃ»§µÄOpenID
-     * @Return: groupid 	    ÓÃ»§ËùÊôµÄgroupid
+     * @FunctionDescription:æŸ¥è¯¢ç”¨æˆ·æ‰€åœ¨åˆ†ç»„(post)
+     * @Param:  access_token 	è°ƒç”¨æ¥å£å‡­è¯
+    openid 	        ç”¨æˆ·çš„OpenID
+     * @Return: groupid 	    ç”¨æˆ·æ‰€å±çš„groupid
      * @Description:
      * @Author:helen zheng
      */
@@ -1090,18 +1050,17 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/groups/getid?access_token='.$access_token;
         $result = $this->request_post($url,$openid);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:ĞŞ¸Ä·Ö×éÃû(post)
-     * @Param:  access_token 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                id 	            ·Ö×éid£¬ÓÉÎ¢ĞÅ·ÖÅä
-                name 	        ·Ö×éÃû×Ö£¨30¸ö×Ö·ûÒÔÄÚ£©
+     * @FunctionDescription:ä¿®æ”¹åˆ†ç»„å(post)
+     * @Param:  access_token 	è°ƒç”¨æ¥å£å‡­è¯
+    id 	            åˆ†ç»„idï¼Œç”±å¾®ä¿¡åˆ†é…
+    name 	        åˆ†ç»„åå­—ï¼ˆ30ä¸ªå­—ç¬¦ä»¥å†…ï¼‰
      * @Return:
      * @Description:
      * @Author:helen zheng
@@ -1110,18 +1069,17 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/groups/update?access_token='.$access_token;
         $result = $this->request_post($url,$group_data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:ÒÆ¶¯ÓÃ»§·Ö×é(post)
-     * @Param:  access_token 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                openid 	        ÓÃ»§Î¨Ò»±êÊ¶·û
-                to_groupid 	    ·Ö×éid
+     * @FunctionDescription:ç§»åŠ¨ç”¨æˆ·åˆ†ç»„(post)
+     * @Param:  access_token 	è°ƒç”¨æ¥å£å‡­è¯
+    openid 	        ç”¨æˆ·å”¯ä¸€æ ‡è¯†ç¬¦
+    to_groupid 	    åˆ†ç»„id
      * @Return:
      * @Description:
      * @Author:helen zheng
@@ -1130,18 +1088,17 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/groups/members/update?access_token='.$access_token;
         $result = $this->request_post($url,$user_data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:ÅúÁ¿ÒÆ¶¯ÓÃ»§·Ö×é(post)
-     * @Param:  access_token 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                openid_list 	ÓÃ»§Î¨Ò»±êÊ¶·ûopenidµÄÁĞ±í£¨size²»ÄÜ³¬¹ı50£©
-                to_groupid 	    ·Ö×éid
+     * @FunctionDescription:æ‰¹é‡ç§»åŠ¨ç”¨æˆ·åˆ†ç»„(post)
+     * @Param:  access_token 	è°ƒç”¨æ¥å£å‡­è¯
+    openid_list 	ç”¨æˆ·å”¯ä¸€æ ‡è¯†ç¬¦openidçš„åˆ—è¡¨ï¼ˆsizeä¸èƒ½è¶…è¿‡50ï¼‰
+    to_groupid 	    åˆ†ç»„id
      * @Return:
      * @Description:
      * @Author:helen zheng
@@ -1150,226 +1107,214 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/groups/members/batchupdate?access_token='.$access_token;
         $result = $this->request_post($url,$user_data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:É¾³ı·Ö×é(post)
-     * @Param:  access_token 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                group 	        ·Ö×é
-                id 	            ·Ö×éµÄid
+     * @FunctionDescription:åˆ é™¤åˆ†ç»„(post)
+     * @Param:  access_token 	è°ƒç”¨æ¥å£å‡­è¯
+    group 	        åˆ†ç»„
+    id 	            åˆ†ç»„çš„id
      * @Return:
-     * @Description:±¾½Ó¿ÚÊÇÉ¾³ıÒ»¸öÓÃ»§·Ö×é£¬É¾³ı·Ö×éºó£¬ËùÓĞ¸Ã·Ö×éÄÚµÄÓÃ»§×Ô¶¯½øÈëÄ¬ÈÏ·Ö×é¡£
+     * @Description:æœ¬æ¥å£æ˜¯åˆ é™¤ä¸€ä¸ªç”¨æˆ·åˆ†ç»„ï¼Œåˆ é™¤åˆ†ç»„åï¼Œæ‰€æœ‰è¯¥åˆ†ç»„å†…çš„ç”¨æˆ·è‡ªåŠ¨è¿›å…¥é»˜è®¤åˆ†ç»„ã€‚
      * @Author:helen zheng
      */
     public function deleteGroups($access_token,$group_data){
         $url = 'https://api.weixin.qq.com/cgi-bin/groups/delete?access_token='.$access_token;
         $result = $this->request_post($url,$group_data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:ÉèÖÃÓÃ»§±¸×¢Ãû(post)
-     * @Param:  access_token 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                openid 	        ÓÃ»§±êÊ¶
-                remark 	        ĞÂµÄ±¸×¢Ãû£¬³¤¶È±ØĞëĞ¡ÓÚ30×Ö·û
+     * @FunctionDescription:è®¾ç½®ç”¨æˆ·å¤‡æ³¨å(post)
+     * @Param:  access_token 	è°ƒç”¨æ¥å£å‡­è¯
+    openid 	        ç”¨æˆ·æ ‡è¯†
+    remark 	        æ–°çš„å¤‡æ³¨åï¼Œé•¿åº¦å¿…é¡»å°äº30å­—ç¬¦
      * @Return:
-     * @Description:¿ª·¢Õß¿ÉÒÔÍ¨¹ı¸Ã½Ó¿Ú¶ÔÖ¸¶¨ÓÃ»§ÉèÖÃ±¸×¢Ãû£¬¸Ã½Ó¿ÚÔİÊ±¿ª·Å¸øÎ¢ĞÅÈÏÖ¤µÄ·şÎñºÅ¡£
+     * @Description:å¼€å‘è€…å¯ä»¥é€šè¿‡è¯¥æ¥å£å¯¹æŒ‡å®šç”¨æˆ·è®¾ç½®å¤‡æ³¨åï¼Œè¯¥æ¥å£æš‚æ—¶å¼€æ”¾ç»™å¾®ä¿¡è®¤è¯çš„æœåŠ¡å·ã€‚
      * @Author:helen zheng
      */
     public function updateUserRemark($access_token,$user_data){
         $url = 'https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token='.$access_token;
         $result = $this->request_post($url,$user_data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡ÓÃ»§»ù±¾ĞÅÏ¢£¨°üÀ¨UnionID»úÖÆ£©(get)
-     * @Param:  access_token 	ÊÇ 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                openid 	        ÊÇ 	ÆÕÍ¨ÓÃ»§µÄ±êÊ¶£¬¶Ôµ±Ç°¹«ÖÚºÅÎ¨Ò»
-                lang 	        ·ñ 	·µ»Ø¹ú¼ÒµØÇøÓïÑÔ°æ±¾£¬zh_CN ¼òÌå£¬zh_TW ·±Ìå£¬en Ó¢Óï
-     * @Return: subscribe 	    ÓÃ»§ÊÇ·ñ¶©ÔÄ¸Ã¹«ÖÚºÅ±êÊ¶£¬ÖµÎª0Ê±£¬´ú±í´ËÓÃ»§Ã»ÓĞ¹Ø×¢¸Ã¹«ÖÚºÅ£¬À­È¡²»µ½ÆäÓàĞÅÏ¢¡£
-                openid 	        ÓÃ»§µÄ±êÊ¶£¬¶Ôµ±Ç°¹«ÖÚºÅÎ¨Ò»
-                nickname 	    ÓÃ»§µÄêÇ³Æ
-                sex 	        ÓÃ»§µÄĞÔ±ğ£¬ÖµÎª1Ê±ÊÇÄĞĞÔ£¬ÖµÎª2Ê±ÊÇÅ®ĞÔ£¬ÖµÎª0Ê±ÊÇÎ´Öª
-                city 	        ÓÃ»§ËùÔÚ³ÇÊĞ
-                country 	    ÓÃ»§ËùÔÚ¹ú¼Ò
-                province 	    ÓÃ»§ËùÔÚÊ¡·İ
-                language 	    ÓÃ»§µÄÓïÑÔ£¬¼òÌåÖĞÎÄÎªzh_CN
-                headimgurl 	    ÓÃ»§Í·Ïñ£¬×îºóÒ»¸öÊıÖµ´ú±íÕı·½ĞÎÍ·Ïñ´óĞ¡£¨ÓĞ0¡¢46¡¢64¡¢96¡¢132ÊıÖµ¿ÉÑ¡£¬0´ú±í640*640Õı·½ĞÎÍ·Ïñ£©£¬ÓÃ»§Ã»ÓĞÍ·ÏñÊ±¸ÃÏîÎª¿Õ¡£ÈôÓÃ»§¸ü»»Í·Ïñ£¬Ô­ÓĞÍ·ÏñURL½«Ê§Ğ§¡£
-                subscribe_time 	ÓÃ»§¹Ø×¢Ê±¼ä£¬ÎªÊ±¼ä´Á¡£Èç¹ûÓÃ»§Ôø¶à´Î¹Ø×¢£¬ÔòÈ¡×îºó¹Ø×¢Ê±¼ä
-                unionid 	    Ö»ÓĞÔÚÓÃ»§½«¹«ÖÚºÅ°ó¶¨µ½Î¢ĞÅ¿ª·ÅÆ½Ì¨ÕÊºÅºó£¬²Å»á³öÏÖ¸Ã×Ö¶Î¡£Ïê¼û£º»ñÈ¡ÓÃ»§¸öÈËĞÅÏ¢£¨UnionID»úÖÆ£©
-                remark 	        ¹«ÖÚºÅÔËÓªÕß¶Ô·ÛË¿µÄ±¸×¢£¬¹«ÖÚºÅÔËÓªÕß¿ÉÔÚÎ¢ĞÅ¹«ÖÚÆ½Ì¨ÓÃ»§¹ÜÀí½çÃæ¶Ô·ÛË¿Ìí¼Ó±¸×¢
-                groupid 	    ÓÃ»§ËùÔÚµÄ·Ö×éID
-     * @Description:ÔÚ¹Ø×¢ÕßÓë¹«ÖÚºÅ²úÉúÏûÏ¢½»»¥ºó£¬¹«ÖÚºÅ¿É»ñµÃ¹Ø×¢ÕßµÄOpenID£¨¼ÓÃÜºóµÄÎ¢ĞÅºÅ£¬Ã¿¸öÓÃ»§¶ÔÃ¿¸ö¹«ÖÚºÅµÄOpenIDÊÇÎ¨Ò»µÄ¡£¶ÔÓÚ²»Í¬¹«ÖÚºÅ£¬Í¬Ò»ÓÃ»§µÄopenid²»Í¬£©¡£
-     * @Description:¹«ÖÚºÅ¿ÉÍ¨¹ı±¾½Ó¿ÚÀ´¸ù¾İOpenID»ñÈ¡ÓÃ»§»ù±¾ĞÅÏ¢£¬°üÀ¨êÇ³Æ¡¢Í·Ïñ¡¢ĞÔ±ğ¡¢ËùÔÚ³ÇÊĞ¡¢ÓïÑÔºÍ¹Ø×¢Ê±¼ä¡£
-     * @Description:Èç¹û¿ª·¢ÕßÓĞÔÚ¶à¸ö¹«ÖÚºÅ£¬»òÔÚ¹«ÖÚºÅ¡¢ÒÆ¶¯Ó¦ÓÃÖ®¼äÍ³Ò»ÓÃ»§ÕÊºÅµÄĞèÇó£¬ĞèÒªÇ°ÍùÎ¢ĞÅ¿ª·ÅÆ½Ì¨£¨open.weixin.qq.com£©°ó¶¨¹«ÖÚºÅºó£¬²Å¿ÉÀûÓÃUnionID»úÖÆÀ´Âú×ãÉÏÊöĞèÇó¡£
+     * @FunctionDescription:è·å–ç”¨æˆ·åŸºæœ¬ä¿¡æ¯ï¼ˆåŒ…æ‹¬UnionIDæœºåˆ¶ï¼‰(get)
+     * @Param:  access_token 	æ˜¯ 	è°ƒç”¨æ¥å£å‡­è¯
+    openid 	        æ˜¯ 	æ™®é€šç”¨æˆ·çš„æ ‡è¯†ï¼Œå¯¹å½“å‰å…¬ä¼—å·å”¯ä¸€
+    lang 	        å¦ 	è¿”å›å›½å®¶åœ°åŒºè¯­è¨€ç‰ˆæœ¬ï¼Œzh_CN ç®€ä½“ï¼Œzh_TW ç¹ä½“ï¼Œen è‹±è¯­
+     * @Return: subscribe 	    ç”¨æˆ·æ˜¯å¦è®¢é˜…è¯¥å…¬ä¼—å·æ ‡è¯†ï¼Œå€¼ä¸º0æ—¶ï¼Œä»£è¡¨æ­¤ç”¨æˆ·æ²¡æœ‰å…³æ³¨è¯¥å…¬ä¼—å·ï¼Œæ‹‰å–ä¸åˆ°å…¶ä½™ä¿¡æ¯ã€‚
+    openid 	        ç”¨æˆ·çš„æ ‡è¯†ï¼Œå¯¹å½“å‰å…¬ä¼—å·å”¯ä¸€
+    nickname 	    ç”¨æˆ·çš„æ˜µç§°
+    sex 	        ç”¨æˆ·çš„æ€§åˆ«ï¼Œå€¼ä¸º1æ—¶æ˜¯ç”·æ€§ï¼Œå€¼ä¸º2æ—¶æ˜¯å¥³æ€§ï¼Œå€¼ä¸º0æ—¶æ˜¯æœªçŸ¥
+    city 	        ç”¨æˆ·æ‰€åœ¨åŸå¸‚
+    country 	    ç”¨æˆ·æ‰€åœ¨å›½å®¶
+    province 	    ç”¨æˆ·æ‰€åœ¨çœä»½
+    language 	    ç”¨æˆ·çš„è¯­è¨€ï¼Œç®€ä½“ä¸­æ–‡ä¸ºzh_CN
+    headimgurl 	    ç”¨æˆ·å¤´åƒï¼Œæœ€åä¸€ä¸ªæ•°å€¼ä»£è¡¨æ­£æ–¹å½¢å¤´åƒå¤§å°ï¼ˆæœ‰0ã€46ã€64ã€96ã€132æ•°å€¼å¯é€‰ï¼Œ0ä»£è¡¨640*640æ­£æ–¹å½¢å¤´åƒï¼‰ï¼Œç”¨æˆ·æ²¡æœ‰å¤´åƒæ—¶è¯¥é¡¹ä¸ºç©ºã€‚è‹¥ç”¨æˆ·æ›´æ¢å¤´åƒï¼ŒåŸæœ‰å¤´åƒURLå°†å¤±æ•ˆã€‚
+    subscribe_time 	ç”¨æˆ·å…³æ³¨æ—¶é—´ï¼Œä¸ºæ—¶é—´æˆ³ã€‚å¦‚æœç”¨æˆ·æ›¾å¤šæ¬¡å…³æ³¨ï¼Œåˆ™å–æœ€åå…³æ³¨æ—¶é—´
+    unionid 	    åªæœ‰åœ¨ç”¨æˆ·å°†å…¬ä¼—å·ç»‘å®šåˆ°å¾®ä¿¡å¼€æ”¾å¹³å°å¸å·åï¼Œæ‰ä¼šå‡ºç°è¯¥å­—æ®µã€‚è¯¦è§ï¼šè·å–ç”¨æˆ·ä¸ªäººä¿¡æ¯ï¼ˆUnionIDæœºåˆ¶ï¼‰
+    remark 	        å…¬ä¼—å·è¿è¥è€…å¯¹ç²‰ä¸çš„å¤‡æ³¨ï¼Œå…¬ä¼—å·è¿è¥è€…å¯åœ¨å¾®ä¿¡å…¬ä¼—å¹³å°ç”¨æˆ·ç®¡ç†ç•Œé¢å¯¹ç²‰ä¸æ·»åŠ å¤‡æ³¨
+    groupid 	    ç”¨æˆ·æ‰€åœ¨çš„åˆ†ç»„ID
+     * @Description:åœ¨å…³æ³¨è€…ä¸å…¬ä¼—å·äº§ç”Ÿæ¶ˆæ¯äº¤äº’åï¼Œå…¬ä¼—å·å¯è·å¾—å…³æ³¨è€…çš„OpenIDï¼ˆåŠ å¯†åçš„å¾®ä¿¡å·ï¼Œæ¯ä¸ªç”¨æˆ·å¯¹æ¯ä¸ªå…¬ä¼—å·çš„OpenIDæ˜¯å”¯ä¸€çš„ã€‚å¯¹äºä¸åŒå…¬ä¼—å·ï¼ŒåŒä¸€ç”¨æˆ·çš„openidä¸åŒï¼‰ã€‚
+     * @Description:å…¬ä¼—å·å¯é€šè¿‡æœ¬æ¥å£æ¥æ ¹æ®OpenIDè·å–ç”¨æˆ·åŸºæœ¬ä¿¡æ¯ï¼ŒåŒ…æ‹¬æ˜µç§°ã€å¤´åƒã€æ€§åˆ«ã€æ‰€åœ¨åŸå¸‚ã€è¯­è¨€å’Œå…³æ³¨æ—¶é—´ã€‚
+     * @Description:å¦‚æœå¼€å‘è€…æœ‰åœ¨å¤šä¸ªå…¬ä¼—å·ï¼Œæˆ–åœ¨å…¬ä¼—å·ã€ç§»åŠ¨åº”ç”¨ä¹‹é—´ç»Ÿä¸€ç”¨æˆ·å¸å·çš„éœ€æ±‚ï¼Œéœ€è¦å‰å¾€å¾®ä¿¡å¼€æ”¾å¹³å°ï¼ˆopen.weixin.qq.comï¼‰ç»‘å®šå…¬ä¼—å·åï¼Œæ‰å¯åˆ©ç”¨UnionIDæœºåˆ¶æ¥æ»¡è¶³ä¸Šè¿°éœ€æ±‚ã€‚
      * @Author:helen zheng
      */
     public function getUserInfo($access_token,$openid){
         $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
         $result = $this->request_get($url);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:ÅúÁ¿»ñÈ¡ÓÃ»§»ù±¾ĞÅÏ¢(post)
-     * @Param:  openid 	ÊÇ 	ÓÃ»§µÄ±êÊ¶£¬¶Ôµ±Ç°¹«ÖÚºÅÎ¨Ò»
-     * @Return: Í¬ÉÏ
-     * @Description:¿ª·¢Õß¿ÉÍ¨¹ı¸Ã½Ó¿ÚÀ´ÅúÁ¿»ñÈ¡ÓÃ»§»ù±¾ĞÅÏ¢¡£×î¶àÖ§³ÖÒ»´ÎÀ­È¡100Ìõ¡£
+     * @FunctionDescription:æ‰¹é‡è·å–ç”¨æˆ·åŸºæœ¬ä¿¡æ¯(post)
+     * @Param:  openid 	æ˜¯ 	ç”¨æˆ·çš„æ ‡è¯†ï¼Œå¯¹å½“å‰å…¬ä¼—å·å”¯ä¸€
+     * @Return: åŒä¸Š
+     * @Description:å¼€å‘è€…å¯é€šè¿‡è¯¥æ¥å£æ¥æ‰¹é‡è·å–ç”¨æˆ·åŸºæœ¬ä¿¡æ¯ã€‚æœ€å¤šæ”¯æŒä¸€æ¬¡æ‹‰å–100æ¡ã€‚
      * @Author:helen zheng
      */
     public function batchgetUserInfo($access_token,$user_list){
         $url = 'https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token='.$access_token;
         $result = $this->request_post($url,$user_list);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡ÓÃ»§ÁĞ±í(get)
-     * @Param:  access_token 	ÊÇ 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                next_openid 	ÊÇ 	µÚÒ»¸öÀ­È¡µÄOPENID£¬²»ÌîÄ¬ÈÏ´ÓÍ·¿ªÊ¼À­È¡
-     * @Return: total 	        ¹Ø×¢¸Ã¹«ÖÚÕËºÅµÄ×ÜÓÃ»§Êı
-                count 	        À­È¡µÄOPENID¸öÊı£¬×î´óÖµÎª10000
-                data 	        ÁĞ±íÊı¾İ£¬OPENIDµÄÁĞ±í
-                next_openid 	À­È¡ÁĞ±íµÄ×îºóÒ»¸öÓÃ»§µÄOPENID
-     * @Description:¹«ÖÚºÅ¿ÉÍ¨¹ı±¾½Ó¿ÚÀ´»ñÈ¡ÕÊºÅµÄ¹Ø×¢ÕßÁĞ±í£¬¹Ø×¢ÕßÁĞ±íÓÉÒ»´®OpenID£¨¼ÓÃÜºóµÄÎ¢ĞÅºÅ£¬Ã¿¸öÓÃ»§¶ÔÃ¿¸ö¹«ÖÚºÅµÄOpenIDÊÇÎ¨Ò»µÄ£©×é³É¡£
-     * @Description:Ò»´ÎÀ­È¡µ÷ÓÃ×î¶àÀ­È¡10000¸ö¹Ø×¢ÕßµÄOpenID£¬¿ÉÒÔÍ¨¹ı¶à´ÎÀ­È¡µÄ·½Ê½À´Âú×ãĞèÇó¡£
+     * @FunctionDescription:è·å–ç”¨æˆ·åˆ—è¡¨(get)
+     * @Param:  access_token 	æ˜¯ 	è°ƒç”¨æ¥å£å‡­è¯
+    next_openid 	æ˜¯ 	ç¬¬ä¸€ä¸ªæ‹‰å–çš„OPENIDï¼Œä¸å¡«é»˜è®¤ä»å¤´å¼€å§‹æ‹‰å–
+     * @Return: total 	        å…³æ³¨è¯¥å…¬ä¼—è´¦å·çš„æ€»ç”¨æˆ·æ•°
+    count 	        æ‹‰å–çš„OPENIDä¸ªæ•°ï¼Œæœ€å¤§å€¼ä¸º10000
+    data 	        åˆ—è¡¨æ•°æ®ï¼ŒOPENIDçš„åˆ—è¡¨
+    next_openid 	æ‹‰å–åˆ—è¡¨çš„æœ€åä¸€ä¸ªç”¨æˆ·çš„OPENID
+     * @Description:å…¬ä¼—å·å¯é€šè¿‡æœ¬æ¥å£æ¥è·å–å¸å·çš„å…³æ³¨è€…åˆ—è¡¨ï¼Œå…³æ³¨è€…åˆ—è¡¨ç”±ä¸€ä¸²OpenIDï¼ˆåŠ å¯†åçš„å¾®ä¿¡å·ï¼Œæ¯ä¸ªç”¨æˆ·å¯¹æ¯ä¸ªå…¬ä¼—å·çš„OpenIDæ˜¯å”¯ä¸€çš„ï¼‰ç»„æˆã€‚
+     * @Description:ä¸€æ¬¡æ‹‰å–è°ƒç”¨æœ€å¤šæ‹‰å–10000ä¸ªå…³æ³¨è€…çš„OpenIDï¼Œå¯ä»¥é€šè¿‡å¤šæ¬¡æ‹‰å–çš„æ–¹å¼æ¥æ»¡è¶³éœ€æ±‚ã€‚
      * @Author:helen zheng
      */
     public function getUserList($access_token,$next_openid=null){
         $url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token='.$access_token.'&next_openid='.$next_openid;
         $result = $this->request_get($url);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:×Ô¶¨Òå²Ëµ¥½Ó¿Ú
-     * @Description:×Ô¶¨Òå²Ëµ¥×î¶à°üÀ¨3¸öÒ»¼¶²Ëµ¥£¬Ã¿¸öÒ»¼¶²Ëµ¥×î¶à°üº¬5¸ö¶ş¼¶²Ëµ¥¡£Ò»¼¶²Ëµ¥×î¶à4¸öºº×Ö£¬¶ş¼¶²Ëµ¥×î¶à7¸öºº×Ö.
-     * @Description:´´½¨×Ô¶¨Òå²Ëµ¥ºó£¬ÓÉÓÚÎ¢ĞÅ¿Í»§¶Ë»º´æ£¬ĞèÒª24Ğ¡Ê±Î¢ĞÅ¿Í»§¶Ë²Å»áÕ¹ÏÖ³öÀ´
+     * @FunctionDescription:è‡ªå®šä¹‰èœå•æ¥å£
+     * @Description:è‡ªå®šä¹‰èœå•æœ€å¤šåŒ…æ‹¬3ä¸ªä¸€çº§èœå•ï¼Œæ¯ä¸ªä¸€çº§èœå•æœ€å¤šåŒ…å«5ä¸ªäºŒçº§èœå•ã€‚ä¸€çº§èœå•æœ€å¤š4ä¸ªæ±‰å­—ï¼ŒäºŒçº§èœå•æœ€å¤š7ä¸ªæ±‰å­—.
+     * @Description:åˆ›å»ºè‡ªå®šä¹‰èœå•åï¼Œç”±äºå¾®ä¿¡å®¢æˆ·ç«¯ç¼“å­˜ï¼Œéœ€è¦24å°æ—¶å¾®ä¿¡å®¢æˆ·ç«¯æ‰ä¼šå±•ç°å‡ºæ¥
      * @Author:helen zheng
      */
-
     /**
-     * @FunctionDescription:×Ô¶¨Òå²Ëµ¥´´½¨½Ó¿Ú£¨post£©
-     * @Param:menu_data( button(Ò»¼¶²Ëµ¥Êı×é)¡¢sub_button[¶ş¼¶²Ëµ¥Êı×é]¡¢type(²Ëµ¥µÄÏìÓ¦¶¯×÷ÀàĞÍ )¡¢name (²Ëµ¥±êÌâ£¬²»³¬¹ı16¸ö×Ö½Ú£¬×Ó²Ëµ¥²»³¬¹ı40¸ö×Ö½Ú ) )
-     * @Param:menu_data(key (clickµÈµã»÷ÀàĞÍ±ØĞë ¡¢²Ëµ¥KEYÖµ£¬ÓÃÓÚÏûÏ¢½Ó¿ÚÍÆËÍ£¬²»³¬¹ı128×Ö½Ú )¡¢url(viewÀàĞÍ±ØĞë ÍøÒ³Á´½Ó£¬ÓÃ»§µã»÷²Ëµ¥¿É´ò¿ªÁ´½Ó£¬²»³¬¹ı256×Ö½Ú )¡¢media_id (media_idÀàĞÍºÍview_limitedÀàĞÍ±ØĞë µ÷ÓÃĞÂÔöÓÀ¾ÃËØ²Ä½Ó¿Ú·µ»ØµÄºÏ·¨media_id ) )
-     * @Return:0 £¨ok£©
-     * @Description:°´Å¥ÀàĞÍ£ºclick£ºµã»÷ÍÆÊÂ¼ş;view£ºÌø×ªURL;scancode_push£ºÉ¨ÂëÍÆÊÂ¼ş;scancode_waitmsg£ºÉ¨ÂëÍÆÊÂ¼şÇÒµ¯³ö¡°ÏûÏ¢½ÓÊÕÖĞ¡±ÌáÊ¾¿ò;pic_sysphoto£ºµ¯³öÏµÍ³ÅÄÕÕ·¢Í¼
-     * @Description:°´Å¥ÀàĞÍ£ºpic_photo_or_album£ºµ¯³öÅÄÕÕ»òÕßÏà²á·¢Í¼;pic_weixin£ºµ¯³öÎ¢ĞÅÏà²á·¢Í¼Æ÷;location_select£ºµ¯³öµØÀíÎ»ÖÃÑ¡ÔñÆ÷;media_id£ºÏÂ·¢ÏûÏ¢£¨³ıÎÄ±¾ÏûÏ¢£©;view_limited£ºÌø×ªÍ¼ÎÄÏûÏ¢URL
+     * @FunctionDescription:è‡ªå®šä¹‰èœå•åˆ›å»ºæ¥å£ï¼ˆpostï¼‰
+     * @Param:menu_data( button(ä¸€çº§èœå•æ•°ç»„)ã€sub_button[äºŒçº§èœå•æ•°ç»„]ã€type(èœå•çš„å“åº”åŠ¨ä½œç±»å‹ )ã€name (èœå•æ ‡é¢˜ï¼Œä¸è¶…è¿‡16ä¸ªå­—èŠ‚ï¼Œå­èœå•ä¸è¶…è¿‡40ä¸ªå­—èŠ‚ ) )
+     * @Param:menu_data(key (clickç­‰ç‚¹å‡»ç±»å‹å¿…é¡» ã€èœå•KEYå€¼ï¼Œç”¨äºæ¶ˆæ¯æ¥å£æ¨é€ï¼Œä¸è¶…è¿‡128å­—èŠ‚ )ã€url(viewç±»å‹å¿…é¡» ç½‘é¡µé“¾æ¥ï¼Œç”¨æˆ·ç‚¹å‡»èœå•å¯æ‰“å¼€é“¾æ¥ï¼Œä¸è¶…è¿‡256å­—èŠ‚ )ã€media_id (media_idç±»å‹å’Œview_limitedç±»å‹å¿…é¡» è°ƒç”¨æ–°å¢æ°¸ä¹…ç´ ææ¥å£è¿”å›çš„åˆæ³•media_id ) )
+     * @Return:0 ï¼ˆokï¼‰
+     * @Description:æŒ‰é’®ç±»å‹ï¼šclickï¼šç‚¹å‡»æ¨äº‹ä»¶;viewï¼šè·³è½¬URL;scancode_pushï¼šæ‰«ç æ¨äº‹ä»¶;scancode_waitmsgï¼šæ‰«ç æ¨äº‹ä»¶ä¸”å¼¹å‡ºâ€œæ¶ˆæ¯æ¥æ”¶ä¸­â€æç¤ºæ¡†;pic_sysphotoï¼šå¼¹å‡ºç³»ç»Ÿæ‹ç…§å‘å›¾
+     * @Description:æŒ‰é’®ç±»å‹ï¼špic_photo_or_albumï¼šå¼¹å‡ºæ‹ç…§æˆ–è€…ç›¸å†Œå‘å›¾;pic_weixinï¼šå¼¹å‡ºå¾®ä¿¡ç›¸å†Œå‘å›¾å™¨;location_selectï¼šå¼¹å‡ºåœ°ç†ä½ç½®é€‰æ‹©å™¨;media_idï¼šä¸‹å‘æ¶ˆæ¯ï¼ˆé™¤æ–‡æœ¬æ¶ˆæ¯ï¼‰;view_limitedï¼šè·³è½¬å›¾æ–‡æ¶ˆæ¯URL
      * @Author:helen zheng
      */
     public function customMenuEdit($menu_data,$access_token){
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$access_token;
         $result = $this->request_post($url,$menu_data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:×Ô¶¨Òå²Ëµ¥²éÑ¯½Ó¿Ú£¨get£©
+     * @FunctionDescription:è‡ªå®šä¹‰èœå•æŸ¥è¯¢æ¥å£ï¼ˆgetï¼‰
      * @Param:access_token
-     * @Return:×Ô¶¨Òå²Ëµ¥ĞÅÏ¢
-     * @Description:²éÑ¯×Ô¶¨Òå²Ëµ¥µÄ½á¹¹¡£
+     * @Return:è‡ªå®šä¹‰èœå•ä¿¡æ¯
+     * @Description:æŸ¥è¯¢è‡ªå®šä¹‰èœå•çš„ç»“æ„ã€‚
      * @Author:helen zheng
      */
     public function customMenuSearch($access_token){
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/get?access_token='.$access_token;
         $result = $this->request_get($url);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:×Ô¶¨Òå²Ëµ¥É¾³ı½Ó¿Ú£¨get£©
+     * @FunctionDescription:è‡ªå®šä¹‰èœå•åˆ é™¤æ¥å£ï¼ˆgetï¼‰
      * @Param:access_token
-     * @Return:0 £¨ok£©
-     * @Description:É¾³ıµ±Ç°Ê¹ÓÃµÄ×Ô¶¨Òå²Ëµ¥¡£
+     * @Return:0 ï¼ˆokï¼‰
+     * @Description:åˆ é™¤å½“å‰ä½¿ç”¨çš„è‡ªå®šä¹‰èœå•ã€‚
      * @Author:helen zheng
      */
     public function customMenuDelete($access_token){
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/delete?access_token='.$access_token;
         $result = $this->request_get($url);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡×Ô¶¨Òå²Ëµ¥ÅäÖÃ½Ó¿Ú(get)
+     * @FunctionDescription:è·å–è‡ªå®šä¹‰èœå•é…ç½®æ¥å£(get)
      * @Param:access_token
-     * @Return:is_menu_open(²Ëµ¥ÊÇ·ñ¿ªÆô£¬0´ú±íÎ´¿ªÆô£¬1´ú±í¿ªÆô )¡¢selfmenu_info(²Ëµ¥ĞÅÏ¢ )¡¢button (²Ëµ¥°´Å¥ )¡¢type (²Ëµ¥µÄÀàĞÍ)¡¢name (²Ëµ¥Ãû³Æ )¡¢value¡¢url¡¢keyµÈ×Ö¶Î
-     * @Return:news_info(Í¼ÎÄÏûÏ¢µÄĞÅÏ¢ )¡¢title(Í¼ÎÄÏûÏ¢µÄ±êÌâ )¡¢digest(ÕªÒª )¡¢author (×÷Õß)¡¢show_cover (ÊÇ·ñÏÔÊ¾·âÃæ£¬0Îª²»ÏÔÊ¾£¬1ÎªÏÔÊ¾ )¡¢cover_url( ·âÃæÍ¼Æ¬µÄURL )¡¢content_url( ÕıÎÄµÄURL )¡¢source_url£¨ Ô­ÎÄµÄURL£¬ÈôÖÃ¿ÕÔòÎŞ²é¿´Ô­ÎÄÈë¿Ú£©
-     * @Description:±¾½Ó¿Ú½«»áÌá¹©¹«ÖÚºÅµ±Ç°Ê¹ÓÃµÄ×Ô¶¨Òå²Ëµ¥µÄÅäÖÃ£¬Èç¹û¹«ÖÚºÅÊÇÍ¨¹ıAPIµ÷ÓÃÉèÖÃµÄ²Ëµ¥£¬Ôò·µ»Ø²Ëµ¥µÄ¿ª·¢ÅäÖÃ£¬¶øÈç¹û¹«ÖÚºÅÊÇÔÚ¹«ÖÚÆ½Ì¨¹ÙÍøÍ¨¹ıÍøÕ¾¹¦ÄÜ·¢²¼²Ëµ¥£¬Ôò±¾½Ó¿Ú·µ»ØÔËÓªÕßÉèÖÃµÄ²Ëµ¥ÅäÖÃ¡£
+     * @Return:is_menu_open(èœå•æ˜¯å¦å¼€å¯ï¼Œ0ä»£è¡¨æœªå¼€å¯ï¼Œ1ä»£è¡¨å¼€å¯ )ã€selfmenu_info(èœå•ä¿¡æ¯ )ã€button (èœå•æŒ‰é’® )ã€type (èœå•çš„ç±»å‹)ã€name (èœå•åç§° )ã€valueã€urlã€keyç­‰å­—æ®µ
+     * @Return:news_info(å›¾æ–‡æ¶ˆæ¯çš„ä¿¡æ¯ )ã€title(å›¾æ–‡æ¶ˆæ¯çš„æ ‡é¢˜ )ã€digest(æ‘˜è¦ )ã€author (ä½œè€…)ã€show_cover (æ˜¯å¦æ˜¾ç¤ºå°é¢ï¼Œ0ä¸ºä¸æ˜¾ç¤ºï¼Œ1ä¸ºæ˜¾ç¤º )ã€cover_url( å°é¢å›¾ç‰‡çš„URL )ã€content_url( æ­£æ–‡çš„URL )ã€source_urlï¼ˆ åŸæ–‡çš„URLï¼Œè‹¥ç½®ç©ºåˆ™æ— æŸ¥çœ‹åŸæ–‡å…¥å£ï¼‰
+     * @Description:æœ¬æ¥å£å°†ä¼šæä¾›å…¬ä¼—å·å½“å‰ä½¿ç”¨çš„è‡ªå®šä¹‰èœå•çš„é…ç½®ï¼Œå¦‚æœå…¬ä¼—å·æ˜¯é€šè¿‡APIè°ƒç”¨è®¾ç½®çš„èœå•ï¼Œåˆ™è¿”å›èœå•çš„å¼€å‘é…ç½®ï¼Œè€Œå¦‚æœå…¬ä¼—å·æ˜¯åœ¨å…¬ä¼—å¹³å°å®˜ç½‘é€šè¿‡ç½‘ç«™åŠŸèƒ½å‘å¸ƒèœå•ï¼Œåˆ™æœ¬æ¥å£è¿”å›è¿è¥è€…è®¾ç½®çš„èœå•é…ç½®ã€‚
      * @Author:helen zheng
      */
     public function customMenuList($access_token){
         $url = 'https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info?access_token='.$access_token;
         $result = $this->request_get($url);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:ÕËºÅ¹ÜÀí
-     * @Description:Éú³É´ø²ÎÊıµÄ¶şÎ¬Âë¡¢³¤Á´½Ó×ª¶ÌÁ´½Ó½Ó¿Ú¡¢Î¢ĞÅÈÏÖ¤ÊÂ¼şÍÆËÍ
+     * @FunctionDescription:è´¦å·ç®¡ç†
+     * @Description:ç”Ÿæˆå¸¦å‚æ•°çš„äºŒç»´ç ã€é•¿é“¾æ¥è½¬çŸ­é“¾æ¥æ¥å£ã€å¾®ä¿¡è®¤è¯äº‹ä»¶æ¨é€
      * @Author:helen zheng
      */
-
     /**
-     * @FunctionDescription:´´½¨¶şÎ¬Âëticket
-     * @Param:  expire_seconds 	¸Ã¶şÎ¬ÂëÓĞĞ§Ê±¼ä£¬ÒÔÃëÎªµ¥Î»¡£ ×î´ó²»³¬¹ı2592000£¨¼´30Ìì£©£¬´Ë×Ö¶ÎÈç¹û²»Ìî£¬ÔòÄ¬ÈÏÓĞĞ§ÆÚÎª30Ãë¡£
-                action_name 	¶şÎ¬ÂëÀàĞÍ£¬QR_SCENEÎªÁÙÊ±,QR_LIMIT_SCENEÎªÓÀ¾Ã,QR_LIMIT_STR_SCENEÎªÓÀ¾ÃµÄ×Ö·û´®²ÎÊıÖµ
-                action_info 	¶şÎ¬ÂëÏêÏ¸ĞÅÏ¢
-                scene_id 	    ³¡¾°ÖµID£¬ÁÙÊ±¶şÎ¬ÂëÊ±Îª32Î»·Ç0ÕûĞÍ£¬ÓÀ¾Ã¶şÎ¬ÂëÊ±×î´óÖµÎª100000£¨Ä¿Ç°²ÎÊıÖ»Ö§³Ö1--100000£©
-                scene_str 	    ³¡¾°ÖµID£¨×Ö·û´®ĞÎÊ½µÄID£©£¬×Ö·û´®ÀàĞÍ£¬³¤¶ÈÏŞÖÆÎª1µ½64£¬½öÓÀ¾Ã¶şÎ¬ÂëÖ§³Ö´Ë×Ö¶Î
-     * @Return: ticket 	        »ñÈ¡µÄ¶şÎ¬Âëticket£¬Æ¾½è´Ëticket¿ÉÒÔÔÚÓĞĞ§Ê±¼äÄÚ»»È¡¶şÎ¬Âë¡£
-                expire_seconds 	¸Ã¶şÎ¬ÂëÓĞĞ§Ê±¼ä£¬ÒÔÃëÎªµ¥Î»¡£ ×î´ó²»³¬¹ı2592000£¨¼´30Ìì£©¡£
-                url 	        ¶şÎ¬ÂëÍ¼Æ¬½âÎöºóµÄµØÖ·£¬¿ª·¢Õß¿É¸ù¾İ¸ÃµØÖ·×ÔĞĞÉú³ÉĞèÒªµÄ¶şÎ¬ÂëÍ¼Æ¬
+     * @FunctionDescription:åˆ›å»ºäºŒç»´ç ticket
+     * @Param:  expire_seconds 	è¯¥äºŒç»´ç æœ‰æ•ˆæ—¶é—´ï¼Œä»¥ç§’ä¸ºå•ä½ã€‚ æœ€å¤§ä¸è¶…è¿‡2592000ï¼ˆå³30å¤©ï¼‰ï¼Œæ­¤å­—æ®µå¦‚æœä¸å¡«ï¼Œåˆ™é»˜è®¤æœ‰æ•ˆæœŸä¸º30ç§’ã€‚
+    action_name 	äºŒç»´ç ç±»å‹ï¼ŒQR_SCENEä¸ºä¸´æ—¶,QR_LIMIT_SCENEä¸ºæ°¸ä¹…,QR_LIMIT_STR_SCENEä¸ºæ°¸ä¹…çš„å­—ç¬¦ä¸²å‚æ•°å€¼
+    action_info 	äºŒç»´ç è¯¦ç»†ä¿¡æ¯
+    scene_id 	    åœºæ™¯å€¼IDï¼Œä¸´æ—¶äºŒç»´ç æ—¶ä¸º32ä½é0æ•´å‹ï¼Œæ°¸ä¹…äºŒç»´ç æ—¶æœ€å¤§å€¼ä¸º100000ï¼ˆç›®å‰å‚æ•°åªæ”¯æŒ1--100000ï¼‰
+    scene_str 	    åœºæ™¯å€¼IDï¼ˆå­—ç¬¦ä¸²å½¢å¼çš„IDï¼‰ï¼Œå­—ç¬¦ä¸²ç±»å‹ï¼Œé•¿åº¦é™åˆ¶ä¸º1åˆ°64ï¼Œä»…æ°¸ä¹…äºŒç»´ç æ”¯æŒæ­¤å­—æ®µ
+     * @Return: ticket 	        è·å–çš„äºŒç»´ç ticketï¼Œå‡­å€Ÿæ­¤ticketå¯ä»¥åœ¨æœ‰æ•ˆæ—¶é—´å†…æ¢å–äºŒç»´ç ã€‚
+    expire_seconds 	è¯¥äºŒç»´ç æœ‰æ•ˆæ—¶é—´ï¼Œä»¥ç§’ä¸ºå•ä½ã€‚ æœ€å¤§ä¸è¶…è¿‡2592000ï¼ˆå³30å¤©ï¼‰ã€‚
+    url 	        äºŒç»´ç å›¾ç‰‡è§£æåçš„åœ°å€ï¼Œå¼€å‘è€…å¯æ ¹æ®è¯¥åœ°å€è‡ªè¡Œç”Ÿæˆéœ€è¦çš„äºŒç»´ç å›¾ç‰‡
      * @Description:
      * @Author:helen zheng
      */
@@ -1377,38 +1322,36 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token='.$access_token;
         $result = $this->request_post($url,$qrcode_data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:Í¨¹ıticket»»È¡¶şÎ¬Âë
+     * @FunctionDescription:é€šè¿‡ticketæ¢å–äºŒç»´ç 
      * @Param:ticket
      * @Return:
-     * @Description:»ñÈ¡¶şÎ¬Âëticketºó£¬¿ª·¢Õß¿ÉÓÃticket»»È¡¶şÎ¬ÂëÍ¼Æ¬¡£TICKET¼ÇµÃ½øĞĞUrlEncode
+     * @Description:è·å–äºŒç»´ç ticketåï¼Œå¼€å‘è€…å¯ç”¨ticketæ¢å–äºŒç»´ç å›¾ç‰‡ã€‚TICKETè®°å¾—è¿›è¡ŒUrlEncode
      * @Author:helen zheng
      */
     public function getQrcode($ticket){
         $url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$ticket;
         $result = $this->downloadFile($url);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:³¤Á´½Ó×ª¶ÌÁ´½Ó½Ó¿Ú£¨post£©
-     * @Param:  access_token 	ÊÇ 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                action 	        ÊÇ 	´Ë´¦Ìîlong2short£¬´ú±í³¤Á´½Ó×ª¶ÌÁ´½Ó
-                long_url 	    ÊÇ 	ĞèÒª×ª»»µÄ³¤Á´½Ó£¬Ö§³Öhttp://¡¢https://¡¢weixin://wxpay ¸ñÊ½µÄurl
-     * @Return: short_url 	    ¶ÌÁ´½Ó¡£
-     * @Description:½«Ò»Ìõ³¤Á´½Ó×ª³É¶ÌÁ´½Ó¡£Ö÷ÒªÊ¹ÓÃ³¡¾°£º ¿ª·¢ÕßÓÃÓÚÉú³É¶şÎ¬ÂëµÄÔ­Á´½Ó£¨ÉÌÆ·¡¢Ö§¸¶¶şÎ¬ÂëµÈ£©Ì«³¤µ¼ÖÂÉ¨ÂëËÙ¶ÈºÍ³É¹¦ÂÊÏÂ½µ£¬½«Ô­³¤Á´½ÓÍ¨¹ı´Ë½Ó¿Ú×ª³É¶ÌÁ´½ÓÔÙÉú³É¶şÎ¬Âë½«´ó´óÌáÉıÉ¨ÂëËÙ¶ÈºÍ³É¹¦ÂÊ¡£
+     * @FunctionDescription:é•¿é“¾æ¥è½¬çŸ­é“¾æ¥æ¥å£ï¼ˆpostï¼‰
+     * @Param:  access_token 	æ˜¯ 	è°ƒç”¨æ¥å£å‡­è¯
+    action 	        æ˜¯ 	æ­¤å¤„å¡«long2shortï¼Œä»£è¡¨é•¿é“¾æ¥è½¬çŸ­é“¾æ¥
+    long_url 	    æ˜¯ 	éœ€è¦è½¬æ¢çš„é•¿é“¾æ¥ï¼Œæ”¯æŒhttp://ã€https://ã€weixin://wxpay æ ¼å¼çš„url
+     * @Return: short_url 	    çŸ­é“¾æ¥ã€‚
+     * @Description:å°†ä¸€æ¡é•¿é“¾æ¥è½¬æˆçŸ­é“¾æ¥ã€‚ä¸»è¦ä½¿ç”¨åœºæ™¯ï¼š å¼€å‘è€…ç”¨äºç”ŸæˆäºŒç»´ç çš„åŸé“¾æ¥ï¼ˆå•†å“ã€æ”¯ä»˜äºŒç»´ç ç­‰ï¼‰å¤ªé•¿å¯¼è‡´æ‰«ç é€Ÿåº¦å’ŒæˆåŠŸç‡ä¸‹é™ï¼Œå°†åŸé•¿é“¾æ¥é€šè¿‡æ­¤æ¥å£è½¬æˆçŸ­é“¾æ¥å†ç”ŸæˆäºŒç»´ç å°†å¤§å¤§æå‡æ‰«ç é€Ÿåº¦å’ŒæˆåŠŸç‡ã€‚
      * @Description:
      * @Author:helen zheng
      */
@@ -1416,30 +1359,28 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/shorturl?access_token='.$access_token;
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:Êı¾İÍ³¼Æ
-     * @Description:ÓÃ»§·ÖÎöÊı¾İ½Ó¿Ú¡¢Í¼ÎÄ·ÖÎöÊı¾İ½Ó¿Ú¡¢ÏûÏ¢·ÖÎöÊı¾İ½Ó¿Ú¡¢½Ó¿Ú·ÖÎöÊı¾İ½Ó¿Ú
+     * @FunctionDescription:æ•°æ®ç»Ÿè®¡
+     * @Description:ç”¨æˆ·åˆ†ææ•°æ®æ¥å£ã€å›¾æ–‡åˆ†ææ•°æ®æ¥å£ã€æ¶ˆæ¯åˆ†ææ•°æ®æ¥å£ã€æ¥å£åˆ†ææ•°æ®æ¥å£
      * @Author:helen zheng
      */
-
     /**
-     * @FunctionDescription:»ñÈ¡ÓÃ»§Ôö¼õÊı¾İ(post)
-     * @Param:  access_token 	ÊÇ 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                begin_date 	    ÊÇ 	»ñÈ¡Êı¾İµÄÆğÊ¼ÈÕÆÚ£¬begin_dateºÍend_dateµÄ²îÖµĞèĞ¡ÓÚ¡°×î´óÊ±¼ä¿ç¶È¡±£¨±ÈÈç×î´óÊ±¼ä¿ç¶ÈÎª1Ê±£¬begin_dateºÍend_dateµÄ²îÖµÖ»ÄÜÎª0£¬²ÅÄÜĞ¡ÓÚ1£©£¬·ñÔò»á±¨´í
-                end_date 	    ÊÇ 	»ñÈ¡Êı¾İµÄ½áÊøÈÕÆÚ£¬end_dateÔÊĞíÉèÖÃµÄ×î´óÖµÎª×òÈÕ
-     * @Return: ref_date 	    Êı¾İµÄÈÕÆÚ
-                user_source 	ÓÃ»§µÄÇşµÀ£¬ÊıÖµ´ú±íµÄº¬ÒåÈçÏÂ£º0´ú±íÆäËû£¨°üÀ¨´ø²ÎÊı¶şÎ¬Âë£© 3´ú±íÉ¨¶şÎ¬Âë 17´ú±íÃûÆ¬·ÖÏí 35´ú±íËÑºÅÂë£¨¼´Î¢ĞÅÌí¼ÓÅóÓÑÒ³µÄËÑË÷£© 39´ú±í²éÑ¯Î¢ĞÅ¹«ÖÚÕÊºÅ 43´ú±íÍ¼ÎÄÒ³ÓÒÉÏ½Ç²Ëµ¥
-                new_user 	    ĞÂÔöµÄÓÃ»§ÊıÁ¿
-                cancel_user 	È¡Ïû¹Ø×¢µÄÓÃ»§ÊıÁ¿£¬new_user¼õÈ¥cancel_user¼´Îª¾»ÔöÓÃ»§ÊıÁ¿
-                cumulate_user 	×ÜÓÃ»§Á¿
-     * @Description:×î´óÊ±¼ä¿ç¶È£¨7£©
+     * @FunctionDescription:è·å–ç”¨æˆ·å¢å‡æ•°æ®(post)
+     * @Param:  access_token 	æ˜¯ 	è°ƒç”¨æ¥å£å‡­è¯
+    begin_date 	    æ˜¯ 	è·å–æ•°æ®çš„èµ·å§‹æ—¥æœŸï¼Œbegin_dateå’Œend_dateçš„å·®å€¼éœ€å°äºâ€œæœ€å¤§æ—¶é—´è·¨åº¦â€ï¼ˆæ¯”å¦‚æœ€å¤§æ—¶é—´è·¨åº¦ä¸º1æ—¶ï¼Œbegin_dateå’Œend_dateçš„å·®å€¼åªèƒ½ä¸º0ï¼Œæ‰èƒ½å°äº1ï¼‰ï¼Œå¦åˆ™ä¼šæŠ¥é”™
+    end_date 	    æ˜¯ 	è·å–æ•°æ®çš„ç»“æŸæ—¥æœŸï¼Œend_dateå…è®¸è®¾ç½®çš„æœ€å¤§å€¼ä¸ºæ˜¨æ—¥
+     * @Return: ref_date 	    æ•°æ®çš„æ—¥æœŸ
+    user_source 	ç”¨æˆ·çš„æ¸ é“ï¼Œæ•°å€¼ä»£è¡¨çš„å«ä¹‰å¦‚ä¸‹ï¼š0ä»£è¡¨å…¶ä»–ï¼ˆåŒ…æ‹¬å¸¦å‚æ•°äºŒç»´ç ï¼‰ 3ä»£è¡¨æ‰«äºŒç»´ç  17ä»£è¡¨åç‰‡åˆ†äº« 35ä»£è¡¨æœå·ç ï¼ˆå³å¾®ä¿¡æ·»åŠ æœ‹å‹é¡µçš„æœç´¢ï¼‰ 39ä»£è¡¨æŸ¥è¯¢å¾®ä¿¡å…¬ä¼—å¸å· 43ä»£è¡¨å›¾æ–‡é¡µå³ä¸Šè§’èœå•
+    new_user 	    æ–°å¢çš„ç”¨æˆ·æ•°é‡
+    cancel_user 	å–æ¶ˆå…³æ³¨çš„ç”¨æˆ·æ•°é‡ï¼Œnew_userå‡å»cancel_userå³ä¸ºå‡€å¢ç”¨æˆ·æ•°é‡
+    cumulate_user 	æ€»ç”¨æˆ·é‡
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦ï¼ˆ7ï¼‰
      * @Author:helen zheng
      */
     public function getUserSummary($access_token,$begin_date,$end_date){
@@ -1451,18 +1392,17 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡ÀÛ¼ÆÓÃ»§Êı¾İ(post)
-     * @Param:Í¬ÉÏ
-     * @Return:Í¬ÉÏ
-     * @Description:×î´óÊ±¼ä¿ç¶È£¨7£©
+     * @FunctionDescription:è·å–ç´¯è®¡ç”¨æˆ·æ•°æ®(post)
+     * @Param:åŒä¸Š
+     * @Return:åŒä¸Š
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦ï¼ˆ7ï¼‰
      * @Author:helen zheng
      */
     public function getUserCumulate($access_token,$begin_date,$end_date){
@@ -1474,35 +1414,34 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡Í¼ÎÄÈº·¢Ã¿ÈÕÊı¾İ(post)
-     * @Param:  access_token 	ÊÇ 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                begin_date 	    ÊÇ 	»ñÈ¡Êı¾İµÄÆğÊ¼ÈÕÆÚ£¬begin_dateºÍend_dateµÄ²îÖµĞèĞ¡ÓÚ¡°×î´óÊ±¼ä¿ç¶È¡±£¨±ÈÈç×î´óÊ±¼ä¿ç¶ÈÎª1Ê±£¬begin_dateºÍend_dateµÄ²îÖµÖ»ÄÜÎª0£¬²ÅÄÜĞ¡ÓÚ1£©£¬·ñÔò»á±¨´í
-                end_date 	    ÊÇ 	»ñÈ¡Êı¾İµÄ½áÊøÈÕÆÚ£¬end_dateÔÊĞíÉèÖÃµÄ×î´óÖµÎª×òÈÕ
-     * @Return: ref_date 	        Êı¾İµÄÈÕÆÚ£¬ĞèÔÚbegin_dateºÍend_dateÖ®¼ä
-                ref_hour 	        Êı¾İµÄĞ¡Ê±£¬°üÀ¨´Ó000µ½2300£¬·Ö±ğ´ú±íµÄÊÇ[000,100)µ½[2300,2400)£¬¼´Ã¿ÈÕµÄµÚ1Ğ¡Ê±ºÍ×îºó1Ğ¡Ê±
-                stat_date 	        Í³¼ÆµÄÈÕÆÚ£¬ÔÚgetarticletotal½Ó¿ÚÖĞ£¬ref_dateÖ¸µÄÊÇÎÄÕÂÈº·¢³öÈÕÆÚ£¬ ¶østat_dateÊÇÊı¾İÍ³¼ÆÈÕÆÚ
-                msgid 	            Çë×¢Òâ£ºÕâÀïµÄmsgidÊµ¼ÊÉÏÊÇÓÉmsgid£¨Í¼ÎÄÏûÏ¢id£¬ÕâÒ²¾ÍÊÇÈº·¢½Ó¿Úµ÷ÓÃºó·µ»ØµÄmsg_data_id£©ºÍindex£¨ÏûÏ¢´ÎĞòË÷Òı£©×é³É£¬ ÀıÈç12003_3£¬ ÆäÖĞ12003ÊÇmsgid£¬¼´Ò»´ÎÈº·¢µÄÏûÏ¢µÄid£» 3Îªindex£¬¼ÙÉè¸Ã´ÎÈº·¢µÄÍ¼ÎÄÏûÏ¢¹²5¸öÎÄÕÂ£¨ÒòÎª¿ÉÄÜÎª¶àÍ¼ÎÄ£©£¬3±íÊ¾5¸öÖĞµÄµÚ3¸ö
-                title 	            Í¼ÎÄÏûÏ¢µÄ±êÌâ
-                int_page_read_user 	Í¼ÎÄÒ³£¨µã»÷Èº·¢Í¼ÎÄ¿¨Æ¬½øÈëµÄÒ³Ãæ£©µÄÔÄ¶ÁÈËÊı
-                int_page_read_count Í¼ÎÄÒ³µÄÔÄ¶Á´ÎÊı
-                ori_page_read_user 	Ô­ÎÄÒ³£¨µã»÷Í¼ÎÄÒ³¡°ÔÄ¶ÁÔ­ÎÄ¡±½øÈëµÄÒ³Ãæ£©µÄÔÄ¶ÁÈËÊı£¬ÎŞÔ­ÎÄÒ³Ê±´Ë´¦Êı¾İÎª0
-                ori_page_read_count Ô­ÎÄÒ³µÄÔÄ¶Á´ÎÊı
-                share_scene 	    ·ÖÏíµÄ³¡¾°   1´ú±íºÃÓÑ×ª·¢ 2´ú±íÅóÓÑÈ¦ 3´ú±íÌÚÑ¶Î¢²© 255´ú±íÆäËû
-                share_user 	        ·ÖÏíµÄÈËÊı
-                share_count 	    ·ÖÏíµÄ´ÎÊı
-                add_to_fav_user 	ÊÕ²ØµÄÈËÊı
-                add_to_fav_count 	ÊÕ²ØµÄ´ÎÊı
-                target_user 	    ËÍ´ïÈËÊı£¬Ò»°ãÔ¼µÈÓÚ×Ü·ÛË¿Êı£¨ĞèÅÅ³ıºÚÃûµ¥»òÆäËûÒì³£Çé¿öÏÂÎŞ·¨ÊÕµ½ÏûÏ¢µÄ·ÛË¿£©
-                user_source 	    ÔÚ»ñÈ¡Í¼ÎÄÔÄ¶Á·ÖÊ±Êı¾İÊ±²ÅÓĞ¸Ã×Ö¶Î£¬´ú±íÓÃ»§´ÓÄÄÀï½øÈëÀ´ÔÄ¶Á¸ÃÍ¼ÎÄ¡£0:»á»°;1.ºÃÓÑ;2.ÅóÓÑÈ¦;3.ÌÚÑ¶Î¢²©;4.ÀúÊ·ÏûÏ¢Ò³;5.ÆäËû
-     * @Description:×î´óÊ±¼ä¿ç¶È(1)
+     * @FunctionDescription:è·å–å›¾æ–‡ç¾¤å‘æ¯æ—¥æ•°æ®(post)
+     * @Param:  access_token 	æ˜¯ 	è°ƒç”¨æ¥å£å‡­è¯
+    begin_date 	    æ˜¯ 	è·å–æ•°æ®çš„èµ·å§‹æ—¥æœŸï¼Œbegin_dateå’Œend_dateçš„å·®å€¼éœ€å°äºâ€œæœ€å¤§æ—¶é—´è·¨åº¦â€ï¼ˆæ¯”å¦‚æœ€å¤§æ—¶é—´è·¨åº¦ä¸º1æ—¶ï¼Œbegin_dateå’Œend_dateçš„å·®å€¼åªèƒ½ä¸º0ï¼Œæ‰èƒ½å°äº1ï¼‰ï¼Œå¦åˆ™ä¼šæŠ¥é”™
+    end_date 	    æ˜¯ 	è·å–æ•°æ®çš„ç»“æŸæ—¥æœŸï¼Œend_dateå…è®¸è®¾ç½®çš„æœ€å¤§å€¼ä¸ºæ˜¨æ—¥
+     * @Return: ref_date 	        æ•°æ®çš„æ—¥æœŸï¼Œéœ€åœ¨begin_dateå’Œend_dateä¹‹é—´
+    ref_hour 	        æ•°æ®çš„å°æ—¶ï¼ŒåŒ…æ‹¬ä»000åˆ°2300ï¼Œåˆ†åˆ«ä»£è¡¨çš„æ˜¯[000,100)åˆ°[2300,2400)ï¼Œå³æ¯æ—¥çš„ç¬¬1å°æ—¶å’Œæœ€å1å°æ—¶
+    stat_date 	        ç»Ÿè®¡çš„æ—¥æœŸï¼Œåœ¨getarticletotalæ¥å£ä¸­ï¼Œref_dateæŒ‡çš„æ˜¯æ–‡ç« ç¾¤å‘å‡ºæ—¥æœŸï¼Œ è€Œstat_dateæ˜¯æ•°æ®ç»Ÿè®¡æ—¥æœŸ
+    msgid 	            è¯·æ³¨æ„ï¼šè¿™é‡Œçš„msgidå®é™…ä¸Šæ˜¯ç”±msgidï¼ˆå›¾æ–‡æ¶ˆæ¯idï¼Œè¿™ä¹Ÿå°±æ˜¯ç¾¤å‘æ¥å£è°ƒç”¨åè¿”å›çš„msg_data_idï¼‰å’Œindexï¼ˆæ¶ˆæ¯æ¬¡åºç´¢å¼•ï¼‰ç»„æˆï¼Œ ä¾‹å¦‚12003_3ï¼Œ å…¶ä¸­12003æ˜¯msgidï¼Œå³ä¸€æ¬¡ç¾¤å‘çš„æ¶ˆæ¯çš„idï¼› 3ä¸ºindexï¼Œå‡è®¾è¯¥æ¬¡ç¾¤å‘çš„å›¾æ–‡æ¶ˆæ¯å…±5ä¸ªæ–‡ç« ï¼ˆå› ä¸ºå¯èƒ½ä¸ºå¤šå›¾æ–‡ï¼‰ï¼Œ3è¡¨ç¤º5ä¸ªä¸­çš„ç¬¬3ä¸ª
+    title 	            å›¾æ–‡æ¶ˆæ¯çš„æ ‡é¢˜
+    int_page_read_user 	å›¾æ–‡é¡µï¼ˆç‚¹å‡»ç¾¤å‘å›¾æ–‡å¡ç‰‡è¿›å…¥çš„é¡µé¢ï¼‰çš„é˜…è¯»äººæ•°
+    int_page_read_count å›¾æ–‡é¡µçš„é˜…è¯»æ¬¡æ•°
+    ori_page_read_user 	åŸæ–‡é¡µï¼ˆç‚¹å‡»å›¾æ–‡é¡µâ€œé˜…è¯»åŸæ–‡â€è¿›å…¥çš„é¡µé¢ï¼‰çš„é˜…è¯»äººæ•°ï¼Œæ— åŸæ–‡é¡µæ—¶æ­¤å¤„æ•°æ®ä¸º0
+    ori_page_read_count åŸæ–‡é¡µçš„é˜…è¯»æ¬¡æ•°
+    share_scene 	    åˆ†äº«çš„åœºæ™¯   1ä»£è¡¨å¥½å‹è½¬å‘ 2ä»£è¡¨æœ‹å‹åœˆ 3ä»£è¡¨è…¾è®¯å¾®åš 255ä»£è¡¨å…¶ä»–
+    share_user 	        åˆ†äº«çš„äººæ•°
+    share_count 	    åˆ†äº«çš„æ¬¡æ•°
+    add_to_fav_user 	æ”¶è—çš„äººæ•°
+    add_to_fav_count 	æ”¶è—çš„æ¬¡æ•°
+    target_user 	    é€è¾¾äººæ•°ï¼Œä¸€èˆ¬çº¦ç­‰äºæ€»ç²‰ä¸æ•°ï¼ˆéœ€æ’é™¤é»‘åå•æˆ–å…¶ä»–å¼‚å¸¸æƒ…å†µä¸‹æ— æ³•æ”¶åˆ°æ¶ˆæ¯çš„ç²‰ä¸ï¼‰
+    user_source 	    åœ¨è·å–å›¾æ–‡é˜…è¯»åˆ†æ—¶æ•°æ®æ—¶æ‰æœ‰è¯¥å­—æ®µï¼Œä»£è¡¨ç”¨æˆ·ä»å“ªé‡Œè¿›å…¥æ¥é˜…è¯»è¯¥å›¾æ–‡ã€‚0:ä¼šè¯;1.å¥½å‹;2.æœ‹å‹åœˆ;3.è…¾è®¯å¾®åš;4.å†å²æ¶ˆæ¯é¡µ;5.å…¶ä»–
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦(1)
      * @Author:helen zheng
      */
     public function getArticleSummary($access_token,$begin_date,$end_date){
@@ -1514,18 +1453,17 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡Í¼ÎÄÈº·¢×ÜÊı¾İ(post)
-     * @Param:Í¬ÉÏ
-     * @Return:Í¬ÉÏ
-     * @Description:×î´óÊ±¼ä¿ç¶È(1)
+     * @FunctionDescription:è·å–å›¾æ–‡ç¾¤å‘æ€»æ•°æ®(post)
+     * @Param:åŒä¸Š
+     * @Return:åŒä¸Š
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦(1)
      * @Author:helen zheng
      */
     public function getArticleTotal($access_token,$begin_date,$end_date){
@@ -1537,18 +1475,17 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡Í¼ÎÄÍ³¼ÆÊı¾İ(post)
-     * @Param:Í¬ÉÏ
-     * @Return:Í¬ÉÏ
-     * @Description:×î´óÊ±¼ä¿ç¶È(3)
+     * @FunctionDescription:è·å–å›¾æ–‡ç»Ÿè®¡æ•°æ®(post)
+     * @Param:åŒä¸Š
+     * @Return:åŒä¸Š
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦(3)
      * @Author:helen zheng
      */
     public function getUserRead($access_token,$begin_date,$end_date){
@@ -1560,18 +1497,17 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡Í¼ÎÄÍ³¼Æ·ÖÊ±Êı¾İ(post)
-     * @Param:Í¬ÉÏ
-     * @Return:Í¬ÉÏ
-     * @Description:×î´óÊ±¼ä¿ç¶È(1)
+     * @FunctionDescription:è·å–å›¾æ–‡ç»Ÿè®¡åˆ†æ—¶æ•°æ®(post)
+     * @Param:åŒä¸Š
+     * @Return:åŒä¸Š
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦(1)
      * @Author:helen zheng
      */
     public function getUserReadHour($access_token,$begin_date,$end_date){
@@ -1583,18 +1519,17 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡Í¼ÎÄ·ÖÏí×ª·¢Êı¾İ(post)
-     * @Param:Í¬ÉÏ
-     * @Return:Í¬ÉÏ
-     * @Description:×î´óÊ±¼ä¿ç¶È(7)
+     * @FunctionDescription:è·å–å›¾æ–‡åˆ†äº«è½¬å‘æ•°æ®(post)
+     * @Param:åŒä¸Š
+     * @Return:åŒä¸Š
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦(7)
      * @Author:helen zheng
      */
     public function getUserShare($access_token,$begin_date,$end_date){
@@ -1606,18 +1541,17 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡Í¼ÎÄ·ÖÏí×ª·¢·ÖÊ±Êı¾İ(post)
-     * @Param:Í¬ÉÏ
-     * @Return:Í¬ÉÏ
-     * @Description:×î´óÊ±¼ä¿ç¶È(1)
+     * @FunctionDescription:è·å–å›¾æ–‡åˆ†äº«è½¬å‘åˆ†æ—¶æ•°æ®(post)
+     * @Param:åŒä¸Š
+     * @Return:åŒä¸Š
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦(1)
      * @Author:helen zheng
      */
     public function getUserShareHour($access_token,$begin_date,$end_date){
@@ -1629,27 +1563,26 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡ÏûÏ¢·¢ËÍ¸Å¿öÊı¾İ(post)
-     * @Param:  access_token 	ÊÇ 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                begin_date 	    ÊÇ 	»ñÈ¡Êı¾İµÄÆğÊ¼ÈÕÆÚ£¬begin_dateºÍend_dateµÄ²îÖµĞèĞ¡ÓÚ¡°×î´óÊ±¼ä¿ç¶È¡±£¨±ÈÈç×î´óÊ±¼ä¿ç¶ÈÎª1Ê±£¬begin_dateºÍend_dateµÄ²îÖµÖ»ÄÜÎª0£¬²ÅÄÜĞ¡ÓÚ1£©£¬·ñÔò»á±¨´í
-                end_date 	    ÊÇ 	»ñÈ¡Êı¾İµÄ½áÊøÈÕÆÚ£¬end_dateÔÊĞíÉèÖÃµÄ×î´óÖµÎª×òÈÕ
-     * @Return: ref_date 	        Êı¾İµÄÈÕÆÚ£¬ĞèÔÚbegin_dateºÍend_dateÖ®¼ä
-                ref_hour 	        Êı¾İµÄĞ¡Ê±£¬°üÀ¨´Ó000µ½2300£¬·Ö±ğ´ú±íµÄÊÇ[000,100)µ½[2300,2400)£¬¼´Ã¿ÈÕµÄµÚ1Ğ¡Ê±ºÍ×îºó1Ğ¡Ê±
-                msg_type 	        ÏûÏ¢ÀàĞÍ£¬´ú±íº¬ÒåÈçÏÂ£º1´ú±íÎÄ×Ö 2´ú±íÍ¼Æ¬ 3´ú±íÓïÒô 4´ú±íÊÓÆµ 6´ú±íµÚÈı·½Ó¦ÓÃÏûÏ¢£¨Á´½ÓÏûÏ¢£©
-                msg_user 	        ÉÏĞĞ·¢ËÍÁË£¨Ïò¹«ÖÚºÅ·¢ËÍÁË£©ÏûÏ¢µÄÓÃ»§Êı
-                msg_count 	        ÉÏĞĞ·¢ËÍÁËÏûÏ¢µÄÏûÏ¢×ÜÊı
-                count_interval 	    µ±ÈÕ·¢ËÍÏûÏ¢Á¿·Ö²¼µÄÇø¼ä£¬0´ú±í ¡°0¡±£¬1´ú±í¡°1-5¡±£¬2´ú±í¡°6-10¡±£¬3´ú±í¡°10´ÎÒÔÉÏ¡±
-                int_page_read_count Í¼ÎÄÒ³µÄÔÄ¶Á´ÎÊı
-                ori_page_read_user 	Ô­ÎÄÒ³£¨µã»÷Í¼ÎÄÒ³¡°ÔÄ¶ÁÔ­ÎÄ¡±½øÈëµÄÒ³Ãæ£©µÄÔÄ¶ÁÈËÊı£¬ÎŞÔ­ÎÄÒ³Ê±´Ë´¦Êı¾İÎª0
-     * @Description:×î´óÊ±¼ä¿ç¶È(7)
+     * @FunctionDescription:è·å–æ¶ˆæ¯å‘é€æ¦‚å†µæ•°æ®(post)
+     * @Param:  access_token 	æ˜¯ 	è°ƒç”¨æ¥å£å‡­è¯
+    begin_date 	    æ˜¯ 	è·å–æ•°æ®çš„èµ·å§‹æ—¥æœŸï¼Œbegin_dateå’Œend_dateçš„å·®å€¼éœ€å°äºâ€œæœ€å¤§æ—¶é—´è·¨åº¦â€ï¼ˆæ¯”å¦‚æœ€å¤§æ—¶é—´è·¨åº¦ä¸º1æ—¶ï¼Œbegin_dateå’Œend_dateçš„å·®å€¼åªèƒ½ä¸º0ï¼Œæ‰èƒ½å°äº1ï¼‰ï¼Œå¦åˆ™ä¼šæŠ¥é”™
+    end_date 	    æ˜¯ 	è·å–æ•°æ®çš„ç»“æŸæ—¥æœŸï¼Œend_dateå…è®¸è®¾ç½®çš„æœ€å¤§å€¼ä¸ºæ˜¨æ—¥
+     * @Return: ref_date 	        æ•°æ®çš„æ—¥æœŸï¼Œéœ€åœ¨begin_dateå’Œend_dateä¹‹é—´
+    ref_hour 	        æ•°æ®çš„å°æ—¶ï¼ŒåŒ…æ‹¬ä»000åˆ°2300ï¼Œåˆ†åˆ«ä»£è¡¨çš„æ˜¯[000,100)åˆ°[2300,2400)ï¼Œå³æ¯æ—¥çš„ç¬¬1å°æ—¶å’Œæœ€å1å°æ—¶
+    msg_type 	        æ¶ˆæ¯ç±»å‹ï¼Œä»£è¡¨å«ä¹‰å¦‚ä¸‹ï¼š1ä»£è¡¨æ–‡å­— 2ä»£è¡¨å›¾ç‰‡ 3ä»£è¡¨è¯­éŸ³ 4ä»£è¡¨è§†é¢‘ 6ä»£è¡¨ç¬¬ä¸‰æ–¹åº”ç”¨æ¶ˆæ¯ï¼ˆé“¾æ¥æ¶ˆæ¯ï¼‰
+    msg_user 	        ä¸Šè¡Œå‘é€äº†ï¼ˆå‘å…¬ä¼—å·å‘é€äº†ï¼‰æ¶ˆæ¯çš„ç”¨æˆ·æ•°
+    msg_count 	        ä¸Šè¡Œå‘é€äº†æ¶ˆæ¯çš„æ¶ˆæ¯æ€»æ•°
+    count_interval 	    å½“æ—¥å‘é€æ¶ˆæ¯é‡åˆ†å¸ƒçš„åŒºé—´ï¼Œ0ä»£è¡¨ â€œ0â€ï¼Œ1ä»£è¡¨â€œ1-5â€ï¼Œ2ä»£è¡¨â€œ6-10â€ï¼Œ3ä»£è¡¨â€œ10æ¬¡ä»¥ä¸Šâ€
+    int_page_read_count å›¾æ–‡é¡µçš„é˜…è¯»æ¬¡æ•°
+    ori_page_read_user 	åŸæ–‡é¡µï¼ˆç‚¹å‡»å›¾æ–‡é¡µâ€œé˜…è¯»åŸæ–‡â€è¿›å…¥çš„é¡µé¢ï¼‰çš„é˜…è¯»äººæ•°ï¼Œæ— åŸæ–‡é¡µæ—¶æ­¤å¤„æ•°æ®ä¸º0
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦(7)
      * @Author:helen zheng
      */
     public function getUpStreamMsg($access_token,$begin_date,$end_date){
@@ -1661,18 +1594,17 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡ÏûÏ¢·ÖËÍ·ÖÊ±Êı¾İ(post)
-     * @Param:Í¬ÉÏ
-     * @Return:Í¬ÉÏ
-     * @Description:×î´óÊ±¼ä¿ç¶È(1)
+     * @FunctionDescription:è·å–æ¶ˆæ¯åˆ†é€åˆ†æ—¶æ•°æ®(post)
+     * @Param:åŒä¸Š
+     * @Return:åŒä¸Š
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦(1)
      * @Author:helen zheng
      */
     public function getUpstreamMsgHour($access_token,$begin_date,$end_date){
@@ -1684,18 +1616,17 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡ÏûÏ¢·¢ËÍÖÜÊı¾İ(post)
-     * @Param:Í¬ÉÏ
-     * @Return:Í¬ÉÏ
-     * @Description:×î´óÊ±¼ä¿ç¶È(30)
+     * @FunctionDescription:è·å–æ¶ˆæ¯å‘é€å‘¨æ•°æ®(post)
+     * @Param:åŒä¸Š
+     * @Return:åŒä¸Š
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦(30)
      * @Author:helen zheng
      */
     public function getUpstreamMsgWeek($access_token,$begin_date,$end_date){
@@ -1707,18 +1638,17 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡ÏûÏ¢·¢ËÍÔÂÊı¾İ(post)
-     * @Param:Í¬ÉÏ
-     * @Return:Í¬ÉÏ
-     * @Description:×î´óÊ±¼ä¿ç¶È(30)
+     * @FunctionDescription:è·å–æ¶ˆæ¯å‘é€æœˆæ•°æ®(post)
+     * @Param:åŒä¸Š
+     * @Return:åŒä¸Š
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦(30)
      * @Author:helen zheng
      */
     public function getUpstreamMsgMonth($access_token,$begin_date,$end_date){
@@ -1730,18 +1660,17 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡ÏûÏ¢·¢ËÍ·Ö²¼Êı¾İ(post)
-     * @Param:Í¬ÉÏ
-     * @Return:Í¬ÉÏ
-     * @Description:×î´óÊ±¼ä¿ç¶È(15)
+     * @FunctionDescription:è·å–æ¶ˆæ¯å‘é€åˆ†å¸ƒæ•°æ®(post)
+     * @Param:åŒä¸Š
+     * @Return:åŒä¸Š
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦(15)
      * @Author:helen zheng
      */
     public function getUpstreamMsgDist($access_token,$begin_date,$end_date){
@@ -1753,18 +1682,17 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡ÏûÏ¢·¢ËÍ·Ö²¼ÖÜÊı¾İ(post)
-     * @Param:Í¬ÉÏ
-     * @Return:Í¬ÉÏ
-     * @Description:×î´óÊ±¼ä¿ç¶È(30)
+     * @FunctionDescription:è·å–æ¶ˆæ¯å‘é€åˆ†å¸ƒå‘¨æ•°æ®(post)
+     * @Param:åŒä¸Š
+     * @Return:åŒä¸Š
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦(30)
      * @Author:helen zheng
      */
     public function getUpstreamMsgDistWeek($access_token,$begin_date,$end_date){
@@ -1776,18 +1704,17 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡ÏûÏ¢·¢ËÍ·Ö²¼ÔÂÊı¾İ(post)
-     * @Param:Í¬ÉÏ
-     * @Return:Í¬ÉÏ
-     * @Description:×î´óÊ±¼ä¿ç¶È(30)
+     * @FunctionDescription:è·å–æ¶ˆæ¯å‘é€åˆ†å¸ƒæœˆæ•°æ®(post)
+     * @Param:åŒä¸Š
+     * @Return:åŒä¸Š
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦(30)
      * @Author:helen zheng
      */
     public function getUpstreamMsgDistMonth($access_token,$begin_date,$end_date){
@@ -1799,25 +1726,24 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡½Ó¿Ú·ÖÎöÊı¾İ(post)
-     * @Param:  access_token 	ÊÇ 	µ÷ÓÃ½Ó¿ÚÆ¾Ö¤
-                begin_date 	    ÊÇ 	»ñÈ¡Êı¾İµÄÆğÊ¼ÈÕÆÚ£¬begin_dateºÍend_dateµÄ²îÖµĞèĞ¡ÓÚ¡°×î´óÊ±¼ä¿ç¶È¡±£¨±ÈÈç×î´óÊ±¼ä¿ç¶ÈÎª1Ê±£¬begin_dateºÍend_dateµÄ²îÖµÖ»ÄÜÎª0£¬²ÅÄÜĞ¡ÓÚ1£©£¬·ñÔò»á±¨´í
-                end_date 	    ÊÇ 	»ñÈ¡Êı¾İµÄ½áÊøÈÕÆÚ£¬end_dateÔÊĞíÉèÖÃµÄ×î´óÖµÎª×òÈÕ
-     * @Return: ref_date 	    Êı¾İµÄÈÕÆÚ
-                ref_hour 	    Êı¾İµÄĞ¡Ê±
-                callback_count 	Í¨¹ı·şÎñÆ÷ÅäÖÃµØÖ·»ñµÃÏûÏ¢ºó£¬±»¶¯»Ø¸´ÓÃ»§ÏûÏ¢µÄ´ÎÊı
-                fail_count 	    ÉÏÊö¶¯×÷µÄÊ§°Ü´ÎÊı
-                total_time_cost ×ÜºÄÊ±£¬³ıÒÔcallback_count¼´ÎªÆ½¾ùºÄÊ±
-                max_time_cost 	×î´óºÄÊ±
-     * @Description:×î´óÊ±¼ä¿ç¶È(30)
+     * @FunctionDescription:è·å–æ¥å£åˆ†ææ•°æ®(post)
+     * @Param:  access_token 	æ˜¯ 	è°ƒç”¨æ¥å£å‡­è¯
+    begin_date 	    æ˜¯ 	è·å–æ•°æ®çš„èµ·å§‹æ—¥æœŸï¼Œbegin_dateå’Œend_dateçš„å·®å€¼éœ€å°äºâ€œæœ€å¤§æ—¶é—´è·¨åº¦â€ï¼ˆæ¯”å¦‚æœ€å¤§æ—¶é—´è·¨åº¦ä¸º1æ—¶ï¼Œbegin_dateå’Œend_dateçš„å·®å€¼åªèƒ½ä¸º0ï¼Œæ‰èƒ½å°äº1ï¼‰ï¼Œå¦åˆ™ä¼šæŠ¥é”™
+    end_date 	    æ˜¯ 	è·å–æ•°æ®çš„ç»“æŸæ—¥æœŸï¼Œend_dateå…è®¸è®¾ç½®çš„æœ€å¤§å€¼ä¸ºæ˜¨æ—¥
+     * @Return: ref_date 	    æ•°æ®çš„æ—¥æœŸ
+    ref_hour 	    æ•°æ®çš„å°æ—¶
+    callback_count 	é€šè¿‡æœåŠ¡å™¨é…ç½®åœ°å€è·å¾—æ¶ˆæ¯åï¼Œè¢«åŠ¨å›å¤ç”¨æˆ·æ¶ˆæ¯çš„æ¬¡æ•°
+    fail_count 	    ä¸Šè¿°åŠ¨ä½œçš„å¤±è´¥æ¬¡æ•°
+    total_time_cost æ€»è€—æ—¶ï¼Œé™¤ä»¥callback_countå³ä¸ºå¹³å‡è€—æ—¶
+    max_time_cost 	æœ€å¤§è€—æ—¶
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦(30)
      * @Author:helen zheng
      */
     public function getInterfaceSummary($access_token,$begin_date,$end_date){
@@ -1829,18 +1755,17 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:»ñÈ¡½Ó¿Ú·ÖÎö·ÖÊ±Êı¾İ(post)
+     * @FunctionDescription:è·å–æ¥å£åˆ†æåˆ†æ—¶æ•°æ®(post)
      * @Param:
      * @Return:
-     * @Description:×î´óÊ±¼ä¿ç¶È(1)
+     * @Description:æœ€å¤§æ—¶é—´è·¨åº¦(1)
      * @Author:helen zheng
      */
     public function getInterfaceSummaryHour($access_token,$begin_date,$end_date){
@@ -1852,18 +1777,17 @@ class Wechat{
         $data = json_encode($data);
         $result = $this->request_post($url,$data);
         $res = $this->resultProcess($result);
-        if($res==$result){  /*½Ó¿Ú·µ»ØÖµ*/
+        if($res==$result){  /*æ¥å£è¿”å›å€¼*/
             return($result);
-        }else{  /*½Ó¿Úµ÷ÓÃ´íÎóĞÅÏ¢*/
+        }else{  /*æ¥å£è°ƒç”¨é”™è¯¯ä¿¡æ¯*/
             return($res);
         }
     }
-
     /**
-     * @FunctionDescription:½Ó¿Úµ÷ÓÃ½á¹û´¦Àíº¯Êı£¨ÅĞ¶Ï½Ó¿Úµ÷ÓÃ³É¹¦Óë·ñ²¢´¦Àí£©
-     * @Param:½Ó¿Úµ÷ÓÃ·µ»ØÖµ£¨json£©
-     * @Return:½á¹û´¦ÀíºóĞÅÏ¢£¨json»òstring£©
-     * @Description:¼ÙÈç½Ó¿Úµ÷ÓÃ³É¹¦£¬Ôò±¾º¯ÊıÕı³£·µ»ØÖµ£»¼ÙÈç½Ó¿Úµ÷ÓÃÊ§°Ü£¬·µ»Ø´íÎóĞÅÏ¢¡£
+     * @FunctionDescription:æ¥å£è°ƒç”¨ç»“æœå¤„ç†å‡½æ•°ï¼ˆåˆ¤æ–­æ¥å£è°ƒç”¨æˆåŠŸä¸å¦å¹¶å¤„ç†ï¼‰
+     * @Param:æ¥å£è°ƒç”¨è¿”å›å€¼ï¼ˆjsonï¼‰
+     * @Return:ç»“æœå¤„ç†åä¿¡æ¯ï¼ˆjsonæˆ–stringï¼‰
+     * @Description:å‡å¦‚æ¥å£è°ƒç”¨æˆåŠŸï¼Œåˆ™æœ¬å‡½æ•°æ­£å¸¸è¿”å›å€¼ï¼›å‡å¦‚æ¥å£è°ƒç”¨å¤±è´¥ï¼Œè¿”å›é”™è¯¯ä¿¡æ¯ã€‚
      * @Author:helen zheng
      */
     function resultProcess($res){
@@ -1873,117 +1797,115 @@ class Wechat{
             return $res;
         }
     }
-
     /**
-     * @FunctionDescription:Î¢ĞÅÈ«¾Ö·µ»ØÂëÖĞÎÄËµÃ÷
-     * @Param:Î¢ĞÅ·µ»ØÂë
-     * @Return:Î¢ĞÅ·µ»ØÂë¶ÔÓ¦µÄÖĞÎÄËµÃ÷
+     * @FunctionDescription:å¾®ä¿¡å…¨å±€è¿”å›ç ä¸­æ–‡è¯´æ˜
+     * @Param:å¾®ä¿¡è¿”å›ç 
+     * @Return:å¾®ä¿¡è¿”å›ç å¯¹åº”çš„ä¸­æ–‡è¯´æ˜
      * @Description:
      * @Author:helen zheng
      */
     function errorMsg($errcode) {
         switch ($errcode) {
-            case -1    : return 'ÏµÍ³·±Ã¦£¬ÇëÉÔºòÔÙÊÔ¡£';
-            case 0     : return 'ÇëÇó³É¹¦¡£';
-            case 40001 : return '»ñÈ¡access_tokenÊ±AppSecret´íÎó£¬»òÕßaccess_tokenÎŞĞ§¡£';
-            case 40002 : return '²»ºÏ·¨µÄÆ¾Ö¤ÀàĞÍ¡£';
-            case 40003 : return '²»ºÏ·¨µÄOpenID£¬Çë¿ª·¢ÕßÈ·ÈÏOpenID£¨¸ÃÓÃ»§£©ÊÇ·ñÒÑ¹Ø×¢¹«ÖÚºÅ£¬»òÊÇ·ñÊÇÆäËû¹«ÖÚºÅµÄOpenID¡£';
-            case 40004 : return '²»ºÏ·¨µÄÃ½ÌåÎÄ¼şÀàĞÍ';
-            case 40005 : return '²»ºÏ·¨µÄÎÄ¼şÀàĞÍ';
-            case 40006 : return '²»ºÏ·¨µÄÎÄ¼ş´óĞ¡';
-            case 40007 : return '²»ºÏ·¨µÄÃ½ÌåÎÄ¼şid ';
-            case 40008 : return '²»ºÏ·¨µÄÏûÏ¢ÀàĞÍ ';
-            case 40009 : return '²»ºÏ·¨µÄÍ¼Æ¬ÎÄ¼ş´óĞ¡';
-            case 40010 : return '²»ºÏ·¨µÄÓïÒôÎÄ¼ş´óĞ¡';
-            case 40011 : return '²»ºÏ·¨µÄÊÓÆµÎÄ¼ş´óĞ¡';
-            case 40012 : return '²»ºÏ·¨µÄËõÂÔÍ¼ÎÄ¼ş´óĞ¡';
-            case 40013 : return '²»ºÏ·¨µÄAPPID';
-            case 40014 : return '²»ºÏ·¨µÄaccess_token ';
-            case 40015 : return '²»ºÏ·¨µÄ²Ëµ¥ÀàĞÍ ';
-            case 40016 : return '²»ºÏ·¨µÄ°´Å¥¸öÊı ';
-            case 40017 : return '²»ºÏ·¨µÄ°´Å¥¸öÊı';
-            case 40018 : return '²»ºÏ·¨µÄ°´Å¥Ãû×Ö³¤¶È';
-            case 40019 : return '²»ºÏ·¨µÄ°´Å¥KEY³¤¶È ';
-            case 40020 : return '²»ºÏ·¨µÄ°´Å¥URL³¤¶È ';
-            case 40021 : return '²»ºÏ·¨µÄ²Ëµ¥°æ±¾ºÅ';
-            case 40022 : return '²»ºÏ·¨µÄ×Ó²Ëµ¥¼¶Êı';
-            case 40023 : return '²»ºÏ·¨µÄ×Ó²Ëµ¥°´Å¥¸öÊı';
-            case 40024 : return '²»ºÏ·¨µÄ×Ó²Ëµ¥°´Å¥ÀàĞÍ';
-            case 40025 : return '²»ºÏ·¨µÄ×Ó²Ëµ¥°´Å¥Ãû×Ö³¤¶È';
-            case 40026 : return '²»ºÏ·¨µÄ×Ó²Ëµ¥°´Å¥KEY³¤¶È ';
-            case 40027 : return '²»ºÏ·¨µÄ×Ó²Ëµ¥°´Å¥URL³¤¶È ';
-            case 40028 : return '²»ºÏ·¨µÄ×Ô¶¨Òå²Ëµ¥Ê¹ÓÃÓÃ»§';
-            case 40029 : return '²»ºÏ·¨µÄoauth_code';
-            case 40030 : return '²»ºÏ·¨µÄrefresh_token';
-            case 40031 : return '²»ºÏ·¨µÄopenidÁĞ±í ';
-            case 40032 : return '²»ºÏ·¨µÄopenidÁĞ±í³¤¶È ';
-            case 40033 : return '²»ºÏ·¨µÄÇëÇó×Ö·û£¬²»ÄÜ°üº¬\uxxxx¸ñÊ½µÄ×Ö·û ';
-            case 40035 : return '²»ºÏ·¨µÄ²ÎÊı';
-            case 40038 : return '²»ºÏ·¨µÄÇëÇó¸ñÊ½';
-            case 40039 : return '²»ºÏ·¨µÄURL³¤¶È ';
-            case 40050 : return '²»ºÏ·¨µÄ·Ö×éid';
-            case 40051 : return '·Ö×éÃû×Ö²»ºÏ·¨';
-            case 41001 : return 'È±ÉÙaccess_token²ÎÊı';
-            case 41002 : return 'È±ÉÙappid²ÎÊı';
-            case 41003 : return 'È±ÉÙrefresh_token²ÎÊı';
-            case 41004 : return 'È±ÉÙsecret²ÎÊı';
-            case 41005 : return 'È±ÉÙ¶àÃ½ÌåÎÄ¼şÊı¾İ';
-            case 41006 : return 'È±ÉÙmedia_id²ÎÊı';
-            case 41007 : return 'È±ÉÙ×Ó²Ëµ¥Êı¾İ';
-            case 41008 : return 'È±ÉÙoauth code';
-            case 41009 : return 'È±ÉÙopenid';
-            case 42001 : return 'access_token³¬Ê±';
-            case 42002 : return 'refresh_token³¬Ê±';
-            case 42003 : return 'oauth_code³¬Ê±';
-            case 43001 : return 'ĞèÒªGETÇëÇó';
-            case 43002 : return 'ĞèÒªPOSTÇëÇó';
-            case 43003 : return 'ĞèÒªHTTPSÇëÇó';
-            case 43004 : return 'ĞèÒª½ÓÊÕÕß¹Ø×¢';
-            case 43005 : return 'ĞèÒªºÃÓÑ¹ØÏµ';
-            case 44001 : return '¶àÃ½ÌåÎÄ¼şÎª¿Õ';
-            case 44002 : return 'POSTµÄÊı¾İ°üÎª¿Õ';
-            case 44003 : return 'Í¼ÎÄÏûÏ¢ÄÚÈİÎª¿Õ';
-            case 44004 : return 'ÎÄ±¾ÏûÏ¢ÄÚÈİÎª¿Õ';
-            case 45001 : return '¶àÃ½ÌåÎÄ¼ş´óĞ¡³¬¹ıÏŞÖÆ';
-            case 45002 : return 'ÏûÏ¢ÄÚÈİ³¬¹ıÏŞÖÆ';
-            case 45003 : return '±êÌâ×Ö¶Î³¬¹ıÏŞÖÆ';
-            case 45004 : return 'ÃèÊö×Ö¶Î³¬¹ıÏŞÖÆ';
-            case 45005 : return 'Á´½Ó×Ö¶Î³¬¹ıÏŞÖÆ';
-            case 45006 : return 'Í¼Æ¬Á´½Ó×Ö¶Î³¬¹ıÏŞÖÆ';
-            case 45007 : return 'ÓïÒô²¥·ÅÊ±¼ä³¬¹ıÏŞÖÆ';
-            case 45008 : return 'Í¼ÎÄÏûÏ¢³¬¹ıÏŞÖÆ';
-            case 45009 : return '½Ó¿Úµ÷ÓÃ³¬¹ıÏŞÖÆ';
-            case 45010 : return '´´½¨²Ëµ¥¸öÊı³¬¹ıÏŞÖÆ';
-            case 45015 : return '»Ø¸´Ê±¼ä³¬¹ıÏŞÖÆ';
-            case 45016 : return 'ÏµÍ³·Ö×é£¬²»ÔÊĞíĞŞ¸Ä';
-            case 45017 : return '·Ö×éÃû×Ö¹ı³¤';
-            case 45018 : return '·Ö×éÊıÁ¿³¬¹ıÉÏÏŞ';
-            case 46001 : return '²»´æÔÚÃ½ÌåÊı¾İ';
-            case 46002 : return '²»´æÔÚµÄ²Ëµ¥°æ±¾';
-            case 46003 : return '²»´æÔÚµÄ²Ëµ¥Êı¾İ';
-            case 46004 : return '²»´æÔÚµÄÓÃ»§';
-            case 47001 : return '½âÎöJSON/XMLÄÚÈİ´íÎó';
-            case 48001 : return 'api¹¦ÄÜÎ´ÊÚÈ¨';
-            case 50001 : return 'ÓÃ»§Î´ÊÚÈ¨¸Ãapi';
-            default    : return 'Î´Öª´íÎó';
+            case -1    : return 'ç³»ç»Ÿç¹å¿™ï¼Œè¯·ç¨å€™å†è¯•ã€‚';
+            case 0     : return 'è¯·æ±‚æˆåŠŸã€‚';
+            case 40001 : return 'è·å–access_tokenæ—¶AppSecreté”™è¯¯ï¼Œæˆ–è€…access_tokenæ— æ•ˆã€‚';
+            case 40002 : return 'ä¸åˆæ³•çš„å‡­è¯ç±»å‹ã€‚';
+            case 40003 : return 'ä¸åˆæ³•çš„OpenIDï¼Œè¯·å¼€å‘è€…ç¡®è®¤OpenIDï¼ˆè¯¥ç”¨æˆ·ï¼‰æ˜¯å¦å·²å…³æ³¨å…¬ä¼—å·ï¼Œæˆ–æ˜¯å¦æ˜¯å…¶ä»–å…¬ä¼—å·çš„OpenIDã€‚';
+            case 40004 : return 'ä¸åˆæ³•çš„åª’ä½“æ–‡ä»¶ç±»å‹';
+            case 40005 : return 'ä¸åˆæ³•çš„æ–‡ä»¶ç±»å‹';
+            case 40006 : return 'ä¸åˆæ³•çš„æ–‡ä»¶å¤§å°';
+            case 40007 : return 'ä¸åˆæ³•çš„åª’ä½“æ–‡ä»¶id ';
+            case 40008 : return 'ä¸åˆæ³•çš„æ¶ˆæ¯ç±»å‹ ';
+            case 40009 : return 'ä¸åˆæ³•çš„å›¾ç‰‡æ–‡ä»¶å¤§å°';
+            case 40010 : return 'ä¸åˆæ³•çš„è¯­éŸ³æ–‡ä»¶å¤§å°';
+            case 40011 : return 'ä¸åˆæ³•çš„è§†é¢‘æ–‡ä»¶å¤§å°';
+            case 40012 : return 'ä¸åˆæ³•çš„ç¼©ç•¥å›¾æ–‡ä»¶å¤§å°';
+            case 40013 : return 'ä¸åˆæ³•çš„APPID';
+            case 40014 : return 'ä¸åˆæ³•çš„access_token ';
+            case 40015 : return 'ä¸åˆæ³•çš„èœå•ç±»å‹ ';
+            case 40016 : return 'ä¸åˆæ³•çš„æŒ‰é’®ä¸ªæ•° ';
+            case 40017 : return 'ä¸åˆæ³•çš„æŒ‰é’®ä¸ªæ•°';
+            case 40018 : return 'ä¸åˆæ³•çš„æŒ‰é’®åå­—é•¿åº¦';
+            case 40019 : return 'ä¸åˆæ³•çš„æŒ‰é’®KEYé•¿åº¦ ';
+            case 40020 : return 'ä¸åˆæ³•çš„æŒ‰é’®URLé•¿åº¦ ';
+            case 40021 : return 'ä¸åˆæ³•çš„èœå•ç‰ˆæœ¬å·';
+            case 40022 : return 'ä¸åˆæ³•çš„å­èœå•çº§æ•°';
+            case 40023 : return 'ä¸åˆæ³•çš„å­èœå•æŒ‰é’®ä¸ªæ•°';
+            case 40024 : return 'ä¸åˆæ³•çš„å­èœå•æŒ‰é’®ç±»å‹';
+            case 40025 : return 'ä¸åˆæ³•çš„å­èœå•æŒ‰é’®åå­—é•¿åº¦';
+            case 40026 : return 'ä¸åˆæ³•çš„å­èœå•æŒ‰é’®KEYé•¿åº¦ ';
+            case 40027 : return 'ä¸åˆæ³•çš„å­èœå•æŒ‰é’®URLé•¿åº¦ ';
+            case 40028 : return 'ä¸åˆæ³•çš„è‡ªå®šä¹‰èœå•ä½¿ç”¨ç”¨æˆ·';
+            case 40029 : return 'ä¸åˆæ³•çš„oauth_code';
+            case 40030 : return 'ä¸åˆæ³•çš„refresh_token';
+            case 40031 : return 'ä¸åˆæ³•çš„openidåˆ—è¡¨ ';
+            case 40032 : return 'ä¸åˆæ³•çš„openidåˆ—è¡¨é•¿åº¦ ';
+            case 40033 : return 'ä¸åˆæ³•çš„è¯·æ±‚å­—ç¬¦ï¼Œä¸èƒ½åŒ…å«\uxxxxæ ¼å¼çš„å­—ç¬¦ ';
+            case 40035 : return 'ä¸åˆæ³•çš„å‚æ•°';
+            case 40038 : return 'ä¸åˆæ³•çš„è¯·æ±‚æ ¼å¼';
+            case 40039 : return 'ä¸åˆæ³•çš„URLé•¿åº¦ ';
+            case 40050 : return 'ä¸åˆæ³•çš„åˆ†ç»„id';
+            case 40051 : return 'åˆ†ç»„åå­—ä¸åˆæ³•';
+            case 41001 : return 'ç¼ºå°‘access_tokenå‚æ•°';
+            case 41002 : return 'ç¼ºå°‘appidå‚æ•°';
+            case 41003 : return 'ç¼ºå°‘refresh_tokenå‚æ•°';
+            case 41004 : return 'ç¼ºå°‘secretå‚æ•°';
+            case 41005 : return 'ç¼ºå°‘å¤šåª’ä½“æ–‡ä»¶æ•°æ®';
+            case 41006 : return 'ç¼ºå°‘media_idå‚æ•°';
+            case 41007 : return 'ç¼ºå°‘å­èœå•æ•°æ®';
+            case 41008 : return 'ç¼ºå°‘oauth code';
+            case 41009 : return 'ç¼ºå°‘openid';
+            case 42001 : return 'access_tokenè¶…æ—¶';
+            case 42002 : return 'refresh_tokenè¶…æ—¶';
+            case 42003 : return 'oauth_codeè¶…æ—¶';
+            case 43001 : return 'éœ€è¦GETè¯·æ±‚';
+            case 43002 : return 'éœ€è¦POSTè¯·æ±‚';
+            case 43003 : return 'éœ€è¦HTTPSè¯·æ±‚';
+            case 43004 : return 'éœ€è¦æ¥æ”¶è€…å…³æ³¨';
+            case 43005 : return 'éœ€è¦å¥½å‹å…³ç³»';
+            case 44001 : return 'å¤šåª’ä½“æ–‡ä»¶ä¸ºç©º';
+            case 44002 : return 'POSTçš„æ•°æ®åŒ…ä¸ºç©º';
+            case 44003 : return 'å›¾æ–‡æ¶ˆæ¯å†…å®¹ä¸ºç©º';
+            case 44004 : return 'æ–‡æœ¬æ¶ˆæ¯å†…å®¹ä¸ºç©º';
+            case 45001 : return 'å¤šåª’ä½“æ–‡ä»¶å¤§å°è¶…è¿‡é™åˆ¶';
+            case 45002 : return 'æ¶ˆæ¯å†…å®¹è¶…è¿‡é™åˆ¶';
+            case 45003 : return 'æ ‡é¢˜å­—æ®µè¶…è¿‡é™åˆ¶';
+            case 45004 : return 'æè¿°å­—æ®µè¶…è¿‡é™åˆ¶';
+            case 45005 : return 'é“¾æ¥å­—æ®µè¶…è¿‡é™åˆ¶';
+            case 45006 : return 'å›¾ç‰‡é“¾æ¥å­—æ®µè¶…è¿‡é™åˆ¶';
+            case 45007 : return 'è¯­éŸ³æ’­æ”¾æ—¶é—´è¶…è¿‡é™åˆ¶';
+            case 45008 : return 'å›¾æ–‡æ¶ˆæ¯è¶…è¿‡é™åˆ¶';
+            case 45009 : return 'æ¥å£è°ƒç”¨è¶…è¿‡é™åˆ¶';
+            case 45010 : return 'åˆ›å»ºèœå•ä¸ªæ•°è¶…è¿‡é™åˆ¶';
+            case 45015 : return 'å›å¤æ—¶é—´è¶…è¿‡é™åˆ¶';
+            case 45016 : return 'ç³»ç»Ÿåˆ†ç»„ï¼Œä¸å…è®¸ä¿®æ”¹';
+            case 45017 : return 'åˆ†ç»„åå­—è¿‡é•¿';
+            case 45018 : return 'åˆ†ç»„æ•°é‡è¶…è¿‡ä¸Šé™';
+            case 46001 : return 'ä¸å­˜åœ¨åª’ä½“æ•°æ®';
+            case 46002 : return 'ä¸å­˜åœ¨çš„èœå•ç‰ˆæœ¬';
+            case 46003 : return 'ä¸å­˜åœ¨çš„èœå•æ•°æ®';
+            case 46004 : return 'ä¸å­˜åœ¨çš„ç”¨æˆ·';
+            case 47001 : return 'è§£æJSON/XMLå†…å®¹é”™è¯¯';
+            case 48001 : return 'apiåŠŸèƒ½æœªæˆæƒ';
+            case 50001 : return 'ç”¨æˆ·æœªæˆæƒè¯¥api';
+            default    : return 'æœªçŸ¥é”™è¯¯';
         }
     }
-
     /**
-     * @FunctionDescription:½Ó¿Úµ÷ÓÃµÄget·½·¨
-     * @Param:ÇëÇóµÄurlµØÖ·
-     * @Return:£¨json£©
-     * @Description:ÀûÓÃcURL·¢ËÍgetÇëÇó£¬»ñÈ¡Êı¾İ
+     * @FunctionDescription:æ¥å£è°ƒç”¨çš„getæ–¹æ³•
+     * @Param:è¯·æ±‚çš„urlåœ°å€
+     * @Return:ï¼ˆjsonï¼‰
+     * @Description:åˆ©ç”¨cURLå‘é€getè¯·æ±‚ï¼Œè·å–æ•°æ®
      * @Author:helen zheng
      */
-    /*½Ó¿Úµ÷ÓÃµÄget·½·¨*/
+    /*æ¥å£è°ƒç”¨çš„getæ–¹æ³•*/
     function request_get($url){
-        //³õÊ¼»¯cURL·½·¨
+        //åˆå§‹åŒ–cURLæ–¹æ³•
         $ch = curl_init();
-        //ÉèÖÃcURL²ÎÊı
+        //è®¾ç½®cURLå‚æ•°
         $opts = array(
-            //ÔÚ¾ÖÓòÍøÄÚ·ÃÎÊhttpsÕ¾µãÊ±ĞèÒªÉèÖÃÒÔÏÂÁ½Ïî£¬¹Ø±ÕsslÑéÖ¤£¡
-            //´ËÁ½ÏîÕıÊ½ÉÏÏßÊ±ĞèÒª¸ü¸Ä£¨²»¼ì²éºÍÑéÖ¤ÈÏÖ¤£©
+            //åœ¨å±€åŸŸç½‘å†…è®¿é—®httpsç«™ç‚¹æ—¶éœ€è¦è®¾ç½®ä»¥ä¸‹ä¸¤é¡¹ï¼Œå…³é—­ssléªŒè¯ï¼
+            //æ­¤ä¸¤é¡¹æ­£å¼ä¸Šçº¿æ—¶éœ€è¦æ›´æ”¹ï¼ˆä¸æ£€æŸ¥å’ŒéªŒè¯è®¤è¯ï¼‰
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_TIMEOUT        => 30,
@@ -1991,32 +1913,31 @@ class Wechat{
             CURLOPT_URL            => $url,
         );
         curl_setopt_array($ch,$opts);
-        //Ö´ĞĞcURL²Ù×÷
+        //æ‰§è¡ŒcURLæ“ä½œ
         $output = curl_exec($ch);
-        if(curl_errno($ch)){    //cURL·¢Éú´íÎó´¦Àí²Ù×÷
+        if(curl_errno($ch)){    //cURLå‘ç”Ÿé”™è¯¯å¤„ç†æ“ä½œ
             var_dump(curl_error($ch));
             die;
         }
-        //¹Ø±ÕcURL
+        //å…³é—­cURL
         curl_close($ch);
         $res = json_decode($output);
-        return($res);    //·µ»ØjsonÊı¾İ
+        return($res);    //è¿”å›jsonæ•°æ®
     }
-
     /**
-     * @FunctionDescription:½Ó¿Úµ÷ÓÃµÄpost·½·¨
-     * @Param:ÇëÇóµÄurlµØÖ·£¬postÊı¾İ£¨json¸ñÊ½£©
-     * @Return:£¨json£©
-     * @Description:ÀûÓÃcURL·¢ËÍgetÇëÇó£¬»ñÈ¡Êı¾İ
+     * @FunctionDescription:æ¥å£è°ƒç”¨çš„postæ–¹æ³•
+     * @Param:è¯·æ±‚çš„urlåœ°å€ï¼Œpostæ•°æ®ï¼ˆjsonæ ¼å¼ï¼‰
+     * @Return:ï¼ˆjsonï¼‰
+     * @Description:åˆ©ç”¨cURLå‘é€getè¯·æ±‚ï¼Œè·å–æ•°æ®
      * @Author:helen zheng
      */
     function request_post($url,$data){
-        //³õÊ¼»¯cURL·½·¨
+        //åˆå§‹åŒ–cURLæ–¹æ³•
         $ch = curl_init();
-        //ÉèÖÃcURL²ÎÊı
+        //è®¾ç½®cURLå‚æ•°
         $opts = array(
-            //ÔÚ¾ÖÓòÍøÄÚ·ÃÎÊhttpsÕ¾µãÊ±ĞèÒªÉèÖÃÒÔÏÂÁ½Ïî£¬¹Ø±ÕsslÑéÖ¤£¡
-            //´ËÁ½ÏîÕıÊ½ÉÏÏßÊ±ĞèÒª¸ü¸Ä£¨²»¼ì²éºÍÑéÖ¤ÈÏÖ¤£©
+            //åœ¨å±€åŸŸç½‘å†…è®¿é—®httpsç«™ç‚¹æ—¶éœ€è¦è®¾ç½®ä»¥ä¸‹ä¸¤é¡¹ï¼Œå…³é—­ssléªŒè¯ï¼
+            //æ­¤ä¸¤é¡¹æ­£å¼ä¸Šçº¿æ—¶éœ€è¦æ›´æ”¹ï¼ˆä¸æ£€æŸ¥å’ŒéªŒè¯è®¤è¯ï¼‰
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_TIMEOUT        => 30,
@@ -2026,32 +1947,31 @@ class Wechat{
             CURLOPT_POSTFIELDS     => $data
         );
         curl_setopt_array($ch,$opts);
-        //Ö´ĞĞcURL²Ù×÷
+        //æ‰§è¡ŒcURLæ“ä½œ
         $output = curl_exec($ch);
-        if(curl_errno($ch)){    //cURL²Ù×÷·¢Éú´íÎó´¦Àí¡£
+        if(curl_errno($ch)){    //cURLæ“ä½œå‘ç”Ÿé”™è¯¯å¤„ç†ã€‚
             var_dump(curl_error($ch));
             die;
         }
-        //¹Ø±ÕcURL
+        //å…³é—­cURL
         curl_close($ch);
         $res = json_decode($output);
-        return($res);   //·µ»ØjsonÊı¾İ
+        return($res);   //è¿”å›jsonæ•°æ®
     }
-
     /**
-     * @FunctionDescription:ÏÂÔØ¶àÃ½ÌåÎÄ¼ş·½·¨
+     * @FunctionDescription:ä¸‹è½½å¤šåª’ä½“æ–‡ä»¶æ–¹æ³•
      * @Param:url
-     * @Return:¶àÃ½ÌåĞÅÏ¢ array
+     * @Return:å¤šåª’ä½“ä¿¡æ¯ array
      * @Description:
      * @Author:helen zheng
      */
     function downloadFile($url){
-        //³õÊ¼»¯cURL·½·¨
+        //åˆå§‹åŒ–cURLæ–¹æ³•
         $ch = curl_init();
-        //ÉèÖÃcURL²ÎÊı
+        //è®¾ç½®cURLå‚æ•°
         $opts = array(
-            //ÔÚ¾ÖÓòÍøÄÚ·ÃÎÊhttpsÕ¾µãÊ±ĞèÒªÉèÖÃÒÔÏÂÁ½Ïî£¬¹Ø±ÕsslÑéÖ¤£¡
-            //´ËÁ½ÏîÕıÊ½ÉÏÏßÊ±ĞèÒª¸ü¸Ä£¨²»¼ì²éºÍÑéÖ¤ÈÏÖ¤£©
+            //åœ¨å±€åŸŸç½‘å†…è®¿é—®httpsç«™ç‚¹æ—¶éœ€è¦è®¾ç½®ä»¥ä¸‹ä¸¤é¡¹ï¼Œå…³é—­ssléªŒè¯ï¼
+            //æ­¤ä¸¤é¡¹æ­£å¼ä¸Šçº¿æ—¶éœ€è¦æ›´æ”¹ï¼ˆä¸æ£€æŸ¥å’ŒéªŒè¯è®¤è¯ï¼‰
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_TIMEOUT        => 30,
@@ -2061,15 +1981,14 @@ class Wechat{
             CURLOPT_NOBODY         => 0
         );
         curl_setopt_array($ch,$opts);
-        //Ö´ĞĞcURL²Ù×÷
+        //æ‰§è¡ŒcURLæ“ä½œ
         $output = curl_exec($ch);
         $httpinfo = curl_getinfo($ch);
         if(curl_errno($ch)){
             var_dump(curl_error($ch));
         }
-        //¹Ø±ÕcURL
+        //å…³é—­cURL
         curl_close($ch);
         return array_merge(array('body'=>$output),array('header'=>$httpinfo));
     }
-
 }
