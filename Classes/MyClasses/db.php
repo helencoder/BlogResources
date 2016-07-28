@@ -1,19 +1,3 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Gist
-@helencoder
-Unwatch 1
-Star 0
-Fork 0 helencoder/BlogResources
-Code  Issues 0  Pull requests 0  Wiki  Pulse  Graphs  Settings
-Branch: master Find file Copy pathBlogResources/Classes/MyClasses/db.php
-929a92a  on 26 Apr
-@helencoder helencoder BlogResources
-1 contributor
-RawBlameHistory     Executable File  501 lines (495 sloc)  15.1 KB
 <?php
 /**
  * Author: helen
@@ -364,6 +348,7 @@ class Database{
     public function find(){
         $option = self::option();
         $sql = 'select * from '.$this->_table.' '.$option;
+        mysqli_query($this->_dbObj, 'set names utf8;'); //**设置字符集***
         $search_res = mysqli_query($this->_dbObj,$sql);
         $msg = self::query_handle($search_res);
         return $msg;
